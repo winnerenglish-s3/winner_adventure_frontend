@@ -433,7 +433,7 @@ export default {
       headerColumn: "",
       studentList: "",
       selectedLevel: "",
-      practiceList: ""
+      practiceList: "",
     };
   },
   methods: {
@@ -445,8 +445,8 @@ export default {
           schoolKey: this.teacherData.schoolKey,
           term: this.getTerm(),
           year: this.getAcademicYear(),
-          classRoomSelected: this.classRoomSelected
-        }
+          classRoomSelected: this.classRoomSelected,
+        },
       });
     },
     loadUnitOptions() {
@@ -468,8 +468,8 @@ export default {
         .where("filter", "==", filter)
         .where("schoolKey", "==", this.teacherData.schoolKey)
         .get()
-        .then(doc => {
-          doc.forEach(element => {
+        .then((doc) => {
+          doc.forEach((element) => {
             passedUnit.push(element.data().unit);
           });
 
@@ -489,14 +489,14 @@ export default {
       let exceptGrammarType = [
         "grammarlesson",
         "review grammar",
-        "grammaraction"
+        "grammaraction",
       ];
       let exceptPhonicsType = ["phonicslesson"];
       let exceptListeningType = ["languagetips", "speaking", "roleplay"];
 
       // NOTE จำนวนแบบฝึกหัดทั้งหมดของ Vocabulary ที่ Unit นี้ โดยยกเว้น flashcard ไม่นับรวมเป็นตัวหาร
       let totalVocab = practiceList.filter(
-        x =>
+        (x) =>
           x.skill == "Vocabulary" &&
           x.unit == this.unitSelected &&
           !exceptVocabType.includes(x.practicetype) &&
@@ -508,7 +508,7 @@ export default {
 
       // NOTE จำนวนแบบฝึกหัดทั้งหมดของ Grammar โดยยกเว้นตาม exceptGrammarType
       let totalGrammar = practiceList.filter(
-        x =>
+        (x) =>
           x.skill == "Grammar" &&
           x.unit == this.unitSelected &&
           !exceptGrammarType.includes(x.practicetype) &&
@@ -518,7 +518,7 @@ export default {
       console.log("totalGrammar", totalGrammar);
 
       let totalWriting = practiceList.filter(
-        x =>
+        (x) =>
           x.skill == "Writing" &&
           x.unit == this.unitSelected &&
           x.level == this.selectedLevel
@@ -528,7 +528,7 @@ export default {
       console.log("totalWriting", totalWriting);
 
       let totalReading = practiceList.filter(
-        x =>
+        (x) =>
           x.skill == "Reading" &&
           x.unit == this.unitSelected &&
           x.level == this.selectedLevel &&
@@ -538,7 +538,7 @@ export default {
       console.log("totalReading", totalReading);
 
       let totalPhonics = practiceList.filter(
-        x =>
+        (x) =>
           x.skill == "Phonics" &&
           x.unit == this.unitSelected &&
           !exceptPhonicsType.includes(x.practicetype) &&
@@ -548,7 +548,7 @@ export default {
       console.log("totalPhonics", totalPhonics);
 
       let totalListening = practiceList.filter(
-        x =>
+        (x) =>
           x.skill == "Listening & Speaking" &&
           x.unit == this.unitSelected &&
           !exceptListeningType.includes(x.practicetype) &&
@@ -568,19 +568,17 @@ export default {
         .where("schoolKey", "==", this.teacherData.schoolKey)
         .where("level", "==", this.selectedLevel)
         .get()
-        .then(doc => {
+        .then((doc) => {
           let scoreTemp = [];
-          console.log(doc);
-          doc.forEach(element => {
+          doc.forEach((element) => {
             scoreTemp.push(element.data());
           });
-          scoreTemp = scoreTemp.filter(x => x.unit == this.unitSelected);
-          console.log(scoreTemp);
-          this.studentList.forEach(element => {
-            console.log(element);
+          scoreTemp = scoreTemp.filter((x) => x.unit == this.unitSelected);
+
+          this.studentList.forEach((element) => {
             let scoreArr = scoreTemp
-              .filter(x => x.studentKey == element.key)
-              .map(e => (e.correct / e.totalQuestion) * 100);
+              .filter((x) => x.studentKey == element.key)
+              .map((e) => (e.correct / e.totalQuestion) * 100);
 
             let scoreAvg =
               scoreArr.reduce((a, b) => a + b, 0) / scoreArr.length;
@@ -597,47 +595,51 @@ export default {
             let listeningScore = 0;
 
             let scoreTempArr = scoreTemp.filter(
-              x => x.studentKey == element.key
+              (x) => x.studentKey == element.key
             );
 
             // NOTE ต้องเอาจำนวนแบบฝึกหัดทั้งหมดใน Vocab ไม่ใช่ แบบฝึกหัดที่ทำไปแล้ว
             vocabScore = scoreTempArr
-              .filter(x => x.skill == "Vocabulary")
-              .map(e => (e.correct / e.totalQuestion) * 100)
+              .filter(
+                (x) =>
+                  x.skill == "Vocabulary" && !x.practiceType.includes("review")
+              )
+              .map((e) => (e.correct / e.totalQuestion) * 100)
               .reduce((a, b) => a + b, 0);
+
             vocabScore = vocabScore / totalVocab;
 
             grammarScore = scoreTempArr
               .filter(
-                x =>
+                (x) =>
                   x.skill == "Grammar" &&
                   !exceptGrammarType.includes(x.practiceType)
               )
-              .map(e => (e.correct / e.totalQuestion) * 100)
+              .map((e) => (e.correct / e.totalQuestion) * 100)
               .reduce((a, b) => a + b, 0);
             grammarScore = grammarScore / totalGrammar;
 
             readingScore = scoreTempArr
-              .filter(x => x.skill == "Reading")
-              .map(e => (e.correct / e.totalQuestion) * 100)
+              .filter((x) => x.skill == "Reading")
+              .map((e) => (e.correct / e.totalQuestion) * 100)
               .reduce((a, b) => a + b, 0);
             readingScore = readingScore / totalReading;
 
             writingScore = scoreTempArr
-              .filter(x => x.skill == "Writing")
-              .map(e => (e.correct / e.totalQuestion) * 100)
+              .filter((x) => x.skill == "Writing")
+              .map((e) => (e.correct / e.totalQuestion) * 100)
               .reduce((a, b) => a + b, 0);
             writingScore = writingScore / totalWriting;
 
             phonicsScore = scoreTempArr
-              .filter(x => x.skill == "Phonics")
-              .map(e => (e.correct / e.totalQuestion) * 100)
+              .filter((x) => x.skill == "Phonics")
+              .map((e) => (e.correct / e.totalQuestion) * 100)
               .reduce((a, b) => a + b, 0);
             phonicsScore = phonicsScore / totalPhonics;
 
             listeningScore = scoreTempArr
-              .filter(x => x.skill == "Listening & Speaking")
-              .map(e => (e.correct / e.totalQuestion) * 100)
+              .filter((x) => x.skill == "Listening & Speaking")
+              .map((e) => (e.correct / e.totalQuestion) * 100)
               .reduce((a, b) => a + b, 0);
             listeningScore = listeningScore / totalListening;
 
@@ -663,7 +665,7 @@ export default {
                   phonicsScore +
                   listeningScore) /
                   6
-              )
+              ),
             };
 
             this.headerColumn = {
@@ -672,7 +674,7 @@ export default {
               reading: totalReading,
               writing: totalWriting,
               phonics: totalPhonics,
-              listening: totalListening
+              listening: totalListening,
             };
             element.totalVocab = totalVocab;
             element.totalGrammar = totalGrammar;
@@ -682,39 +684,39 @@ export default {
             element.totalListening = totalListening;
 
             let scoreVocabMap = scoreTempArr
-              .filter(x => x.skill == "Vocabulary")
-              .map(e => Math.round((e.correct / e.totalQuestion) * 100));
+              .filter((x) => x.skill == "Vocabulary")
+              .map((e) => Math.round((e.correct / e.totalQuestion) * 100));
             element.vocabScoreArr = scoreVocabMap;
 
             // console.log(scoreTempArr.filter(x => x.skill == "Grammar"));
 
             let scoreGrammarMap = scoreTempArr
               .filter(
-                x =>
+                (x) =>
                   x.skill == "Grammar" &&
                   !exceptGrammarType.includes(x.practiceType)
               )
-              .map(e => Math.round((e.correct / e.totalQuestion) * 100));
+              .map((e) => Math.round((e.correct / e.totalQuestion) * 100));
             element.grammarScoreArr = scoreGrammarMap;
 
             let scoreReadingMap = scoreTempArr
-              .filter(x => x.skill == "Reading")
-              .map(e => Math.round((e.correct / e.totalQuestion) * 100));
+              .filter((x) => x.skill == "Reading")
+              .map((e) => Math.round((e.correct / e.totalQuestion) * 100));
             element.readingScoreArr = scoreReadingMap;
 
             let scoreWritingMap = scoreTempArr
-              .filter(x => x.skill == "Writing")
-              .map(e => Math.round((e.correct / e.totalQuestion) * 100));
+              .filter((x) => x.skill == "Writing")
+              .map((e) => Math.round((e.correct / e.totalQuestion) * 100));
             element.writingScoreArr = scoreWritingMap;
 
             let scorePhonicsMap = scoreTempArr
-              .filter(x => x.skill == "Phonics")
-              .map(e => Math.round((e.correct / e.totalQuestion) * 100));
+              .filter((x) => x.skill == "Phonics")
+              .map((e) => Math.round((e.correct / e.totalQuestion) * 100));
             element.phonicsScoreArr = scorePhonicsMap;
 
             let scoreListeningMap = scoreTempArr
-              .filter(x => x.skill == "Listening & Speaking")
-              .map(e => Math.round((e.correct / e.totalQuestion) * 100));
+              .filter((x) => x.skill == "Listening & Speaking")
+              .map((e) => Math.round((e.correct / e.totalQuestion) * 100));
 
             element.listeningScoreArr = scoreListeningMap;
 
@@ -735,7 +737,7 @@ export default {
       );
 
       let roomTotal = [];
-      let studentData = this.studentAllList.map(x => {
+      let studentData = this.studentAllList.map((x) => {
         return x.classRoom + "/" + x.room;
       });
 
@@ -760,7 +762,7 @@ export default {
     loadStudent() {
       let classRoom = this.classRoomSelected.slice(0, 3);
       let room = this.classRoomSelected.slice(4);
-      let result = this.studentAllList.filter(x => {
+      let result = this.studentAllList.filter((x) => {
         return x.classRoom == classRoom && x.room == room;
       });
 
@@ -768,7 +770,7 @@ export default {
         return a.no - b.no;
       });
 
-      result.forEach(element => {
+      result.forEach((element) => {
         element.overallScore = {
           vocabScore: 0,
           grammarScore: 0,
@@ -776,13 +778,13 @@ export default {
           writingScore: 0,
           phonicsScore: 0,
           listeningScore: 0,
-          scoreAvg: 0
+          scoreAvg: 0,
         };
       });
 
       this.studentList = result;
 
-      let studentLevel = result.map(x => x.level);
+      let studentLevel = result.map((x) => x.level);
       studentLevel.sort((a, b) => Number(b) - Number(a));
       this.selectedLevel = studentLevel[0];
       this.loadUnitOptions();
@@ -790,7 +792,7 @@ export default {
     async getPracticeList() {
       let practiceTemp = [];
       let loadPracticelist = await db.collection("practicelist").get();
-      loadPracticelist.forEach(element => {
+      loadPracticelist.forEach((element) => {
         let dataKey = { practiceKey: element.id };
         let final = { ...dataKey, ...element.data() };
         practiceTemp.push(final);
@@ -803,7 +805,7 @@ export default {
       });
       this.practiceList = practiceTemp;
       this.loadData();
-    }
+    },
   },
   computed: {
     convertClassroom() {
@@ -812,11 +814,11 @@ export default {
       } else {
         return this.classRoomSelected.replace("ม.", "ชั้นมัธยมศึกษาปีที่ ");
       }
-    }
+    },
   },
   mounted() {
     this.getPracticeList();
-  }
+  },
 };
 </script>
 
