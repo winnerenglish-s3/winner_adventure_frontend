@@ -1,0 +1,1709 @@
+/* app global css */
+.brx {
+  border: 1px solid red;
+}
+
+@font-face {
+  font-family: Prompt;
+  src: url("../statics/Prompt-Regular.ttf");
+}
+
+@font-face {
+  font-family: pridi;
+  src: url("../statics/Pridi-Light.ttf");
+}
+
+* {
+  padding: 0px 0px;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-scroll-behavior: smooth;
+  -moz-scroll-behavior: smooth;
+}
+
+body {
+  height: 100vh;
+  font-family: Prompt;
+  background-image: url("../statics/bg sky.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: top;
+}
+
+/* SECTION  -------- background-color -------- */
+
+.bg1 {
+  background-color: #ffffff;
+}
+
+.bg2 {
+  background-color: #000000;
+}
+
+.bg3 {
+  background-color: #662707;
+}
+
+.bg4 {
+  background-color: #d68a4c;
+}
+
+.bg5 {
+  background-color: #eabd94;
+}
+
+.bg6 {
+  background-color: #f9bc35;
+}
+
+.bg7 {
+  background-color: #b1161e;
+}
+
+.bg8 {
+  background-color: #0683df;
+}
+
+.bg9 {
+  background-color: #f7a537;
+}
+
+.bg10 {
+  background-color: #3e882e;
+}
+
+.bg11 {
+  background-color: #bbbbbb;
+}
+
+.bg12 {
+  background-color: #9ae4f7;
+}
+
+.bg13 {
+  background-color: #0477bd;
+}
+
+.bg14 {
+  background-color: #6a1b9a;
+}
+
+/* SECTION  -------- color -------- */
+
+.color1 {
+  color: #ffffff;
+}
+
+.color2 {
+  color: #000000;
+}
+
+.color3 {
+  color: #662707;
+}
+
+.color4 {
+  color: #d68a4c;
+}
+
+.color5 {
+  color: #eabd94;
+}
+
+.color6 {
+  color: #f9bc35;
+}
+
+.color7 {
+  color: #b1161e;
+}
+
+.color8 {
+  color: #0683df;
+}
+
+.color9 {
+  color: #f7a537;
+}
+
+.color10 {
+  color: #3e882e;
+}
+
+.color11 {
+  color: #bbbbbb;
+}
+
+.colorF {
+  color: #950e15;
+}
+
+/* SECTION  -------- border  -------- */
+
+.border1-xs {
+  border: 1px solid #ffffff;
+}
+
+.border1-l-xs {
+  border-left: 1px solid #ffffff;
+}
+
+.border1-r-xs {
+  border-right: 1px solid #ffffff;
+}
+
+.border1-t-xs {
+  border-top: 1px solid #ffffff;
+}
+
+.border1-b-xs {
+  border-bottom: 1px solid #ffffff;
+}
+
+.border2-xs {
+  border: 1px solid #000000;
+}
+
+.border2-l-xs {
+  border-left: 1px solid #000000;
+}
+
+.border2-r-xs {
+  border-right: 1px solid #000000;
+}
+
+.border2-t-xs {
+  border-top: 1px solid #000000;
+}
+
+.border2-b-xs {
+  border-bottom: 1px solid #000000;
+}
+
+.border3-xs {
+  border: 1px solid #662707;
+}
+
+.border3-l-xs {
+  border-left: 1px solid #662707;
+}
+
+.border3-r-xs {
+  border-right: 1px solid #662707;
+}
+
+.border3-t-xs {
+  border-top: 1px solid #662707;
+}
+
+.border3-b-xs {
+  border-bottom: 1px solid #662707;
+}
+
+.border4-xs {
+  border: 1px solid #d68a4c;
+}
+
+.border4-l-xs {
+  border-left: 1px solid #d68a4c;
+}
+
+.border4-r-xs {
+  border-right: 1px solid #d68a4c;
+}
+
+.border4-t-xs {
+  border-top: 1px solid #d68a4c;
+}
+
+.border4-b-xs {
+  border-bottom: 1px solid #d68a4c;
+}
+
+.border5-xs {
+  border: 1px solid #eabd94;
+}
+
+.border5-l-xs {
+  border-left: 1px solid #eabd94;
+}
+
+.border5-r-xs {
+  border-right: 1px solid #eabd94;
+}
+
+.border5-t-xs {
+  border-top: 1px solid #eabd94;
+}
+
+.border5-b-xs {
+  border-bottom: 1px solid #eabd94;
+}
+
+.border6-xs {
+  border: 1px solid #f9bc35;
+}
+
+.border6-l-xs {
+  border-left: 1px solid #f9bc35;
+}
+
+.border6-r-xs {
+  border-right: 1px solid #f9bc35;
+}
+
+.border6-t-xs {
+  border-top: 1px solid #f9bc35;
+}
+
+.border6-b-xs {
+  border-bottom: 1px solid #f9bc35;
+}
+
+.border7-xs {
+  border: 1px solid #b1161e;
+}
+
+.border7-l-xs {
+  border-left: 1px solid #b1161e;
+}
+
+.border7-r-xs {
+  border-right: 1px solid #b1161e;
+}
+
+.border7-t-xs {
+  border-top: 1px solid #b1161e;
+}
+
+.border7-b-xs {
+  border-bottom: 1px solid #b1161e;
+}
+
+.border8-xs {
+  border: 1px solid #0683df;
+}
+
+.border8-l-xs {
+  border-left: 1px solid #0683df;
+}
+
+.border8-r-xs {
+  border-right: 1px solid #0683df;
+}
+
+.border8-t-xs {
+  border-top: 1px solid #0683df;
+}
+
+.border8-b-xs {
+  border-bottom: 1px solid #0683df;
+}
+
+.border9-xs {
+  border: 1px solid #f7a537;
+}
+
+.border9-l-xs {
+  border-left: 1px solid #f7a537;
+}
+
+.border9-r-xs {
+  border-right: 1px solid #f7a537;
+}
+
+.border9-t-xs {
+  border-top: 1px solid #f7a537;
+}
+
+.border9-b-xs {
+  border-bottom: 1px solid #f7a537;
+}
+
+.border10-xs {
+  border: 1px solid #3e882e;
+}
+
+.border10-l-xs {
+  border-left: 1px solid #3e882e;
+}
+
+.border10-r-xs {
+  border-right: 1px solid #3e882e;
+}
+
+.border10-t-xs {
+  border-top: 1px solid #3e882e;
+}
+
+.border10-b-xs {
+  border-bottom: 1px solid #3e882e;
+}
+
+.border13-xs {
+  border: 2px solid #0477bd;
+}
+
+.border1-sm {
+  border: 2px solid #ffffff;
+}
+
+.border1-l-sm {
+  border-left: 2px solid #ffffff;
+}
+
+.border1-r-sm {
+  border-right: 2px solid #ffffff;
+}
+
+.border1-t-sm {
+  border-top: 2px solid #ffffff;
+}
+
+.border1-b-sm {
+  border-bottom: 2px solid #ffffff;
+}
+
+.border2-sm {
+  border: 2px solid #000000;
+}
+
+.border2-l-sm {
+  border-left: 2px solid #000000;
+}
+
+.border2-r-sm {
+  border-right: 2px solid #000000;
+}
+
+.border2-t-sm {
+  border-top: 2px solid #000000;
+}
+
+.border2-b-sm {
+  border-bottom: 2px solid #000000;
+}
+
+.border3-sm {
+  border: 2px solid #662707;
+}
+
+.border3-l-sm {
+  border-left: 2px solid #662707;
+}
+
+.border3-r-sm {
+  border-right: 2px solid #662707;
+}
+
+.border3-t-sm {
+  border-top: 2px solid #662707;
+}
+
+.border3-b-sm {
+  border-bottom: 2px solid #662707;
+}
+
+.border4-sm {
+  border: 2px solid #d68a4c;
+}
+
+.border4-l-sm {
+  border-left: 2px solid #d68a4c;
+}
+
+.border4-r-sm {
+  border-right: 2px solid #d68a4c;
+}
+
+.border4-t-sm {
+  border-top: 2px solid #d68a4c;
+}
+
+.border4-b-sm {
+  border-bottom: 2px solid #d68a4c;
+}
+
+.border5-sm {
+  border: 2px solid #eabd94;
+}
+
+.border5-l-sm {
+  border-left: 2px solid #eabd94;
+}
+
+.border5-r-sm {
+  border-right: 2px solid #eabd94;
+}
+
+.border5-t-sm {
+  border-top: 2px solid #eabd94;
+}
+
+.border5-b-sm {
+  border-bottom: 2px solid #eabd94;
+}
+
+.border6-sm {
+  border: 2px solid #f9bc35;
+}
+
+.border6-l-sm {
+  border-left: 2px solid #f9bc35;
+}
+
+.border6-r-sm {
+  border-right: 2px solid #f9bc35;
+}
+
+.border6-t-sm {
+  border-top: 2px solid #f9bc35;
+}
+
+.border6-b-sm {
+  border-bottom: 2px solid #f9bc35;
+}
+
+.border7-sm {
+  border: 2px solid #b1161e;
+}
+
+.border7-l-sm {
+  border-left: 2px solid #b1161e;
+}
+
+.border7-r-sm {
+  border-right: 2px solid #b1161e;
+}
+
+.border7-t-sm {
+  border-top: 2px solid #b1161e;
+}
+
+.border7-b-sm {
+  border-bottom: 2px solid #b1161e;
+}
+
+.border8-sm {
+  border: 2px solid #0683df;
+}
+
+.border8-l-sm {
+  border-left: 2px solid #0683df;
+}
+
+.border8-r-sm {
+  border-right: 2px solid #0683df;
+}
+
+.border8-t-sm {
+  border-top: 2px solid #0683df;
+}
+
+.border8-b-sm {
+  border-bottom: 2px solid #0683df;
+}
+
+.border9-sm {
+  border: 2px solid #f7a537;
+}
+
+.border9-l-sm {
+  border-left: 2px solid #f7a537;
+}
+
+.border9-r-sm {
+  border-right: 2px solid #f7a537;
+}
+
+.border9-t-sm {
+  border-top: 2px solid #f7a537;
+}
+
+.border9-b-sm {
+  border-bottom: 2px solid #f7a537;
+}
+
+.border10-sm {
+  border: 2px solid #3e882e;
+}
+
+.border10-l-sm {
+  border-left: 2px solid #3e882e;
+}
+
+.border10-r-sm {
+  border-right: 2px solid #3e882e;
+}
+
+.border10-t-sm {
+  border-top: 2px solid #3e882e;
+}
+
+.border10-b-sm {
+  border-bottom: 2px solid #3e882e;
+}
+
+.border1-md {
+  border: 3px solid #ffffff;
+}
+
+.border1-l-md {
+  border-left: 3px solid #ffffff;
+}
+
+.border1-r-md {
+  border-right: 3px solid #ffffff;
+}
+
+.border1-t-md {
+  border-top: 3px solid #ffffff;
+}
+
+.border1-b-md {
+  border-bottom: 3px solid #ffffff;
+}
+
+.border2-md {
+  border: 3px solid #000000;
+}
+
+.border2-l-md {
+  border-left: 3px solid #000000;
+}
+
+.border2-r-md {
+  border-right: 3px solid #000000;
+}
+
+.border2-t-md {
+  border-top: 3px solid #000000;
+}
+
+.border2-b-md {
+  border-bottom: 3px solid #000000;
+}
+
+.border3-md {
+  border: 3px solid #662707;
+}
+
+.border3-l-md {
+  border-left: 3px solid #662707;
+}
+
+.border3-r-md {
+  border-right: 3px solid #662707;
+}
+
+.border3-t-md {
+  border-top: 3px solid #662707;
+}
+
+.border3-b-md {
+  border-bottom: 3px solid #662707;
+}
+
+.border4-md {
+  border: 3px solid #d68a4c;
+}
+
+.border4-l-md {
+  border-left: 3px solid #d68a4c;
+}
+
+.border4-r-md {
+  border-right: 3px solid #d68a4c;
+}
+
+.border4-t-md {
+  border-top: 3px solid #d68a4c;
+}
+
+.border4-b-md {
+  border-bottom: 3px solid #d68a4c;
+}
+
+.border5-md {
+  border: 3px solid #eabd94;
+}
+
+.border5-l-md {
+  border-left: 3px solid #eabd94;
+}
+
+.border5-r-md {
+  border-right: 3px solid #eabd94;
+}
+
+.border5-t-md {
+  border-top: 3px solid #eabd94;
+}
+
+.border5-b-md {
+  border-bottom: 3px solid #eabd94;
+}
+
+.border6-md {
+  border: 3px solid #f9bc35;
+}
+
+.border6-l-md {
+  border-left: 3px solid #f9bc35;
+}
+
+.border6-r-md {
+  border-right: 3px solid #f9bc35;
+}
+
+.border6-t-md {
+  border-top: 3px solid #f9bc35;
+}
+
+.border6-b-md {
+  border-bottom: 3px solid #f9bc35;
+}
+
+.border7-md {
+  border: 3px solid #b1161e;
+}
+
+.border7-l-md {
+  border-left: 3px solid #b1161e;
+}
+
+.border7-r-md {
+  border-right: 3px solid #b1161e;
+}
+
+.border7-t-md {
+  border-top: 3px solid #b1161e;
+}
+
+.border7-b-md {
+  border-bottom: 3px solid #b1161e;
+}
+
+.border8-md {
+  border: 3px solid #0683df;
+}
+
+.border8-l-md {
+  border-left: 3px solid #0683df;
+}
+
+.border8-r-md {
+  border-right: 3px solid #0683df;
+}
+
+.border8-t-md {
+  border-top: 3px solid #0683df;
+}
+
+.border8-b-md {
+  border-bottom: 3px solid #0683df;
+}
+
+.border9-md {
+  border: 3px solid #f7a537;
+}
+
+.border9-l-md {
+  border-left: 3px solid #f7a537;
+}
+
+.border9-r-md {
+  border-right: 3px solid #f7a537;
+}
+
+.border9-t-md {
+  border-top: 3px solid #f7a537;
+}
+
+.border9-b-md {
+  border-bottom: 3px solid #f7a537;
+}
+
+.border10-md {
+  border: 3px solid #3e882e;
+}
+
+.border10-l-md {
+  border-left: 3px solid #3e882e;
+}
+
+.border10-r-md {
+  border-right: 3px solid #3e882e;
+}
+
+.border10-t-md {
+  border-top: 3px solid #3e882e;
+}
+
+.border10-b-md {
+  border-bottom: 3px solid #3e882e;
+}
+
+.border1-lg {
+  border: 4px solid #ffffff;
+}
+
+.border1-l-lg {
+  border-left: 4px solid #ffffff;
+}
+
+.border1-r-lg {
+  border-right: 4px solid #ffffff;
+}
+
+.border1-t-lg {
+  border-top: 4px solid #ffffff;
+}
+
+.border1-b-lg {
+  border-bottom: 4px solid #ffffff;
+}
+
+.border2-lg {
+  border: 4px solid #000000;
+}
+
+.border2-l-lg {
+  border-left: 4px solid #000000;
+}
+
+.border2-r-lg {
+  border-right: 4px solid #000000;
+}
+
+.border2-t-lg {
+  border-top: 4px solid #000000;
+}
+
+.border2-b-lg {
+  border-bottom: 4px solid #000000;
+}
+
+.border3-lg {
+  border: 4px solid #662707;
+}
+
+.border3-l-lg {
+  border-left: 4px solid #662707;
+}
+
+.border3-r-lg {
+  border-right: 4px solid #662707;
+}
+
+.border3-t-lg {
+  border-top: 4px solid #662707;
+}
+
+.border3-b-lg {
+  border-bottom: 4px solid #662707;
+}
+
+.border4-lg {
+  border: 4px solid #d68a4c;
+}
+
+.border4-l-lg {
+  border-left: 4px solid #d68a4c;
+}
+
+.border4-r-lg {
+  border-right: 4px solid #d68a4c;
+}
+
+.border4-t-lg {
+  border-top: 4px solid #d68a4c;
+}
+
+.border4-b-lg {
+  border-bottom: 4px solid #d68a4c;
+}
+
+.border5-lg {
+  border: 4px solid #eabd94;
+}
+
+.border5-l-lg {
+  border-left: 4px solid #eabd94;
+}
+
+.border5-r-lg {
+  border-right: 4px solid #eabd94;
+}
+
+.border5-t-lg {
+  border-top: 4px solid #eabd94;
+}
+
+.border5-b-lg {
+  border-bottom: 4px solid #eabd94;
+}
+
+.border6-lg {
+  border: 4px solid #f9bc35;
+}
+
+.border6-l-lg {
+  border-left: 4px solid #f9bc35;
+}
+
+.border6-r-lg {
+  border-right: 4px solid #f9bc35;
+}
+
+.border6-t-lg {
+  border-top: 4px solid #f9bc35;
+}
+
+.border6-b-lg {
+  border-bottom: 4px solid #f9bc35;
+}
+
+.border7-lg {
+  border: 4px solid #b1161e;
+}
+
+.border7-l-lg {
+  border-left: 4px solid #b1161e;
+}
+
+.border7-r-lg {
+  border-right: 4px solid #b1161e;
+}
+
+.border7-t-lg {
+  border-top: 4px solid #b1161e;
+}
+
+.border7-b-lg {
+  border-bottom: 4px solid #b1161e;
+}
+
+.border8-lg {
+  border: 4px solid #0683df;
+}
+
+.border8-l-lg {
+  border-left: 4px solid #0683df;
+}
+
+.border8-r-lg {
+  border-right: 4px solid #0683df;
+}
+
+.border8-t-lg {
+  border-top: 4px solid #0683df;
+}
+
+.border8-b-lg {
+  border-bottom: 4px solid #0683df;
+}
+
+.border9-lg {
+  border: 4px solid #f7a537;
+}
+
+.border9-l-lg {
+  border-left: 4px solid #f7a537;
+}
+
+.border9-r-lg {
+  border-right: 4px solid #f7a537;
+}
+
+.border9-t-lg {
+  border-top: 4px solid #f7a537;
+}
+
+.border9-b-lg {
+  border-bottom: 4px solid #f7a537;
+}
+
+.border10-lg {
+  border: 4px solid #3e882e;
+}
+
+.border10-l-lg {
+  border-left: 4px solid #3e882e;
+}
+
+.border10-r-lg {
+  border-right: 4px solid #3e882e;
+}
+
+.border10-t-lg {
+  border-top: 4px solid #3e882e;
+}
+
+.border10-b-lg {
+  border-bottom: 4px solid #3e882e;
+}
+
+.border1-xl {
+  border: 5px solid #ffffff;
+}
+
+.border1-l-xl {
+  border-left: 5px solid #ffffff;
+}
+
+.border1-r-xl {
+  border-right: 5px solid #ffffff;
+}
+
+.border1-t-xl {
+  border-top: 5px solid #ffffff;
+}
+
+.border1-b-xl {
+  border-bottom: 5px solid #ffffff;
+}
+
+.border2-xl {
+  border: 5px solid #000000;
+}
+
+.border2-l-xl {
+  border-left: 5px solid #000000;
+}
+
+.border2-r-xl {
+  border-right: 5px solid #000000;
+}
+
+.border2-t-xl {
+  border-top: 5px solid #000000;
+}
+
+.border2-b-xl {
+  border-bottom: 5px solid #000000;
+}
+
+.border3-xl {
+  border: 5px solid #662707;
+}
+
+.border3-l-xl {
+  border-left: 5px solid #662707;
+}
+
+.border3-r-xl {
+  border-right: 5px solid #662707;
+}
+
+.border3-t-xl {
+  border-top: 5px solid #662707;
+}
+
+.border3-b-xl {
+  border-bottom: 5px solid #662707;
+}
+
+.border4-xl {
+  border: 5px solid #d68a4c;
+}
+
+.border4-l-xl {
+  border-left: 5px solid #d68a4c;
+}
+
+.border4-r-xl {
+  border-right: 5px solid #d68a4c;
+}
+
+.border4-t-xl {
+  border-top: 5px solid #d68a4c;
+}
+
+.border4-b-xl {
+  border-bottom: 5px solid #d68a4c;
+}
+
+.border5-xl {
+  border: 5px solid #eabd94;
+}
+
+.border5-l-xl {
+  border-left: 5px solid #eabd94;
+}
+
+.border5-r-xl {
+  border-right: 5px solid #eabd94;
+}
+
+.border5-t-xl {
+  border-top: 5px solid #eabd94;
+}
+
+.border5-b-xl {
+  border-bottom: 5px solid #eabd94;
+}
+
+.border6-xl {
+  border: 5px solid #f9bc35;
+}
+
+.border6-l-xl {
+  border-left: 5px solid #f9bc35;
+}
+
+.border6-r-xl {
+  border-right: 5px solid #f9bc35;
+}
+
+.border6-t-xl {
+  border-top: 5px solid #f9bc35;
+}
+
+.border6-b-xl {
+  border-bottom: 5px solid #f9bc35;
+}
+
+.border7-xl {
+  border: 5px solid #b1161e;
+}
+
+.border7-l-xl {
+  border-left: 5px solid #b1161e;
+}
+
+.border7-r-xl {
+  border-right: 5px solid #b1161e;
+}
+
+.border7-t-xl {
+  border-top: 5px solid #b1161e;
+}
+
+.border7-b-xl {
+  border-bottom: 5px solid #b1161e;
+}
+
+.border8-xl {
+  border: 5px solid #0683df;
+}
+
+.border8-l-xl {
+  border-left: 5px solid #0683df;
+}
+
+.border8-r-xl {
+  border-right: 5px solid #0683df;
+}
+
+.border8-t-xl {
+  border-top: 5px solid #0683df;
+}
+
+.border8-b-xl {
+  border-bottom: 5px solid #0683df;
+}
+
+.border9-xl {
+  border: 5px solid #f7a537;
+}
+
+.border9-l-xl {
+  border-left: 5px solid #f7a537;
+}
+
+.border9-r-xl {
+  border-right: 5px solid #f7a537;
+}
+
+.border9-t-xl {
+  border-top: 5px solid #f7a537;
+}
+
+.border9-b-xl {
+  border-bottom: 5px solid #f7a537;
+}
+
+.border10-xl {
+  border: 5px solid #3e882e;
+}
+
+.border10-l-xl {
+  border-left: 5px solid #3e882e;
+}
+
+.border10-r-xl {
+  border-right: 5px solid #3e882e;
+}
+
+.border10-t-xl {
+  border-top: 5px solid #3e882e;
+}
+
+.border10-b-xl {
+  border-bottom: 5px solid #3e882e;
+}
+
+.border1-xxl {
+  border: 10px solid #ffffff;
+}
+
+.border1-l-xxl {
+  border-left: 10px solid #ffffff;
+}
+
+.border1-r-xxl {
+  border-right: 10px solid #ffffff;
+}
+
+.border1-t-xxl {
+  border-top: 10px solid #ffffff;
+}
+
+.border1-b-xxl {
+  border-bottom: 10px solid #ffffff;
+}
+
+.border2-xxl {
+  border: 10px solid #000000;
+}
+
+.border2-l-xxl {
+  border-left: 10px solid #000000;
+}
+
+.border2-r-xxl {
+  border-right: 10px solid #000000;
+}
+
+.border2-t-xxl {
+  border-top: 10px solid #000000;
+}
+
+.border2-b-xxl {
+  border-bottom: 10px solid #000000;
+}
+
+.border3-xxl {
+  border: 10px solid #662707;
+}
+
+.border3-l-xxl {
+  border-left: 10px solid #662707;
+}
+
+.border3-r-xxl {
+  border-right: 10px solid #662707;
+}
+
+.border3-t-xxl {
+  border-top: 10px solid #662707;
+}
+
+.border3-b-xxl {
+  border-bottom: 10px solid #662707;
+}
+
+.border4-xxl {
+  border: 10px solid #d68a4c;
+}
+
+.border4-l-xxl {
+  border-left: 10px solid #d68a4c;
+}
+
+.border4-r-xxl {
+  border-right: 10px solid #d68a4c;
+}
+
+.border4-t-xxl {
+  border-top: 10px solid #d68a4c;
+}
+
+.border4-b-xxl {
+  border-bottom: 10px solid #d68a4c;
+}
+
+.border5-xxl {
+  border: 10px solid #eabd94;
+}
+
+.border5-l-xxl {
+  border-left: 10px solid #eabd94;
+}
+
+.border5-r-xxl {
+  border-right: 10px solid #eabd94;
+}
+
+.border5-t-xxl {
+  border-top: 10px solid #eabd94;
+}
+
+.border5-b-xxl {
+  border-bottom: 10px solid #eabd94;
+}
+
+.border6-xxl {
+  border: 10px solid #f9bc35;
+}
+
+.border6-l-xxl {
+  border-left: 10px solid #f9bc35;
+}
+
+.border6-r-xxl {
+  border-right: 10px solid #f9bc35;
+}
+
+.border6-t-xxl {
+  border-top: 10px solid #f9bc35;
+}
+
+.border6-b-xxl {
+  border-bottom: 10px solid #f9bc35;
+}
+
+.border7-xxl {
+  border: 10px solid #b1161e;
+}
+
+.border7-l-xxl {
+  border-left: 10px solid #b1161e;
+}
+
+.border7-r-xxl {
+  border-right: 10px solid #b1161e;
+}
+
+.border7-t-xxl {
+  border-top: 10px solid #b1161e;
+}
+
+.border7-b-xxl {
+  border-bottom: 10px solid #b1161e;
+}
+
+.border8-xxl {
+  border: 10px solid #0683df;
+}
+
+.border8-l-xxl {
+  border-left: 10px solid #0683df;
+}
+
+.border8-r-xxl {
+  border-right: 10px solid #0683df;
+}
+
+.border8-t-xxl {
+  border-top: 10px solid #0683df;
+}
+
+.border8-b-xxl {
+  border-bottom: 10px solid #0683df;
+}
+
+.border9-xxl {
+  border: 10px solid #f7a537;
+}
+
+.border9-l-xxl {
+  border-left: 10px solid #f7a537;
+}
+
+.border9-r-xxl {
+  border-right: 10px solid #f7a537;
+}
+
+.border9-t-xxl {
+  border-top: 10px solid #f7a537;
+}
+
+.border9-b-xxl {
+  border-bottom: 10px solid #f7a537;
+}
+
+.border10-xxl {
+  border: 10px solid #3e882e;
+}
+
+.border10-l-xxl {
+  border-left: 10px solid #3e882e;
+}
+
+.border10-r-xxl {
+  border-right: 10px solid #3e882e;
+}
+
+.border10-t-xxl {
+  border-top: 10px solid #3e882e;
+}
+
+.border10-b-xxl {
+  border-bottom: 10px solid #3e882e;
+}
+
+.border11-xs {
+  border: 1px solid #bbbbbb;
+}
+
+/* SECTION  -------- border radius -------- */
+
+/* NOTE  Border Radius : All  */
+.br-a-xs {
+  border-radius: 5px;
+}
+
+.br-a-sm {
+  border-radius: 10px;
+}
+
+.br-a-md {
+  border-radius: 15px;
+}
+
+.br-a-lg {
+  border-radius: 20px;
+}
+
+.br-a-xl {
+  border-radius: 25px;
+}
+
+.br-ta-xs {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.br-ta-sm {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.br-ta-md {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+.br-ta-lg {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.br-ta-xl {
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+.br-ba-xs {
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+.br-ba-sm {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.br-ba-md {
+  border-bottom-left-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.br-ba-lg {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.br-ba-xl {
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+}
+
+/* NOTE  Border Radius : Top */
+.br-tl-xs {
+  border-top-left-radius: 5px;
+}
+
+.br-tr-xs {
+  border-top-right-radius: 5px;
+}
+
+.br-tl-sm {
+  border-top-left-radius: 10px;
+}
+
+.br-tr-sm {
+  border-top-right-radius: 10px;
+}
+
+.br-tl-md {
+  border-top-left-radius: 15px;
+}
+
+.br-tr-md {
+  border-top-right-radius: 15px;
+}
+
+.br-tl-lg {
+  border-top-left-radius: 20px;
+}
+
+.br-tr-lg {
+  border-top-right-radius: 20px;
+}
+
+.br-tl-xl {
+  border-top-left-radius: 25px;
+}
+
+.br-tr-xl {
+  border-top-right-radius: 25px;
+}
+
+/* NOTE  Border Radius : Bottom */
+.br-bl-xs {
+  border-bottom-left-radius: 5px;
+}
+
+.br-br-xs {
+  border-bottom-right-radius: 5px;
+}
+
+.br-bl-sm {
+  border-bottom-left-radius: 10px;
+}
+
+.br-br-sm {
+  border-bottom-right-radius: 10px;
+}
+
+.br-bl-md {
+  border-bottom-left-radius: 15px;
+}
+
+.br-br-md {
+  border-bottom-right-radius: 15px;
+}
+
+.br-bl-lg {
+  border-bottom-left-radius: 20px;
+}
+
+.br-br-lg {
+  border-bottom-right-radius: 20px;
+}
+
+.br-bl-xl {
+  border-bottom-left-radius: 25px;
+}
+
+.br-br-xl {
+  border-bottom-right-radius: 25px;
+}
+
+/* SECTION  Background */
+
+/* NOTE  login */
+.bg-login {
+  width: 100%;
+  height: 100vh;
+  background-image: url("../statics/bg sky.png");
+  background-size: cover;
+  background-repeat: repeat;
+  background-attachment: scroll;
+  background-position: center;
+}
+
+.bg-cloud {
+  width: 100%;
+  background-image: url("../statics/bg sky.png");
+  background-size: cover;
+  background-repeat: repeat;
+  background-attachment: scroll;
+  background-position: top;
+}
+
+/* NOTE  Main */
+.bg-main {
+  width: 100%;
+  background-image: url("../statics/bg-original.png");
+  background-size: cover;
+  background-repeat: repeat;
+  background-attachment: scroll;
+  background-position: bottom;
+}
+
+.bg-folder {
+  width: 100%;
+  background-image: url("../statics/bg-folder.png");
+  background-size: cover;
+  background-repeat: repeat;
+  background-attachment: scroll;
+  background-position: bottom;
+}
+
+/* NOTE  Flashcard */
+.bg-practice {
+  width: 100%;
+  background-size: cover;
+  background-repeat: repeat;
+  background-attachment: scroll;
+  background-position: bottom;
+}
+
+/* NOTE  Plcament */
+.bg-placement {
+  width: 100%;
+  background-image: url("../statics/placement/bg_placement.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: top;
+}
+
+.bg-vocabulary {
+  width: 100%;
+  background-image: url("../statics/main/bgworld/vocabulary.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: bottom;
+}
+
+.bg-grammar {
+  width: 100%;
+  background-image: url("../statics/main/bgworld/grammar.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: bottom;
+}
+
+.bg-writing {
+  width: 100%;
+  background-image: url("../statics/main/bgworld/writing.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: bottom;
+}
+
+.bg-reading {
+  width: 100%;
+  background-image: url("../statics/main/bgworld/reading.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: bottom;
+}
+
+.bg-listening {
+  width: 100%;
+  background-image: url("../statics/main/bgworld/listening.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: bottom;
+}
+
+.bg-phonics {
+  width: 100%;
+  background-image: url("../statics/main/bgworld/speaking.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: bottom;
+}
+
+/* NOTE  Pre-test */
+.bg-pretest {
+  width: 100%;
+  background-color: #000;
+  background-image: url("../statics/prepost/bgPreTest.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center;
+}
+
+/* NOTE  Post-test */
+.bg-posttest {
+  width: 100%;
+  background-color: #000;
+  background-image: url("../statics/prepost/bgPostTest.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center;
+}
+
+/* NOTE  Questionnair */
+.bg-questionnair {
+  width: 100%;
+  background-color: #000;
+  background-image: url("../statics/questionnair/bg_questionnair.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-position: center;
+}
+
+.bg-blend-mode {
+  background-color: rgba(0, 0, 0, 0.1);
+  background-blend-mode: soft-light;
+}
+
+/* NOTE  notlandscape */
+.bg-notlandscape {
+  background-color: #b5f2f7;
+}
+
+/* SECTION  practice box */
+.box-practice {
+  max-width: 1300px;
+  width: 100%;
+  margin: auto;
+}
+
+.border-dashed {
+  border-width: 2px;
+  border-style: dashed;
+  border-color: #662707;
+}
+
+.border-dashed-color5 {
+  border-width: 2px;
+  border-style: dashed;
+  border-color: #eabd94;
+}
+
+.text-size-s {
+  font-size: 24px;
+}
+
+.text-size-m {
+  font-size: 27px;
+}
+
+.text-size-l {
+  font-size: 30px;
+}
+
+.boxtalk {
+  max-height: fit-content;
+  min-height: 180px;
+}
+
+.text-overflow {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+}

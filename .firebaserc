@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "winneradventure-ed4a1"
+  },
+  "targets": {
+    "winneradventure-ed4a1": {
+      "hosting": {
+        "winneradventures": [
+          "winneradventures"
+        ]
+      }
+    }
+  }
+}
