@@ -223,7 +223,7 @@ export default {
           "-" +
           this.currentYear;
         db.collection("classroomPracticeLog")
-        .where('schoolKey',"==",this.teacherData.schoolKey)
+          .where("schoolKey", "==", this.teacherData.schoolKey)
           .where("filter", "==", filter)
           .where("practiceKey", "==", this.currentPractice.practiceKey)
           .get()
@@ -327,6 +327,7 @@ export default {
         .collection("classroomPracticeLog")
         .where("filter", "==", filterWhere)
         .where("level", "==", this.currentLevel)
+        .where("schoolKey", "==", this.teacherData.schoolKey)
         .get();
       // โหลดแบบฝึกหัดที่ทำแล้ว
       let practiceTemp = [];

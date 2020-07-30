@@ -206,7 +206,9 @@ export default {
     this.loadSynchronize();
   },
   beforeDestroy() {
-    this.snapSync();
+    if (typeof this.snapSync == "function") {
+      this.snapSync();
+    }
   }
 };
 </script>

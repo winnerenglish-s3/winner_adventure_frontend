@@ -53,39 +53,29 @@ export default {
     return {
       showStudentDataDialog: true,
       snapshot: "",
-      currentClass: "",
-      currentRoom: "",
-      currentTerm: "",
-      schoolKey: "",
+      currentClass: this.decrypt(
+        this.$q.localStorage.getItem("currentClass"),
+        2
+      ),
+      currentRoom: this.decrypt(this.$q.localStorage.getItem("currentRoom"), 2),
+      currentTerm: this.decrypt(this.$q.localStorage.getItem("currentTerm"), 2),
       showStudentData: [],
       buddyOptions: [],
       snapshotOnline: ""
     };
   },
   methods: {
-    async loadData() {
-      let syncData = await this.loadTeacherSyncData();
-
-      this.currentClass = syncData.class;
-      this.currentRoom = syncData.room;
-      this.currentTerm = syncData.term;
-      this.currentYear = syncData.year;
-      this.schoolKey = syncData.schoolKey;
-
-      this.snapCheckStudent();
-    },
     closePopup() {
       this.showStudentDataDialog = false;
-      setTimeout(() => {
-        this.$emit("closePopup", false);
-      }, 500);
+      this.$emit("closePopup", false);
     },
+    selectBuddy() {},
     snapCheckStudent() {
       this.loadingShow();
 
       this.snapshot = db
         .collection("student")
-        .where("schoolKey", "==", this.schoolKey)
+        .where("schoolKey", "==", this.teacherData.schoolKey)
         .where("classRoom", "==", this.currentClass)
         .where("room", "==", this.currentRoom)
         .onSnapshot({ includeMetadataChanges: true }, doc => {
@@ -115,12 +105,10 @@ export default {
     }
   },
   mounted() {
-    this.loadData();
+    this.snapCheckStudent();
   },
   beforeDestroy() {
-    if (typeof this.snapshot == "function") {
-      this.snapshot();
-    }
+    this.snapshot();
   }
 };
 </script>

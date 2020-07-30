@@ -811,8 +811,9 @@ export default {
           }
         });
     },
-    loadSynchronize() {
-      console.clear();
+    async loadSynchronize() {
+      let dateTime = await this.getDateAndTime();
+
       this.snapSync = db
         .collection("synchronize")
         .where("schoolKey", "==", this.studentData.schoolKey)
@@ -820,6 +821,8 @@ export default {
         .where("room", "==", this.studentData.room)
         .where("term", "==", this.studentData.term)
         .where("year", "==", this.studentData.year)
+        .where("currentDate", "==", dateTime.date)
+        .where("status", "==", "online")
         .onSnapshot({ includeMetadataChanges: true }, doc => {
           if (doc.size) {
             this.practiceKey = doc.docs[0].data().practiceKey
@@ -929,7 +932,7 @@ export default {
     });
   },
   beforeDestroy() {
-    if (typeof this.syncData == "function") {
+    if (typeof this.snapSync == "function") {
       this.snapSync();
     }
     this.$q.localStorage.remove("useTime");

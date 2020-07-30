@@ -56,10 +56,10 @@
                 <div class="absolute-center full-width">
                   <span class="text-bold" style="font-size:4.2vw;">
                     {{
-                      convertPracticeName(
-                        currentPractice.practicetype,
-                        currentPractice.skill
-                      )
+                    convertPracticeName(
+                    currentPractice.practicetype,
+                    currentPractice.skill
+                    )
                     }}
                   </span>
                 </div>
@@ -70,9 +70,7 @@
                 class="bg-transparent absolute-bottom"
                 style="height:calc(100% - 62%);font-size:5vw;transform: rotate(-.5deg);"
               >
-                <span v-if="currentPractice.skill == 'Vocabulary'"
-                  >คำศัพท์</span
-                >
+                <span v-if="currentPractice.skill == 'Vocabulary'">คำศัพท์</span>
                 <span v-else>ไวยากรณ์</span>
               </div>
             </q-img>
@@ -90,10 +88,7 @@
           v-if="isActiveMainCharactor"
         >
           <div>
-            <q-img
-              src="../../statics/teacher-practice.png"
-              style="max-width:1200px;width:100%;"
-            ></q-img>
+            <q-img src="../../statics/teacher-practice.png" style="max-width:1200px;width:100%;"></q-img>
           </div>
         </transition>
       </div>
@@ -105,10 +100,7 @@
           leave-active-class="animated fadeOutDown duration-talk-out"
           v-if="isActiveMainTalk"
         >
-          <div
-            class="boxtalk row bg1 color2 border3-lg br-a-lg q-ma-md"
-            align="left"
-          >
+          <div class="boxtalk row bg1 color2 border3-lg br-a-lg q-ma-md" align="left">
             <div class="col q-pa-md">
               <span
                 :class="{
@@ -119,10 +111,7 @@
               >
                 <!-- GRAMMAR LESSON  -->
 
-                <div
-                  v-if="!currentPractice.practicetype.includes('review')"
-                  class="q-pb-sm"
-                >
+                <div v-if="!currentPractice.practicetype.includes('review')" class="q-pb-sm">
                   {{ talking.title }}
                   <br />
                 </div>
@@ -141,48 +130,42 @@
                   ให้ครบถึงจะสามารถทำภารกิจต่อไปได้
                 </span>
 
-                <span
-                  v-else-if="currentPractice.practicetype == 'review grammar'"
-                  >กัปตันครับ ก่อนที่ท่านและลูกเรือจะเริ่มทำภารกิจ ไวยากรณ์
-                  ท่านจะต้องพาลูกเรือมา ทบทวน ความรู้ก่อนทุกครั้ง</span
-                >
+                <span v-else-if="currentPractice.practicetype == 'review grammar'">
+                  กัปตันครับ ก่อนที่ท่านและลูกเรือจะเริ่มทำภารกิจ ไวยากรณ์
+                  ท่านจะต้องพาลูกเรือมา ทบทวน ความรู้ก่อนทุกครั้ง
+                </span>
                 <!-- FILL IN THE BLANK -->
-                <span
-                  v-else-if="currentPractice.practicetype == 'fillintheblank'"
-                  >กัปตันครับ
-                  ให้ลูกเรือเตรียมพร้อมทำภารกิจเติมคำในช่องว่าง</span
-                >
+                <span v-else-if="currentPractice.practicetype == 'fillintheblank'">
+                  กัปตันครับ
+                  ให้ลูกเรือเตรียมพร้อมทำภารกิจเติมคำในช่องว่าง
+                </span>
                 <!-- PHONICS LESSON -->
-                <span
-                  v-else-if="currentPractice.practicetype == 'phonicslesson'"
-                  >เรียนการออกเสียง ต้องเรียนให้ครบทุกอัน
-                  เพื่อทำแบบฝึกหัดนะ</span
-                >
+                <span v-else-if="currentPractice.practicetype == 'phonicslesson'">
+                  เรียนการออกเสียง ต้องเรียนให้ครบทุกอัน
+                  เพื่อทำแบบฝึกหัดนะ
+                </span>
                 <!-- SPELLING BEE -->
-                <span v-else-if="currentPractice.practicetype == 'spelling bee'"
-                  >กัปตัน เราจะทำภารกิจ สะกดคำศัพท์
-                  จะให้ลูกเรือใส่หูฟังหรือไม่ก็ได้ ขึ้นอยู่กับท่าน</span
-                >
+                <span v-else-if="currentPractice.practicetype == 'spelling bee'">
+                  กัปตัน เราจะทำภารกิจ สะกดคำศัพท์
+                  จะให้ลูกเรือใส่หูฟังหรือไม่ก็ได้ ขึ้นอยู่กับท่าน
+                </span>
                 <!-- READING -->
                 <span
                   v-else-if="currentPractice.practicetype == 'readingspeaking'"
-                  >กัปตัน อย่าลืมให้ลูกเรืออ่านออกเสียงประโยคพร้อมกันนะ</span
-                >
-                <span v-else-if="currentPractice.practicetype == 'readingmulti'"
-                  >กัปตันครับ เราจะให้ลูกเรือทำภารกิจ อ่านจับใจความ
-                  ถ้าลูกเรือพร้อมแล้ว กัปตันกดทำภารกิจได้เลยครับ</span
-                >
-                <span
-                  v-else-if="currentPractice.practicetype == 'readingfillin'"
-                  >กัปตันครับ เราจะให้ลูกเรือทำภารกิจ อ่านจับใจความ
-                  ถ้าลูกเรือพร้อมแล้ว กัปตันกดทำภารกิจได้เลยครับ</span
-                >
+                >กัปตัน อย่าลืมให้ลูกเรืออ่านออกเสียงประโยคพร้อมกันนะ</span>
+                <span v-else-if="currentPractice.practicetype == 'readingmulti'">
+                  กัปตันครับ เราจะให้ลูกเรือทำภารกิจ อ่านจับใจความ
+                  ถ้าลูกเรือพร้อมแล้ว กัปตันกดทำภารกิจได้เลยครับ
+                </span>
+                <span v-else-if="currentPractice.practicetype == 'readingfillin'">
+                  กัปตันครับ เราจะให้ลูกเรือทำภารกิจ อ่านจับใจความ
+                  ถ้าลูกเรือพร้อมแล้ว กัปตันกดทำภารกิจได้เลยครับ
+                </span>
                 <!-- MULTIPLE CHOICES -->
-                <span
-                  v-else-if="currentPractice.practicetype == 'multiplechoices'"
-                  >กัปตันครับ เราจะทำภารกิจ เลือกคำศัพท์
-                  ลูกเรือทุกคนพร้อมลุยแล้วครับ</span
-                >
+                <span v-else-if="currentPractice.practicetype == 'multiplechoices'">
+                  กัปตันครับ เราจะทำภารกิจ เลือกคำศัพท์
+                  ลูกเรือทุกคนพร้อมลุยแล้วครับ
+                </span>
 
                 <span
                   v-else-if="
@@ -191,14 +174,15 @@
                       currentPractice.practicetype ==
                         'multiplechoice(questionsound)'
                   "
-                  >กัปตันครับ...
+                >
+                  กัปตันครับ...
                   ภารกิจนี้จำเป็นต้องให้ลูกเรือใส่หูฟังในการทำภารกิจนะครับ
-                  กัปตันช่วยสั่งการด้วยนะครับ</span
-                >
+                  กัปตันช่วยสั่งการด้วยนะครับ
+                </span>
                 <!-- TRANSLATION -->
-                <span v-else-if="currentPractice.practicetype == 'translation'"
-                  >ให้ลูกเรือแปลประโยคภาษาไทยเป็นภาษาอังกฤษ</span
-                >
+                <span
+                  v-else-if="currentPractice.practicetype == 'translation'"
+                >ให้ลูกเรือแปลประโยคภาษาไทยเป็นภาษาอังกฤษ</span>
                 <!-- PHONICS MULTIPLE CHOICES -->
 
                 <span
@@ -206,9 +190,10 @@
                     currentPractice.practicetype == 'multiplechoices' &&
                       currentPractice.skill == 'Phonics'
                   "
-                  >กัปตันครับ
-                  ภารกิจที่แล้วเราเรียนรู้หลักการออกเสียงมาแล้วถึงเวลาที่ลูกเรือจะได้รับการฝึกฝีมือแล้วครับ...</span
                 >
+                  กัปตันครับ
+                  ภารกิจที่แล้วเราเรียนรู้หลักการออกเสียงมาแล้วถึงเวลาที่ลูกเรือจะได้รับการฝึกฝีมือแล้วครับ...
+                </span>
 
                 <span
                   v-else-if="
@@ -219,56 +204,43 @@
                         'multiplechoice(questionsound)' &&
                         currentPractice.skill == 'Phonics')
                   "
-                  >กัปตันครับ...
-                  ภารกิจนี้จำเป็นต้องให้ลูกเรือใส่หูฟังในการทำภารกิจนะครับกัปตันช่วยสั่งการด้วยนะครับ</span
                 >
+                  กัปตันครับ...
+                  ภารกิจนี้จำเป็นต้องให้ลูกเรือใส่หูฟังในการทำภารกิจนะครับกัปตันช่วยสั่งการด้วยนะครับ
+                </span>
                 <!-- LANGUAGE TIPS -->
-                <span
-                  v-else-if="currentPractice.practicetype == 'languagetips'"
-                >
+                <span v-else-if="currentPractice.practicetype == 'languagetips'">
                   กัปตันครับ... ถ้าเจอสัญลักษณ์
-                  <q-btn
-                    icon="fas fa-volume-up"
-                    round
-                    flat
-                    class="bg3 text-white"
-                  />
+                  <q-btn icon="fas fa-volume-up" round flat class="bg3 text-white" />
                   <span class="q-pl-sm">ให้ลูกเรือออกเสียงตามด้วยนะครับ</span>
                 </span>
                 <!-- GRAMMAR ACTION -->
-                <span
-                  v-else-if="currentPractice.practicetype == 'grammaraction'"
-                  >กัปตันครับ เราจะพาลูกเรือทำภารกิจ ถามตอบไวยากรณ์
-                  กัปตันพร้อมที่จะให้ลูกเรือทำภารกิจหรือยังครับ</span
-                >
+                <span v-else-if="currentPractice.practicetype == 'grammaraction'">
+                  กัปตันครับ เราจะพาลูกเรือทำภารกิจ ถามตอบไวยากรณ์
+                  กัปตันพร้อมที่จะให้ลูกเรือทำภารกิจหรือยังครับ
+                </span>
                 <!-- FLASHCARD -->
-                <span v-else-if="currentPractice.practicetype == 'flashcard'"
-                  >กัปตันเราจะพาลูกเรือเรียนคำศัพท์ใหม่
-                  กัปตันอย่าลืมให้ลูกเรือออกเสียงด้วยนะครับ</span
-                >
+                <span v-else-if="currentPractice.practicetype == 'flashcard'">
+                  กัปตันเราจะพาลูกเรือเรียนคำศัพท์ใหม่
+                  กัปตันอย่าลืมให้ลูกเรือออกเสียงด้วยนะครับ
+                </span>
                 <!-- REVIEW VOCAB -->
-                <span
-                  v-else-if="currentPractice.practicetype == 'review vocab'"
-                >
+                <span v-else-if="currentPractice.practicetype == 'review vocab'">
                   กัปตันครับ ก่อนที่ท่านและลูกเรือจะเริ่มทำภารกิจ คำศัพท์
                   ท่านจะต้องพาลูกเรือมา ทบทวน ความรู้ก่อนทุกครั้ง
                 </span>
-                <span v-else-if="currentPractice.practicetype == 'roleplay'"
-                  >กัปตันพร้อมจะพาลูกเรือ ทำภารกิจ หรือยังครับ?</span
-                >
+                <span
+                  v-else-if="currentPractice.practicetype == 'roleplay'"
+                >กัปตันพร้อมจะพาลูกเรือ ทำภารกิจ หรือยังครับ?</span>
 
-                <span v-else-if="currentPractice.practicetype == 'speaking'"
-                  >กัปตันครับ... เปิดหนังสั้นให้ลูกเรือดูพร้อมกัน
-                  เพื่อนำไปตอบคำถาม ในภารกิจถัดไป</span
-                >
+                <span v-else-if="currentPractice.practicetype == 'speaking'">
+                  กัปตันครับ... เปิดหนังสั้นให้ลูกเรือดูพร้อมกัน
+                  เพื่อนำไปตอบคำถาม ในภารกิจถัดไป
+                </span>
               </span>
             </div>
 
-            <div
-              align="right"
-              class="col-2 q-px-lg q-py-lg self-end"
-              style="width:220px"
-            >
+            <div align="right" class="col-2 q-px-lg q-py-lg self-end" style="width:220px">
               <q-btn
                 icon="fas fa-star"
                 :label="
@@ -463,8 +435,13 @@ export default {
         data.practiceKey;
       // กรณีเป็น แบบฝึกหัด ต้องเข้าไป Reset ข้อมูลการทำแบบฝึกหัดของนักเรียนในกรณี เข้ามาทำทีหลัง
       db.collection("studentpracticelog")
-        .where("filter", "==", filterWhere)
-        .where("schoolKey","==",this.teacherData.schoolKey)
+        // .where("filter", "==", filterWhere)
+        .where("class", "==", this.currentClass)
+        .where("room", "==", this.currentRoom)
+        .where("term", "==", this.currentTerm)
+        .where("year", "==", this.currentYear)
+        .where("practiceKey", "==", this.currentPractice.practiceKey)
+        .where("schoolKey", "==", this.teacherData.schoolKey)
         .get()
         .then(doc => {
           // กรณีพบว่าได้เคยทำ หรือ นักเรียนมีข้อมูลแบบฝึกหัดนี้อยู่แล้ว ให้ทำการลบข้อมูลนั้นๆออก

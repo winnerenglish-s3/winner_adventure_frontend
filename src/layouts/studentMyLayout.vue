@@ -76,17 +76,17 @@
           <q-spinner-oval
             color="deep-orange-10"
             size="4em"
-            v-if="!isLoadStudentBar"
+            v-if="!isLoadData"
             class="absolute-center"
           />
           <q-img
-            v-if="isLoadStudentBar && studentData.currentLevel < 27"
+            v-if="isLoadData && studentData.currentLevel < 27"
             :src="'../statics/main/Level' + studentData.currentLevel + '.png'"
             style="width:50px;"
             class="absolute-center"
           />
           <q-img
-            v-if="isLoadStudentBar && studentData.currentLevel >= 27"
+            v-if="isLoadData && studentData.currentLevel >= 27"
             :src="'../statics/main/Level27.png'"
             style="width:50px;"
             class="absolute-center"
@@ -96,12 +96,15 @@
       <div class="row bg5 br-br-sm shadow-4" style="width:300px;height:fit-content;">
         <div class="col-12" align="center">
           <div class="row">
-            <div class="col-4 relative-position" :class="{ 'self-center': !isLoadStudentBar }">
-              <div v-if="!isLoadStudentBar">
-                <q-spinner-oval color="deep-orange-10" size="4em" class="absolute-center z-top" />
-              </div>
+            <div class="col-4 relative-position" :class="{ 'self-center': !isLoadData }">
               <div class="bar-exp-top relative-position">
-                <div class="row color1" v-if="isLoadStudentBar">
+                <q-spinner-oval
+                  color="deep-orange-10"
+                  style="z-index:15;"
+                  class="q-mt-sm"
+                  v-if="!isLoadData"
+                />
+                <div class="row color1" v-if="isLoadData">
                   <div class="col-12" style="font-size:20px;" align="left">
                     <span>LEVEL</span>
                   </div>
@@ -113,7 +116,7 @@
                   class="absolute-bottom row full-width"
                   align="center"
                   style="bottom:3px;"
-                  v-if="isLoadStudentBar"
+                  v-if="isLoadData"
                 >
                   <div class="col self-center">
                     <q-icon size="30px" name="fas fa-angle-double-right"></q-icon>
@@ -132,32 +135,25 @@
             </div>
             <div class="col"></div>
             <div class="col-7 relative-position" style="width:190px;">
-              <div v-if="!isLoadStudentBar">
-                <q-spinner-oval color="deep-orange-10" size="4em" class="absolute-center" />
+              <div align="center" class="name-student q-px-sm text-h6" style="padding-top:13px;">
+                <span class>
+                  {{
+                  studentData.name + " " + studentData.surname
+                  }}
+                </span>
               </div>
-
-              <div v-if="isLoadStudentBar">
-                <div align="center" class="name-student q-px-sm text-h6" style="padding-top:13px;">
-                  <span class>
-                    {{
-                    studentData.name + " " + studentData.surname
-                    }}
-                  </span>
+              <div class="absolute-bottom-right" style="width:210px;">
+                <div style="left:-15px;z-index:5;">
+                  <q-linear-progress
+                    track-color="white"
+                    stripe
+                    style="height: 10px"
+                    :value="studentData.progress"
+                  />
                 </div>
-                <div class="absolute-bottom-right" style="width:210px;">
-                  <div style="left:-15px;z-index:5;">
-                    <q-linear-progress
-                      track-color="white"
-                      stripe
-                      style="height: 10px"
-                      :value="studentData.progress"
-                    />
-                  </div>
-
-                  <div class="bg6 q-pr-xs br-br-sm" style="font-size:12px;" align="right">
-                    XP
-                    {{ studentData.expOld + "/" + studentData.exp }}
-                  </div>
+                <div class="bg6 q-pr-xs br-br-sm" style="font-size:12px;" align="right">
+                  XP
+                  {{ studentData.expOld + "/" + studentData.exp }}
                 </div>
               </div>
             </div>
@@ -202,7 +198,7 @@ export default {
     notLandscape,
     notMobile,
     appDialogLogout,
-    dialogCheckLogin,
+    dialogCheckLogin
   },
   data() {
     return {
@@ -213,7 +209,7 @@ export default {
         expOld: 0,
         currentLevel: 1,
         buddy: null,
-        ship: null,
+        ship: null
       },
       totalStudent: 0,
       missionCurrent: {},
@@ -236,13 +232,12 @@ export default {
         title: "",
         btn1: "",
         btn2: "",
-        icon: "",
+        icon: ""
       },
 
       isDialogPopup: false,
 
-      isLoadData: false,
-      isLoadStudentBar: false,
+      isLoadData: false
     };
   },
   methods: {
@@ -267,7 +262,7 @@ export default {
       db.collection("student")
         .doc(this.studentData.key)
         .update({
-          status: "offline",
+          status: "offline"
         })
         .then(() => {
           this.syncData();
@@ -292,7 +287,7 @@ export default {
       db.collection("student")
         .doc(this.studentData.key)
         .update({
-          status: "offline",
+          status: "offline"
         })
         .then(() => {
           this.$q.localStorage.clear();
@@ -306,14 +301,17 @@ export default {
         });
     },
     // TODO : Function() => Loading Mission
-    async loadMission() {
+    loadMission() {
       if (this.isLoadData) {
         return;
       }
 
       this.isLoadData = true;
 
-      let allMission = await this.loadMissionAll();
+      let allMission = this.decrypt(
+        this.$q.localStorage.getItem("allMission"),
+        1
+      );
 
       this.syncMission = db
         .collection("classroomMission")
@@ -322,15 +320,16 @@ export default {
         .where("term", "==", this.studentData.term)
         .where("year", "==", this.studentData.year)
         .where("room", "==", this.studentData.room)
-        .onSnapshot({ includeMetadataChanges: true }, (missionDoc) => {
+        .onSnapshot({ includeMetadataChanges: true }, missionDoc => {
+          console.log(missionDoc);
           let temp = [];
           let missionShipFinish = [];
           let missionBuddyFinish = [];
           let missionTreasureFinish = [];
 
           if (missionDoc.size) {
-            missionDoc.forEach((missionData) => {
-              let missionFinish = allMission.data.filter((x) => {
+            missionDoc.forEach(missionData => {
+              let missionFinish = allMission.filter(x => {
                 return x.key == missionData.data().currentMissionKey;
               })[0];
 
@@ -339,7 +338,7 @@ export default {
                 level: missionFinish.level,
                 name: missionFinish.name,
                 skill: missionFinish.status,
-                ...missionData.data(),
+                ...missionData.data()
               });
 
               temp.sort((a, b) => {
@@ -350,10 +349,10 @@ export default {
             let classroomMission = {
               ship: [],
               treasure: [],
-              buddy: [],
+              buddy: []
             };
 
-            temp.filter((x) => {
+            temp.filter(x => {
               if (x.name === "คู่หู") {
                 if (x.status === "finish") {
                   missionBuddyFinish.push(x);
@@ -386,13 +385,20 @@ export default {
                 ? missionBuddyFinish[missionBuddyFinish.length - 1]
                 : null;
 
-            let currentMission = temp.filter((x) => {
+            let classroomMissionEncrypt = this.encrypt(classroomMission, 1);
+
+            this.$q.localStorage.set(
+              "classroomMission",
+              classroomMissionEncrypt
+            );
+
+            let currentMission = temp.filter(x => {
               return x.status == "current";
             })[0];
 
             if (currentMission != undefined) {
-              let missionCurrent = allMission.data.filter(
-                (x) => x.key == currentMission.currentMissionKey
+              let missionCurrent = allMission.filter(
+                x => x.key == currentMission.currentMissionKey
               )[0];
 
               let disCountNumber = 0;
@@ -420,8 +426,16 @@ export default {
                 type: missionCurrent.name,
                 level: missionCurrent.level,
                 buddySkill: disCountNumber,
-                ...currentMission,
+                ...currentMission
               };
+
+              let missionEncrypt = this.encrypt(this.missionCurrent, 1);
+
+              this.$q.localStorage.set("currentMission", missionEncrypt);
+
+              let studentDataEncrypt = this.encrypt(this.studentData, 1);
+
+              this.$q.localStorage.set("studentData", studentDataEncrypt);
 
               this.isMissionStart = true;
             } else {
@@ -429,24 +443,24 @@ export default {
             }
           }
         });
+
+      this.loadStudent();
     },
     loadStudent() {
       if (typeof this.syncStudent == "function") {
         this.syncStudent();
       }
 
-      let dataStudent = db
-        .collection("student")
-        .doc(this.$q.localStorage.getItem("sk"));
+      let dataStudent = db.collection("student").doc(this.studentData.key);
 
       db.collection("levelexp")
         .get()
-        .then((docLevel) => {
+        .then(docLevel => {
           let setLevel = [];
-          docLevel.forEach((dataLevel) => {
+          docLevel.forEach(dataLevel => {
             let newData = {
               level: dataLevel.id,
-              ...dataLevel.data(),
+              ...dataLevel.data()
             };
 
             setLevel.push(newData);
@@ -460,11 +474,10 @@ export default {
             x.index = index;
           });
 
-          console.log(setLevel);
-
           this.syncStudent = dataStudent.onSnapshot(
             { includeMetadataChanges: true },
-            async (doc) => {
+            async doc => {
+              console.log(doc);
               let currentExp =
                 doc.data().currentExp === undefined ||
                 doc.data().currentExp === 0
@@ -473,71 +486,73 @@ export default {
 
               let getOldExpIndex = null;
 
-              let exscore = await this.loadPracticeScore();
+              await this.loadPracticeScore().then(exscore => {
+                let testExp = currentExp + exscore;
 
-              let testExp = currentExp + exscore;
+                this.studentData.currentExp = testExp;
 
-              this.studentData.currentExp = testExp;
+                let getExp = setLevel.filter(x => {
+                  return this.studentData.currentExp < x.exp;
+                })[0];
 
-              let getExp = setLevel.filter((x) => {
-                return this.studentData.currentExp < x.exp;
-              })[0];
+                this.studentData.currentLevel = getExp.level;
 
-              this.studentData.currentLevel = getExp.level;
+                this.studentData.currentExp =
+                  getExp.level == 1
+                    ? this.studentData.currentExp
+                    : this.studentData.currentExp;
 
-              this.studentData.currentExp =
-                getExp.level == 1
-                  ? this.studentData.currentExp
-                  : this.studentData.currentExp;
+                this.studentData.exp =
+                  getExp.level == 1
+                    ? getExp.exp
+                    : getExp.exp - setLevel[getExp.index - 1].exp;
 
-              this.studentData.exp =
-                getExp.level == 1
-                  ? getExp.exp
-                  : getExp.exp - setLevel[getExp.index - 1].exp;
+                this.studentData.expOld =
+                  getExp.level == 1
+                    ? this.studentData.currentExp
+                    : this.studentData.currentExp -
+                      setLevel[getExp.index - 1].exp;
 
-              this.studentData.expOld =
-                getExp.level == 1
-                  ? this.studentData.currentExp
-                  : this.studentData.currentExp -
-                    setLevel[getExp.index - 1].exp;
+                // console.log(
+                //   "levelปัจจุบัน",
+                //   getExp.level,
+                //   "EXP ปัจจุบัน",
+                //   this.studentData.currentExp,
+                //   "EXP ของเลเวลก่อนหน้า",
+                //   setLevel[getExp.index - 1].exp,
+                //   "Exp ณ เลเวลนี้",
+                //   this.studentData.currentExp - setLevel[getExp.index - 1].exp,
+                //   "% Progress ของเลเวลนี้ = ",
+                //   (this.studentData.currentExp - setLevel[getExp.index - 1].exp) /
+                //     (getExp.exp - setLevel[getExp.index - 1].exp)
+                // );
 
-              // console.log(
-              //   "levelปัจจุบัน",
-              //   getExp.level,
-              //   "EXP ปัจจุบัน",
-              //   this.studentData.currentExp,
-              //   "EXP ของเลเวลก่อนหน้า",
-              //   setLevel[getExp.index - 1].exp,
-              //   "Exp ณ เลเวลนี้",
-              //   this.studentData.currentExp - setLevel[getExp.index - 1].exp,
-              //   "% Progress ของเลเวลนี้ = ",
-              //   (this.studentData.currentExp - setLevel[getExp.index - 1].exp) /
-              //     (getExp.exp - setLevel[getExp.index - 1].exp)
-              // );
+                this.studentData.progress =
+                  getExp.level == 1
+                    ? this.studentData.currentExp / getExp.exp
+                    : (this.studentData.currentExp -
+                        setLevel[getExp.index - 1].exp) /
+                      (getExp.exp - setLevel[getExp.index - 1].exp);
 
-              this.studentData.progress =
-                getExp.level == 1
-                  ? this.studentData.currentExp / getExp.exp
-                  : (this.studentData.currentExp -
-                      setLevel[getExp.index - 1].exp) /
-                    (getExp.exp - setLevel[getExp.index - 1].exp);
+                let studentDataEncrypt = this.encrypt(this.studentData, 1);
 
-              if (doc.data().status == "offline") {
-                // this.$q.localStorage.clear();
-                this.isDialogPopup = true;
-                this.sendDataDialog.type = "hasStudentOrTeacher";
-                this.sendDataDialog.title = "มีการเข้าสู่ระบบจากอุปกรณ์อื่น";
-                this.sendDataDialog.btn1 = "ตกลง";
-                this.sendDataDialog.icon = "fas fa-exclamation-circle";
-              } else if (doc.data().status == "waiting") {
-                this.isDialogPopup = true;
-                this.sendDataDialog.type = "finishLearning";
-                this.sendDataDialog.title = "จบคาบเรียน";
-                this.sendDataDialog.btn1 = "ตกลง";
-                this.sendDataDialog.icon = "fas fa-star";
-              }
+                this.$q.localStorage.set("studentData", studentDataEncrypt);
 
-              this.isLoadStudentBar = true;
+                if (doc.data().status == "offline") {
+                  // this.$q.localStorage.clear();
+                  this.isDialogPopup = true;
+                  this.sendDataDialog.type = "hasStudentOrTeacher";
+                  this.sendDataDialog.title = "มีการเข้าสู่ระบบจากอุปกรณ์อื่น";
+                  this.sendDataDialog.btn1 = "ตกลง";
+                  this.sendDataDialog.icon = "fas fa-exclamation-circle";
+                } else if (doc.data().status == "waiting") {
+                  this.isDialogPopup = true;
+                  this.sendDataDialog.type = "finishLearning";
+                  this.sendDataDialog.title = "จบคาบเรียน";
+                  this.sendDataDialog.btn1 = "ตกลง";
+                  this.sendDataDialog.icon = "fas fa-star";
+                }
+              });
             }
           );
         });
@@ -548,13 +563,13 @@ export default {
 
       return new Promise((reslove, reject) => {
         db.collection("studentpracticelog")
-          .where("studentKey", "==", this.$q.localStorage.getItem("sk"))
+          .where("studentKey", "==", this.studentData.key)
           .get()
-          .then(async (doc) => {
+          .then(async doc => {
             let score = 0;
 
             if (doc.size) {
-              doc.forEach((data) => {
+              doc.forEach(data => {
                 if (data.data().practiceType == "translation") {
                   score +=
                     Math.round(data.data().correct / 4) +
@@ -573,237 +588,263 @@ export default {
     },
     async loadSynchronize() {
       let dateTime = await this.getDateAndTime();
-      this.studentData = { ...(await this.loadStudentData()) };
-      this.syncData = await this.loadTeacherDataSnapshot();
-      if (this.syncData.size) {
-        let currentTime =
-          dateTime.microtime - this.syncData.data.date.microtime;
 
-        this.totalStudent = this.syncData.data.totalStudent;
+      this.syncData = await db
+        .collection("synchronize")
+        .where("schoolKey", "==", this.studentData.schoolKey)
+        .where("class", "==", this.studentData.classRoom)
+        .where("room", "==", this.studentData.room)
+        .where("term", "==", this.studentData.term)
+        .where("year", "==", this.studentData.year)
+        .where("currentDate", "==", dateTime.date)
+        .where("status", "==", "online")
+        .onSnapshot({ includeMetadataChanges: true }, doc => {
+          if (doc.size) {
+            let currentTime =
+              dateTime.microtime - doc.docs[0].data().date.microtime;
 
-        this.missionScore =
-          this.syncData.data.missionScore == undefined
-            ? 0
-            : this.syncData.data.missionScore;
+            let syncData = doc.docs[0].data();
 
-        if (!this.isLoadData) {
-          this.loadMission();
-          this.loadStudent();
-        }
+            this.totalStudent = doc.docs[0].data().totalStudent;
 
-        // NOTE
-        if (currentTime > 1800000) {
-          // TODO : Waiting Teacher
-          if (this.$route.name != "s-waiting") {
-            this.$router.push("/student/waiting/");
-          }
-        }
-        // NOTE : กรณีคุณครูยังมีการใช้งานระบบอย่างต่อเนื่อง
-        else {
-          // TODO : Waiting
-          if (this.syncData.data.currentPage == "waiting") {
-            if (this.$route.name != "s-waiting") {
-              this.$router.push("/student/waiting/");
-            }
-          }
-          // TODO : Placement
-          else if (
-            this.syncData.data.currentPage == "prepare-placement" ||
-            this.syncData.data.currentPage == "start-placement" ||
-            this.syncData.data.currentPage == "talkingplacement"
-          ) {
-            if (this.$route.name != "s-placement") {
-              this.$router.push("/student/placement");
-            }
-          }
-          // TODO : Pretest - Posttest
-          else if (
-            this.syncData.data.currentPage == "prepare-pretest" ||
-            this.syncData.data.currentPage == "prepare-posttest" ||
-            this.syncData.data.currentPage == "start-posttest" ||
-            this.syncData.data.currentPage == "start-pretest"
-          ) {
-            if (this.$route.name != "s-prepost") {
-              this.$router.push("/student/prepost");
-            }
-          }
-          // TODO : Questionnaire
-          else if (
-            this.syncData.data.currentPage == "prepare-questionnaire" ||
-            this.syncData.data.currentPage == "start-questionnaire"
-          ) {
-            if (this.$route.name != "s-questionnaire") {
-              this.$router.push("/student/questionnaire");
-            }
-          }
-          // TODO : Main
-          else if (this.syncData.data.currentPage == "main") {
-            if (this.$route.name != "s-main") {
-              this.$router.push("/student/main/");
-            }
-          }
-          // TODO : Vote
-          else if (this.syncData.data.currentPage == "vote") {
-            if (this.$route.name != "s-vote") {
-              this.$router.push("/student/vote/");
-            }
-          }
-          // TODO : Mission
-          else if (this.syncData.data.currentPage == "show-current-mission") {
-            if (this.$route.name != "s-mission") {
-              this.$router.push("/student/mission/");
-            }
-          }
-          // TODO : Studyplan
-          else if (this.syncData.data.currentPage == "studyplan") {
-            if (this.$route.name != "s-studyplan") {
-              this.$router.push("/student/studyplan/");
-            }
-          }
-          // TODO : Practice
-          else if (this.syncData.data.currentPage == "practice") {
-            if (this.$route.name != "s-practice") {
-              this.$router.push("/student/practice/");
-            }
-          }
-          // TODO : Review Practice
-          else if (
-            this.syncData.data.currentPage == "review grammar" ||
-            this.syncData.data.currentPage == "review vocab"
-          ) {
-            if (this.$route.name != "s-reviewpractice") {
-              this.$router.push("/student/practice/review/");
-            }
-          }
-          // TODO : Vocabluary : Flashcard
-          else if (this.syncData.data.currentPage == "flashcard") {
-            if (this.$route.name != "s-flashcard") {
-              this.$router.push("/student/practice/flashcard/");
-            }
-          }
-          // TODO : Vocabluary : Spelling Bee
-          else if (this.syncData.data.currentPage == "spelling bee") {
-            if (this.$route.name != "s-spellingbee") {
-              this.$router.push("/student/practice/spellingbee/");
-            }
-          }
-          // TODO : Vocabluary : Multiple Choices
-          else if (this.syncData.data.currentPage == "multiplechoices") {
-            if (this.$route.name != "s-multiplechoice") {
-              this.$router.push("/student/practice/multiplechoice/");
-            }
-          }
-          // TODO : Grammar : Grammar Lesson
-          else if (this.syncData.data.currentPage == "grammarlesson") {
-            if (this.$route.name != "s-lesson") {
-              this.$router.push("/student/practice/lesson/");
-            }
-          }
-          // TODO : Grammar : Grammar Action
-          else if (this.syncData.data.currentPage == "grammaraction") {
-            if (this.$route.name != "s-grammaraction") {
-              this.$router.push("/student/practice/grammaraction/");
-            }
-          }
-          // TODO : Grammar : Grammar Action
-          else if (this.syncData.data.currentPage == "fillintheblank") {
-            if (this.$route.name != "s-grammarfillin") {
-              this.$router.push("/student/practice/grammarfillin/");
-            }
-          }
-          // TODO : Writing : Translation
-          else if (this.syncData.data.currentPage == "translation") {
-            if (this.$route.name != "s-translation") {
-              this.$router.push("/student/practice/translation/");
-            }
-          }
-          // TODO : Reading : Reading Content
-          else if (this.syncData.data.currentPage == "readingspeaking") {
-            if (this.$route.name != "s-readingcontent") {
-              this.$router.push("/student/practice/readingcontent/");
-            }
-          }
-          // TODO : Reading : Reading Multiple Choices
-          else if (this.syncData.data.currentPage == "readingmulti") {
-            if (this.$route.name != "s-readingmultiple") {
-              this.$router.push("/student/practice/readingmultiple/");
-            }
-          }
-          // TODO : Reading : Reading Fill in the blank
-          else if (this.syncData.data.currentPage == "readingfillin") {
-            if (this.$route.name != "s-readingfillin") {
-              this.$router.push("/student/practice/readingfillin/");
-            }
-          }
-          // TODO : Phonics : Phonics Lesson
-          else if (this.syncData.data.currentPage == "phonicslesson") {
-            if (this.$route.name != "s-lesson") {
-              this.$router.push("/student/practice/lesson/");
-            }
-          }
-          // TODO : Phonics & Listening & Speaking : (Multiple Answersound) & (Multiple Questionsound)
-          else if (
-            this.syncData.data.currentPage == "multiplechoice(questionsound)" ||
-            this.syncData.data.currentPage == "multiplechoice(answersound)"
-          ) {
-            if (this.$route.name != "s-multipleother") {
-              this.$router.push("/student/practice/multipleother/");
-            }
-          }
-          // TODO : Listening & Speaking : Language Tips Lesson
-          else if (this.syncData.data.currentPage == "languagetips") {
-            if (this.$route.name != "s-lesson") {
-              this.$router.push("/student/practice/lesson/");
-            }
-          }
-          // TODO : Listening & Speaking : Speaking
-          else if (this.syncData.data.currentPage == "speaking") {
-            if (this.$route.name != "s-lesson") {
-              this.$router.push("/student/practice/lesson/");
-            }
-          }
-          // TODO : Listening & Speaking : Speaking
-          else if (this.syncData.data.currentPage == "roleplay") {
-            if (this.$route.name != "s-roleplay") {
-              this.$router.push("/student/practice/roleplay/");
-            }
-          }
-          // TODO : Show Score Finish Practice & Finish World
-          else if (
-            this.syncData.data.currentPage == "finish-practice" ||
-            this.syncData.data.currentPage == "finish-world"
-          ) {
-            if (this.$route.name != "s-score") {
-              this.$router.push("/student/practice/score/");
-            }
-          }
+            this.missionScore =
+              doc.docs[0].data().missionScore == undefined
+                ? 0
+                : doc.docs[0].data().missionScore;
 
-          // TODO : Show Extra Score
-          else if (this.syncData.data.currentPage == "extra-score") {
-            if (this.$route.name != "s-extrascore") {
-              this.$router.push("/student/practice/extrascore/");
+            if (!this.isLoadData) {
+              this.loadMission();
             }
-          }
-          // TODO : Finish Waiting
-          else if (this.syncData.data.currentPage == "finish-waiting") {
-            if (this.$route.name != "s-waitingfriend") {
-              this.$router.push("/student/practice/waiting/");
+
+            // NOTE
+            if (currentTime > 1800000) {
+              // TODO : Waiting Teacher
+              if (this.$route.name != "s-waiting") {
+                this.$router.push("/student/waiting/");
+              }
             }
-          }
-          // TODO : Finish Mission
-          else if (this.syncData.data.currentPage == "finish-mission") {
-            if (this.$route.name != "s-missionsuccess") {
-              this.$router.push("/student/missionsuccess/");
+            // NOTE : กรณีคุณครูยังมีการใช้งานระบบอย่างต่อเนื่อง
+            else {
+              // TODO : Waiting
+              if (syncData.currentPage == "waiting") {
+                if (this.$route.name != "s-waiting") {
+                  this.$router.push("/student/waiting/");
+                }
+              }
+              // TODO : Placement
+              else if (
+                syncData.currentPage == "prepare-placement" ||
+                syncData.currentPage == "start-placement" ||
+                syncData.currentPage == "talkingplacement"
+              ) {
+                if (this.$route.name != "s-placement") {
+                  this.$router.push("/student/placement");
+                }
+              }
+              // TODO : Pretest - Posttest
+              else if (
+                syncData.currentPage == "prepare-pretest" ||
+                syncData.currentPage == "prepare-posttest" ||
+                syncData.currentPage == "start-posttest" ||
+                syncData.currentPage == "start-pretest"
+              ) {
+                if (this.$route.name != "s-prepost") {
+                  this.$router.push("/student/prepost");
+                }
+              }
+              // TODO : Questionnaire
+              else if (
+                syncData.currentPage == "prepare-questionnaire" ||
+                syncData.currentPage == "start-questionnaire"
+              ) {
+                if (this.$route.name != "s-questionnaire") {
+                  this.$router.push("/student/questionnaire");
+                }
+              }
+              // TODO : Main
+              else if (syncData.currentPage == "main") {
+                if (this.$route.name != "s-main") {
+                  this.$router.push("/student/main/");
+                }
+              }
+              // TODO : Vote
+              else if (syncData.currentPage == "vote") {
+                if (this.$route.name != "s-vote") {
+                  this.$router.push("/student/vote/");
+                }
+              }
+              // TODO : Mission
+              else if (syncData.currentPage == "show-current-mission") {
+                if (this.$route.name != "s-mission") {
+                  this.$router.push("/student/mission/");
+                }
+              }
+              // TODO : Studyplan
+              else if (syncData.currentPage == "studyplan") {
+                if (this.$route.name != "s-studyplan") {
+                  this.$router.push("/student/studyplan/");
+                }
+              }
+              // TODO : Practice
+              else if (syncData.currentPage == "practice") {
+                if (this.$route.name != "s-practice") {
+                  this.$router.push("/student/practice/");
+                }
+              }
+              // TODO : Review Practice
+              else if (
+                syncData.currentPage == "review grammar" ||
+                syncData.currentPage == "review vocab"
+              ) {
+                if (this.$route.name != "s-reviewpractice") {
+                  this.$router.push("/student/practice/review/");
+                }
+              }
+              // TODO : Vocabluary : Flashcard
+              else if (syncData.currentPage == "flashcard") {
+                if (this.$route.name != "s-flashcard") {
+                  this.$router.push("/student/practice/flashcard/");
+                }
+              }
+              // TODO : Vocabluary : Spelling Bee
+              else if (syncData.currentPage == "spelling bee") {
+                if (this.$route.name != "s-spellingbee") {
+                  this.$router.push("/student/practice/spellingbee/");
+                }
+              }
+              // TODO : Vocabluary : Multiple Choices
+              else if (syncData.currentPage == "multiplechoices") {
+                if (this.$route.name != "s-multiplechoice") {
+                  this.$router.push("/student/practice/multiplechoice/");
+                }
+              }
+              // TODO : Grammar : Grammar Lesson
+              else if (syncData.currentPage == "grammarlesson") {
+                if (this.$route.name != "s-lesson") {
+                  this.$router.push("/student/practice/lesson/");
+                }
+              }
+              // TODO : Grammar : Grammar Action
+              else if (syncData.currentPage == "grammaraction") {
+                if (this.$route.name != "s-grammaraction") {
+                  this.$router.push("/student/practice/grammaraction/");
+                }
+              }
+              // TODO : Grammar : Grammar Action
+              else if (syncData.currentPage == "fillintheblank") {
+                if (this.$route.name != "s-grammarfillin") {
+                  this.$router.push("/student/practice/grammarfillin/");
+                }
+              }
+              // TODO : Writing : Translation
+              else if (syncData.currentPage == "translation") {
+                if (this.$route.name != "s-translation") {
+                  this.$router.push("/student/practice/translation/");
+                }
+              }
+              // TODO : Reading : Reading Content
+              else if (syncData.currentPage == "readingspeaking") {
+                if (this.$route.name != "s-readingcontent") {
+                  this.$router.push("/student/practice/readingcontent/");
+                }
+              }
+              // TODO : Reading : Reading Multiple Choices
+              else if (syncData.currentPage == "readingmulti") {
+                if (this.$route.name != "s-readingmultiple") {
+                  this.$router.push("/student/practice/readingmultiple/");
+                }
+              }
+              // TODO : Reading : Reading Fill in the blank
+              else if (syncData.currentPage == "readingfillin") {
+                if (this.$route.name != "s-readingfillin") {
+                  this.$router.push("/student/practice/readingfillin/");
+                }
+              }
+              // TODO : Phonics : Phonics Lesson
+              else if (syncData.currentPage == "phonicslesson") {
+                if (this.$route.name != "s-lesson") {
+                  this.$router.push("/student/practice/lesson/");
+                }
+              }
+              // TODO : Phonics & Listening & Speaking : (Multiple Answersound) & (Multiple Questionsound)
+              else if (
+                syncData.currentPage == "multiplechoice(questionsound)" ||
+                syncData.currentPage == "multiplechoice(answersound)"
+              ) {
+                if (this.$route.name != "s-multipleother") {
+                  this.$router.push("/student/practice/multipleother/");
+                }
+              }
+              // TODO : Listening & Speaking : Language Tips Lesson
+              else if (syncData.currentPage == "languagetips") {
+                if (this.$route.name != "s-lesson") {
+                  this.$router.push("/student/practice/lesson/");
+                }
+              }
+              // TODO : Listening & Speaking : Speaking
+              else if (syncData.currentPage == "speaking") {
+                if (this.$route.name != "s-lesson") {
+                  this.$router.push("/student/practice/lesson/");
+                }
+              }
+              // TODO : Listening & Speaking : Speaking
+              else if (syncData.currentPage == "roleplay") {
+                if (this.$route.name != "s-roleplay") {
+                  this.$router.push("/student/practice/roleplay/");
+                }
+              }
+              // TODO : Show Score Finish Practice & Finish World
+              else if (
+                syncData.currentPage == "finish-practice" ||
+                syncData.currentPage == "finish-world"
+              ) {
+                if (this.$route.name != "s-score") {
+                  this.$router.push("/student/practice/score/");
+                }
+              }
+
+              // TODO : Show Extra Score
+              else if (syncData.currentPage == "extra-score") {
+                if (this.$route.name != "s-extrascore") {
+                  this.$router.push("/student/practice/extrascore/");
+                }
+              }
+              // TODO : Finish Waiting
+              else if (syncData.currentPage == "finish-waiting") {
+                if (this.$route.name != "s-waitingfriend") {
+                  this.$router.push("/student/practice/waiting/");
+                }
+              }
+              // TODO : Finish Mission
+              else if (syncData.currentPage == "finish-mission") {
+                if (this.$route.name != "s-missionsuccess") {
+                  this.$router.push("/student/missionsuccess/");
+                }
+              }
             }
+          } else {
+            this.teacherClearClass();
           }
-        }
-      } else {
-        this.teacherClearClass();
-      }
+        });
     },
 
     onResize(size) {
       (this.innerWidth = size.width), (this.innerHeight = size.height);
+    },
+    loadVersion() {
+      this.syncVersion = db
+        .collection("version")
+        .doc("frontend")
+        .onSnapshot(
+          {
+            includeMetadataChanges: true
+          },
+          doc => {
+            if (doc.data().version != this.version) {
+              window.location.reload(true);
+            }
+          }
+        );
     },
     clearSnapData() {
       if (typeof this.syncData == "function") {
@@ -821,21 +862,21 @@ export default {
       if (typeof this.syncVersion == "function") {
         this.syncVersion();
       }
-    },
+    }
   },
   watch: {
     $route() {
       if (this.$route.name == "s-score") {
         this.loadStudent();
       }
-    },
+    }
   },
   created() {
-    window.onpopstate = function () {
+    window.onpopstate = function() {
       window.location.reload();
     };
 
-    window.onscroll = function () {
+    window.onscroll = function() {
       let currentScrollPos = window.pageYOffset;
       if (100 > currentScrollPos) {
         document.getElementById("userBar").style.top = "0";
@@ -853,10 +894,11 @@ export default {
       }
     };
 
-    let checkStudentData = this.$q.localStorage.has("sk");
+    let checkStudentData = this.$q.localStorage.has("studentData");
 
     if (checkStudentData) {
       this.loadSynchronize();
+      this.loadVersion();
     } else {
       this.clearSnapData();
 
@@ -866,7 +908,7 @@ export default {
   },
   beforeDestroy() {
     this.clearSnapData();
-  },
+  }
 };
 </script>
 

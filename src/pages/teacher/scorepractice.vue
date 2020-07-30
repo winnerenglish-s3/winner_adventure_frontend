@@ -11,17 +11,13 @@
           icon="fas fa-chevron-left"
         ></q-btn>
       </div>
-      <div align="center" class="color2 col-12 self-center text-h6">
-        คะแนนแบบฝึกหัด/ทักษะ
-      </div>
+      <div align="center" class="color2 col-12 self-center text-h6">คะแนนแบบฝึกหัด/ทักษะ</div>
     </div>
 
     <!-- NOTE Selection-->
 
     <div class="row q-pa-md items-center">
-      <div class="col-2 q-pr-sm" style="width:100px" align="right">
-        ชั้น/ห้อง
-      </div>
+      <div class="col-2 q-pr-sm" style="width:100px" align="right">ชั้น/ห้อง</div>
       <div class="col-1">
         <q-select
           outlined
@@ -46,10 +42,7 @@
         ></q-select>
       </div>
       <div class="col q-px-md">
-        <div
-          class="row items-center q-px-md q-py-md"
-          style="border:1px solid #87533B"
-        >
+        <div class="row items-center q-px-md q-py-md" style="border:1px solid #87533B">
           <div class="col-2">รูปแบบ</div>
           <div class="col-5">
             <q-radio class dense v-model="scoreType" val="1">
@@ -74,11 +67,7 @@
         </div>-->
         <div style="margin:auto;width:100%;" class="bg-white q-pa-sm">
           <div class="row bg8 q-pa-xs" style="border-radius:5px">
-            <div
-              class="col-2 bg-white"
-              align="center"
-              style="border-radius:5px"
-            >
+            <div class="col-2 bg-white" align="center" style="border-radius:5px">
               <img style="width:90px" src="../../statics/logo_winner.png" alt />
             </div>
             <div class="col text-white q-pa-sm" align="center">
@@ -90,9 +79,7 @@
               </div>
             </div>
           </div>
-          <div align="center" v-if="scoreType == '1'" class="q-pa-md">
-            คะแนนแยกตามแบบฝึกหัด (%)
-          </div>
+          <div align="center" v-if="scoreType == '1'" class="q-pa-md">คะแนนแยกตามแบบฝึกหัด (%)</div>
           <div align="center" v-else class="q-pa-md">คะแนนแยกตามทักษะ (%)</div>
           <!-- NOTE คะแนนแยกตามแบบฝึกหัด -->
           <div v-if="scoreType == '2'">
@@ -113,27 +100,13 @@
                 <td
                   class="table_border"
                   style="text-align:left;padding-left:30px"
-                >
-                  {{ items.name }} {{ items.surname }}
-                </td>
-                <td class="table_border">
-                  {{ items.overallScore.vocabScore }}
-                </td>
-                <td class="table_border">
-                  {{ items.overallScore.grammarScore }}
-                </td>
-                <td class="table_border">
-                  {{ items.overallScore.readingScore }}
-                </td>
-                <td class="table_border">
-                  {{ items.overallScore.writingScore }}
-                </td>
-                <td class="table_border">
-                  {{ items.overallScore.phonicsScore }}
-                </td>
-                <td class="table_border">
-                  {{ items.overallScore.listeningScore }}
-                </td>
+                >{{ items.name }} {{ items.surname }}</td>
+                <td class="table_border">{{ items.overallScore.vocabScore }}</td>
+                <td class="table_border">{{ items.overallScore.grammarScore }}</td>
+                <td class="table_border">{{ items.overallScore.readingScore }}</td>
+                <td class="table_border">{{ items.overallScore.writingScore }}</td>
+                <td class="table_border">{{ items.overallScore.phonicsScore }}</td>
+                <td class="table_border">{{ items.overallScore.listeningScore }}</td>
                 <td class="table_border">{{ items.overallScore.scoreAvg }}%</td>
               </tr>
             </table>
@@ -143,18 +116,14 @@
             <table class="scroll_table fit" style="border-collapse:collapse">
               <tr style="background-color:#616262" class="text-white">
                 <td class="table_border" style="min-width:70px">เลขที่</td>
-                <td class="table_border" style="width:50%;min-width:170px">
-                  ชื่อ - นามสกุล
-                </td>
+                <td class="table_border" style="width:50%;min-width:170px">ชื่อ - นามสกุล</td>
                 <td class="table_border" style="width:20%;padding:0px;">
                   <table class="fit" style="border-collapse:collapse">
                     <tr>
                       <td
                         style="border-bottom:1px solid black;min-width:120px"
                         :colspan="headerColumn.vocab + 1"
-                      >
-                        คำศัพท์
-                      </td>
+                      >คำศัพท์</td>
                     </tr>
                     <tr>
                       <td
@@ -174,9 +143,7 @@
                       <td
                         style="border-bottom:1px solid black"
                         :colspan="headerColumn.grammar + 1"
-                      >
-                        ไวยกรณ์
-                      </td>
+                      >ไวยกรณ์</td>
                     </tr>
                     <tr>
                       <td
@@ -196,9 +163,7 @@
                       <td
                         style="border-bottom:1px solid black"
                         :colspan="headerColumn.reading + 1"
-                      >
-                        การอ่าน
-                      </td>
+                      >การอ่าน</td>
                     </tr>
                     <tr>
                       <td
@@ -207,9 +172,7 @@
                         :key="i"
                         class="border-right"
                         v-show="i == 1"
-                      >
-                        {{ i }}
-                      </td>
+                      >{{ i }}</td>
                     </tr>
                   </table>
                 </td>
@@ -219,9 +182,7 @@
                       <td
                         style="border-bottom:1px solid black"
                         :colspan="headerColumn.writing + 1"
-                      >
-                        การเขียน
-                      </td>
+                      >การเขียน</td>
                     </tr>
                     <tr>
                       <td
@@ -229,9 +190,7 @@
                         v-for="i in headerColumn.writing"
                         :key="i"
                         class="border-right"
-                      >
-                        {{ i }}
-                      </td>
+                      >{{ i }}</td>
                     </tr>
                   </table>
                 </td>
@@ -241,9 +200,7 @@
                       <td
                         style="border-bottom:1px solid black"
                         :colspan="headerColumn.phonics + 1"
-                      >
-                        การออกเสียง
-                      </td>
+                      >การออกเสียง</td>
                     </tr>
                     <tr>
                       <td
@@ -251,9 +208,7 @@
                         v-for="i in headerColumn.phonics"
                         :key="i"
                         class="border-right"
-                      >
-                        {{ i }}
-                      </td>
+                      >{{ i }}</td>
                     </tr>
                   </table>
                 </td>
@@ -263,9 +218,7 @@
                       <td
                         style="border-bottom:1px solid black"
                         :colspan="headerColumn.listening + 1"
-                      >
-                        การพูดและการฟัง
-                      </td>
+                      >การพูดและการฟัง</td>
                     </tr>
                     <tr>
                       <td
@@ -273,9 +226,7 @@
                         v-for="i in headerColumn.listening"
                         :key="i"
                         class="border-right"
-                      >
-                        {{ i }}
-                      </td>
+                      >{{ i }}</td>
                     </tr>
                   </table>
                 </td>
@@ -285,12 +236,11 @@
                 :key="index"
                 style="border-bottom:1px solid"
               >
-                <td align="center" style="border:1px solid black">
-                  {{ items.no }}
-                </td>
-                <td align="center" style="border-bottom:1px solid black">
-                  {{ items.name }} {{ items.surname }}
-                </td>
+                <td align="center" style="border:1px solid black">{{ items.no }}</td>
+                <td
+                  align="center"
+                  style="border-bottom:1px solid black"
+                >{{ items.name }} {{ items.surname }}</td>
                 <td style="padding:0px">
                   <table
                     class="fit"
@@ -305,9 +255,11 @@
                         :style="'min-width:50px'"
                         style="border-bottom:1px solid;border-left:1px solid black"
                       >
-                        <span v-if="items.vocabScoreArr[s - 1]">{{
+                        <span v-if="items.vocabScoreArr[s - 1]">
+                          {{
                           items.vocabScoreArr[s - 1]
-                        }}</span>
+                          }}
+                        </span>
                         <span v-else>0</span>
                       </td>
                     </tr>
@@ -320,11 +272,7 @@
                   </table>
                 </td>
                 <td style="padding:0px">
-                  <table
-                    class="fit"
-                    style="border-collapse:collapse"
-                    v-if="headerColumn.grammar"
-                  >
+                  <table class="fit" style="border-collapse:collapse" v-if="headerColumn.grammar">
                     <tr>
                       <td
                         align="center"
@@ -333,9 +281,11 @@
                         :key="s"
                         :style="'min-width:50px'"
                       >
-                        <span v-if="items.grammarScoreArr[s - 1]">{{
+                        <span v-if="items.grammarScoreArr[s - 1]">
+                          {{
                           items.grammarScoreArr[s - 1]
-                        }}</span>
+                          }}
+                        </span>
                         <span v-else>0</span>
                       </td>
                     </tr>
@@ -348,11 +298,7 @@
                   </table>
                 </td>
                 <td style="padding:0px;min-width:100px">
-                  <table
-                    class="fit"
-                    style="border-collapse:collapse"
-                    v-if="headerColumn.reading"
-                  >
+                  <table class="fit" style="border-collapse:collapse" v-if="headerColumn.reading">
                     <tr>
                       <td
                         align="center"
@@ -361,9 +307,11 @@
                         :key="s"
                         v-show="s == 1"
                       >
-                        <span v-if="items.readingScoreArr[s - 1]">{{
+                        <span v-if="items.readingScoreArr[s - 1]">
+                          {{
                           items.readingScoreArr[s - 1]
-                        }}</span>
+                          }}
+                        </span>
                         <span v-else>0</span>
                       </td>
                     </tr>
@@ -376,11 +324,7 @@
                   </table>
                 </td>
                 <td style="padding:0px">
-                  <table
-                    class="fit"
-                    style="border-collapse:collapse"
-                    v-if="headerColumn.writing"
-                  >
+                  <table class="fit" style="border-collapse:collapse" v-if="headerColumn.writing">
                     <tr>
                       <td
                         align="center"
@@ -389,9 +333,11 @@
                         :key="s"
                         :style="'min-width:50px'"
                       >
-                        <span v-if="items.writingScoreArr[s - 1]">{{
+                        <span v-if="items.writingScoreArr[s - 1]">
+                          {{
                           items.writingScoreArr[s - 1]
-                        }}</span>
+                          }}
+                        </span>
                         <span v-else>0</span>
                       </td>
                     </tr>
@@ -404,11 +350,7 @@
                   </table>
                 </td>
                 <td style="padding:0px">
-                  <table
-                    class="fit"
-                    style="border-collapse:collapse"
-                    v-if="headerColumn.phonics"
-                  >
+                  <table class="fit" style="border-collapse:collapse" v-if="headerColumn.phonics">
                     <tr>
                       <td
                         align="center"
@@ -417,9 +359,11 @@
                         :style="'width:' + 100 / headerColumn.phonics + '%'"
                         :key="s"
                       >
-                        <span v-if="items.phonicsScoreArr[s - 1]">{{
+                        <span v-if="items.phonicsScoreArr[s - 1]">
+                          {{
                           items.phonicsScoreArr[s - 1]
-                        }}</span>
+                          }}
+                        </span>
                         <span v-else>0</span>
                       </td>
                     </tr>
@@ -432,11 +376,7 @@
                   </table>
                 </td>
                 <td style="padding:0px">
-                  <table
-                    class="fit"
-                    style="border-collapse:collapse"
-                    v-if="headerColumn.listening"
-                  >
+                  <table class="fit" style="border-collapse:collapse" v-if="headerColumn.listening">
                     <tr>
                       <td
                         align="center"
@@ -445,9 +385,11 @@
                         :key="s"
                         :style="'width:' + 100 / headerColumn.listening + '%'"
                       >
-                        <span v-if="items.listeningScoreArr[s - 1]">{{
+                        <span v-if="items.listeningScoreArr[s - 1]">
+                          {{
                           items.listeningScoreArr[s - 1]
-                        }}</span>
+                          }}
+                        </span>
                         <span v-else>0</span>
                       </td>
                     </tr>
@@ -455,12 +397,7 @@
 
                   <table v-else class="fit" style="border-collapse:collapse">
                     <tr>
-                      <td
-                        align="center"
-                        style="border-left:1px solid;border-right:1px solid"
-                      >
-                        0
-                      </td>
+                      <td align="center" style="border-left:1px solid;border-right:1px solid">0</td>
                     </tr>
                   </table>
                 </td>
@@ -469,11 +406,11 @@
           </div>
           <div class="q-mt-md">
             <span class="text-italic">หมายเหตุ &nbsp;</span>
-            <span
-              >ลำดับตัวเลขใต้ทักษะคำศัพท์ และ ไวยากรณ์
+            <span>
+              ลำดับตัวเลขใต้ทักษะคำศัพท์ และ ไวยากรณ์
               คือลำดับแบบฝึกหัดที่มีการเก็บคะแนนเท่านั้น ไม่รวมการสอน
-              ทบทวนก่อนเรียน และ ถามตอบไวยากรณ์</span
-            >
+              ทบทวนก่อนเรียน และ ถามตอบไวยากรณ์
+            </span>
           </div>
         </div>
       </div>
@@ -633,19 +570,12 @@ export default {
         .get()
         .then(doc => {
           let scoreTemp = [];
-
           console.log(doc);
-
           doc.forEach(element => {
             scoreTemp.push(element.data());
           });
-
-          
-
           scoreTemp = scoreTemp.filter(x => x.unit == this.unitSelected);
-
           console.log(scoreTemp);
-
           this.studentList.forEach(element => {
             console.log(element);
             let scoreArr = scoreTemp
@@ -670,8 +600,6 @@ export default {
               x => x.studentKey == element.key
             );
 
-           
-
             // NOTE ต้องเอาจำนวนแบบฝึกหัดทั้งหมดใน Vocab ไม่ใช่ แบบฝึกหัดที่ทำไปแล้ว
             vocabScore = scoreTempArr
               .filter(x => x.skill == "Vocabulary")
@@ -679,15 +607,15 @@ export default {
               .reduce((a, b) => a + b, 0);
             vocabScore = vocabScore / totalVocab;
 
-
-
             grammarScore = scoreTempArr
-              .filter(x => x.skill == "Grammar" && !exceptGrammarType.includes(x.practiceType))
+              .filter(
+                x =>
+                  x.skill == "Grammar" &&
+                  !exceptGrammarType.includes(x.practiceType)
+              )
               .map(e => (e.correct / e.totalQuestion) * 100)
               .reduce((a, b) => a + b, 0);
             grammarScore = grammarScore / totalGrammar;
-
-         
 
             readingScore = scoreTempArr
               .filter(x => x.skill == "Reading")
@@ -761,10 +689,13 @@ export default {
             // console.log(scoreTempArr.filter(x => x.skill == "Grammar"));
 
             let scoreGrammarMap = scoreTempArr
-              .filter(x => x.skill == "Grammar" && !exceptGrammarType.includes(x.practiceType))
+              .filter(
+                x =>
+                  x.skill == "Grammar" &&
+                  !exceptGrammarType.includes(x.practiceType)
+              )
               .map(e => Math.round((e.correct / e.totalQuestion) * 100));
             element.grammarScoreArr = scoreGrammarMap;
-
 
             let scoreReadingMap = scoreTempArr
               .filter(x => x.skill == "Reading")

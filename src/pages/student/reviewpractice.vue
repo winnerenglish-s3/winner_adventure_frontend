@@ -28,9 +28,10 @@
             style="width:fit-content;width:-webkit-fit-content;"
           >
             <div class="border-dashed br-a-sm q-px-xl q-py-sm">
-              <span class="text-bold" style="font-size:calc(20px + 1vw)">
-                {{ convertPracticeName(practiceType, practiceSkill) }}
-              </span>
+              <span
+                class="text-bold"
+                style="font-size:calc(20px + 1vw)"
+              >{{ convertPracticeName(practiceType, practiceSkill) }}</span>
             </div>
           </div>
         </div>
@@ -44,14 +45,8 @@
       >
         <div class="q-mt-md row justify-center">
           <div class="col-lg-9 col-md-12 col-xs-12 row relative-position">
-            <div
-              class="col-2 self-center bg5 shadow-2 br-a-sm q-pa-xs"
-              style="width:150px;"
-            >
-              <div
-                class="border-dashed br-a-sm q-pa-md text-h5 text-bold"
-                align="center"
-              >
+            <div class="col-2 self-center bg5 shadow-2 br-a-sm q-pa-xs" style="width:150px;">
+              <div class="border-dashed br-a-sm q-pa-md text-h5 text-bold" align="center">
                 <span>
                   ข้อ
                   {{ practice.currentQuestion + 1 + "/" + practiceList.length }}
@@ -63,23 +58,27 @@
             >
               <div class="col self-center text-overflow" align="left">
                 <span class="text-h6 text-bold">
-                  <span v-if="!isChangeLanguage">{{
+                  <span v-if="!isChangeLanguage">
+                    {{
                     practiceList[practice.currentQuestion].instructionENG
-                  }}</span>
-                  <span v-else>{{
+                    }}
+                  </span>
+                  <span v-else>
+                    {{
                     practiceList[practice.currentQuestion].instructionTH
-                  }}</span>
-                  <q-tooltip
-                    anchor="top left"
-                    self="bottom left"
-                    :offset="[10, 10]"
-                  >
-                    <span style="font-size:1vw;" v-if="!isChangeLanguage">{{
+                    }}
+                  </span>
+                  <q-tooltip anchor="top left" self="bottom left" :offset="[10, 10]">
+                    <span style="font-size:1vw;" v-if="!isChangeLanguage">
+                      {{
                       practiceList[practice.currentQuestion].instructionENG
-                    }}</span>
-                    <span style="font-size:1vw;" v-else>{{
+                      }}
+                    </span>
+                    <span style="font-size:1vw;" v-else>
+                      {{
                       practiceList[practice.currentQuestion].instructionTH
-                    }}</span>
+                      }}
+                    </span>
                   </q-tooltip>
                 </span>
               </div>
@@ -110,19 +109,11 @@
             </div>-->
           </div>
 
-          <div
-            class="col-lg-9 col-md-12 col-xs-12 row q-mt-sm relative-position"
-          >
+          <div class="col-lg-9 col-md-12 col-xs-12 row q-mt-sm relative-position">
             <div class="col bg5 q-mr-md br-a-sm">
               <div class="q-pa-lg">
-                <div
-                  class="q-mb-md"
-                  v-if="practiceList[practice.currentQuestion].question != ''"
-                >
-                  <span
-                    class="text-h5"
-                    v-html="practiceList[practice.currentQuestion].question"
-                  ></span>
+                <div class="q-mb-md" v-if="practiceList[practice.currentQuestion].question != ''">
+                  <span class="text-h5" v-html="practiceList[practice.currentQuestion].question"></span>
                 </div>
 
                 <!-- แสดงปุ่มตอบ -->
@@ -151,10 +142,7 @@
                     </template>
 
                     <div class="row full-width">
-                      <div
-                        class="col-2 self-center q-pa-md"
-                        style="width:100px"
-                      >
+                      <div class="col-2 self-center q-pa-md" style="width:100px">
                         <q-icon
                           :name="
                             index == 0
@@ -170,10 +158,7 @@
                           size="45px"
                         ></q-icon>
                       </div>
-                      <div
-                        class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm"
-                        align="left"
-                      >
+                      <div class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm" align="left">
                         <div class="self-center q-px-md">
                           <span class="text-h5" v-html="item.answer"></span>
                         </div>
@@ -210,10 +195,7 @@
                     }"
                   >
                     <div class="row full-width">
-                      <div
-                        class="col-2 self-center q-pa-md"
-                        style="width:100px"
-                      >
+                      <div class="col-2 self-center q-pa-md" style="width:100px">
                         <span
                           v-if="
                             studentPracticeData.dataAnswerList[
@@ -223,26 +205,10 @@
                                 .correctanswer != item.index
                           "
                         >
-                          <q-icon
-                            name="fas fa-dove"
-                            v-if="index == 0"
-                            size="45px"
-                          ></q-icon>
-                          <q-icon
-                            name="fas fa-fish"
-                            v-if="index == 1"
-                            size="45px"
-                          ></q-icon>
-                          <q-icon
-                            name="fas fa-frog"
-                            v-if="index == 2"
-                            size="45px"
-                          ></q-icon>
-                          <q-icon
-                            name="fas fa-spider"
-                            v-if="index == 3"
-                            size="45px"
-                          ></q-icon>
+                          <q-icon name="fas fa-dove" v-if="index == 0" size="45px"></q-icon>
+                          <q-icon name="fas fa-fish" v-if="index == 1" size="45px"></q-icon>
+                          <q-icon name="fas fa-frog" v-if="index == 2" size="45px"></q-icon>
+                          <q-icon name="fas fa-spider" v-if="index == 3" size="45px"></q-icon>
                         </span>
                         <span
                           v-if="
@@ -264,10 +230,7 @@
                           <q-icon name="fas fa-times" size="45px"></q-icon>
                         </span>
                       </div>
-                      <div
-                        class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm"
-                        align="left"
-                      >
+                      <div class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm" align="left">
                         <div class="self-center q-px-md">
                           <span class="text-h5" v-html="item.answer"></span>
                         </div>
@@ -278,14 +241,9 @@
               </div>
             </div>
 
-            <div
-              class="col-3 bg5 br-a-sm relative-position"
-              style="width:300px;"
-            >
+            <div class="col-3 bg5 br-a-sm relative-position" style="width:300px;">
               <div class="bg3 br-tl-xs br-tr-xs">
-                <div class="color1 text-h5 q-pa-sm q-py-md" align="center">
-                  คำศัพท์เสริม
-                </div>
+                <div class="color1 text-h5 q-pa-sm q-py-md" align="center">คำศัพท์เสริม</div>
               </div>
               <div
                 class="row q-pa-md q-pt-md relative-position"
@@ -313,9 +271,7 @@
                 </div>
                 <div v-else class="absolute-center col-10">
                   <div>
-                    <div class="q-py-xl q-px-sm text-bold text-h6">
-                      ไม่มีคำศัพท์เสริม
-                    </div>
+                    <div class="q-py-xl q-px-sm text-bold text-h6">ไม่มีคำศัพท์เสริม</div>
                   </div>
                 </div>
               </div>
@@ -353,18 +309,15 @@
                     ></q-icon>
                     <span class="text-h5 text-bold">
                       {{
-                        studentPracticeData.dataAnswerList[
-                          practice.currentQuestion
-                        ].status == "ผิด"
-                          ? "ตอบผิด"
-                          : "ตอบถูก"
+                      studentPracticeData.dataAnswerList[
+                      practice.currentQuestion
+                      ].status == "ผิด"
+                      ? "ตอบผิด"
+                      : "ตอบถูก"
                       }}
                     </span>
                   </div>
-                  <div
-                    class="border-dashed q-pa-md q-pb-md br-a-sm"
-                    align="center"
-                  >
+                  <div class="border-dashed q-pa-md q-pb-md br-a-sm" align="center">
                     <span class="text-h5 text-bold">คำอธิบาย</span>
                     <div class="q-mt-sm">
                       <span
@@ -944,8 +897,9 @@ export default {
           });
       }
     },
-    loadSynchronize() {
-      console.clear();
+    async loadSynchronize() {
+      let dateTime = await this.getDateAndTime();
+
       this.snapSync = db
         .collection("synchronize")
         .where("schoolKey", "==", this.studentData.schoolKey)
@@ -953,6 +907,8 @@ export default {
         .where("room", "==", this.studentData.room)
         .where("term", "==", this.studentData.term)
         .where("year", "==", this.studentData.year)
+        .where("currentDate", "==", dateTime.date)
+        .where("status", "==", "online")
         .onSnapshot({ includeMetadataChanges: true }, doc => {
           if (doc.size) {
             this.practiceKey = doc.docs[0].data().practiceKey

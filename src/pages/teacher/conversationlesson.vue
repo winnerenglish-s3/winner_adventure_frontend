@@ -157,6 +157,7 @@ export default {
         .where("filter", "==", filterWhere)
         .where("practiceKey", "==", this.currentPractice.practiceKey)
         .where("status", "==", false)
+        .where("schoolKey", "==", this.teacherData.schoolKey)
         .get()
         .then(doc => {
           if (!doc.size) {

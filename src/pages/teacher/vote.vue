@@ -259,7 +259,7 @@ import appDialog from "../../components/dialog.vue";
 
 export default {
   components: {
-    appDialog,
+    appDialog
   },
   data() {
     return {
@@ -267,16 +267,18 @@ export default {
       isShowWhenChooseMission: false,
       isDisabled: false,
       snapVote: "",
-      currentClass: "",
-      currentRoom: "",
+      currentClass: this.decrypt(
+        this.$q.localStorage.getItem("currentClass"),
+        2
+      ),
+      currentRoom: this.decrypt(this.$q.localStorage.getItem("currentRoom"), 2),
       vote: {
         ship: 0,
         buddy: 0,
-        treasure: 0,
+        treasure: 0
       },
-      currentTerm: "",
-      currentYear: "",
-      schoolKey: "",
+      currentTerm: this.decrypt(this.$q.localStorage.getItem("currentTerm"), 2),
+      currentYear: this.decrypt(this.$q.localStorage.getItem("currentYear"), 2),
       allMission: "",
       allClassMission: "",
       isLoaded: false,
@@ -286,29 +288,13 @@ export default {
       snapGetOnlineStudent: "",
       snapTotalVote: "",
       clickedMissionKey: "",
-      totalStudent: "",
+      totalStudent: this.decrypt(
+        this.$q.localStorage.getItem("totalStudent"),
+        2
+      )
     };
   },
   methods: {
-    async loadData() {
-      console.clear();
-      let syncData = await this.loadTeacherSyncData();
-
-      this.currentClass = syncData.class;
-      this.currentRoom = syncData.room;
-      this.currentTerm = syncData.term;
-      this.currentYear = syncData.year;
-      this.schoolKey = syncData.schoolKey;
-
-      this.snapMissionVote();
-      this.loadClassroomMission();
-      this.checkVotePermission();
-
-      this.getStudentVote();
-      // this.getOnlineStudent();
-
-      console.log(syncData);
-    },
     cancleDialog(val) {
       this.isShowWhenChooseMission = val;
       this.isShowWhenNeedToConfirmChoose = val;
@@ -343,7 +329,7 @@ export default {
           term: this.currentTerm,
           year: this.currentYear,
           status: "current",
-          schoolKey: this.teacherData.schoolKey,
+          schoolKey: this.teacherData.schoolKey
         })
         .then(() => {
           db.collection("classroomMission")
@@ -352,21 +338,21 @@ export default {
             .where("room", "==", this.currentRoom)
             .where("status", "==", "finish")
             .get()
-            .then((m) => {
+            .then(m => {
               // let totalMission = [];
               let allMission = this.decrypt(
                 this.$q.localStorage.getItem("allMission"),
                 1
               )
-                .filter((x) => {
+                .filter(x => {
                   return x.name == "คู่หู";
                 })
-                .map((e) => {
+                .map(e => {
                   return e.key;
                 });
 
               let checkExists = false;
-              m.forEach((missionElement) => {
+              m.forEach(missionElement => {
                 if (
                   allMission.includes(missionElement.data().currentMissionKey)
                 ) {
@@ -380,7 +366,7 @@ export default {
                 db.collection("synchronize")
                   .doc(this.teacherData.key)
                   .update({
-                    currentPage: "show-current-mission",
+                    currentPage: "show-current-mission"
                   })
                   .then(() => {
                     this.loadingHide();
@@ -399,152 +385,179 @@ export default {
             });
         });
     },
-    async loadClassroomMission() {
+    loadClassroomMission() {
       this.loadingShow();
       // console.clear();
+      db.collection("mission")
+        .get()
+        .then(doc => {
+          let temp = [];
+          doc.forEach(element => {
+            temp.push({ key: element.id, ...element.data() });
+          });
+          // ภารกิจทั้งหมด
+          temp.sort((a, b) => {
+            return Number(b.level) - Number(a.level);
+          });
+          this.allMission = temp;
+          // Load Mission ปัจจุบันของห้องเรียนนี้
+          db.collection("classroomMission")
+            .where("class", "==", this.currentClass)
+            .where("room", "==", this.currentRoom)
+            .where("term", "==", this.currentTerm)
+            .where("year", "==", this.currentYear)
+            .where("schoolKey", "==", this.teacherData.schoolKey)
+            .where("status", "==", "finish")
+            .get()
+            .then(doc => {
+              let classroomTemp = [];
+              doc.forEach(classElement => {
+                let dataAdd = {
+                  key: classElement.id
+                };
+                let dataFinal = { ...dataAdd, ...classElement.data() };
+                classroomTemp.push(dataFinal);
+              });
+              this.allClassMission = classroomTemp;
 
-      let temp = await this.loadMissionAll();
+              let shipMission;
+              let buddyMission;
+              let treasureMission;
 
-      this.allMission = temp.data;
+              // ภาคกิจเรือทั้งหมด
+              shipMission = temp.filter(x => {
+                return x.name == "เรือ";
+              });
+              // ภารกิจคู่หูทั้งหมด
 
-      let classroomTemp = await this.loadClassroomMissionFinish();
+              buddyMission = temp.filter(x => {
+                return x.name == "คู่หู";
+              });
+              // ภารกิจสมบัติทั้งหมด
 
-      this.allClassMission = classroomTemp.data;
+              treasureMission = temp.filter(x => {
+                return x.name == "สมบัติ";
+              });
 
-      // Load Mission ปัจจุบันของห้องเรียนนี้
+              let classShipMission;
+              let classBuddyMission;
+              let classTreasureMission;
 
-      let shipMission;
-      let buddyMission;
-      let treasureMission;
+              // ARRAY ของ missionkey ที่ได้ทำไปแล้ว
+              let classTempMap = classroomTemp.map(e => {
+                return e.currentMissionKey;
+              });
 
-      // ภาคกิจเรือทั้งหมด
-      shipMission = temp.data.filter((x) => {
-        return x.name == "เรือ";
-      });
-      // ภารกิจคู่หูทั้งหมด
+              // ภารกิจเรือที่ระดับชั้นนี้ได้ทำ
+              classShipMission = shipMission.filter(x => {
+                return classTempMap.includes(x.key);
+              });
 
-      buddyMission = temp.data.filter((x) => {
-        return x.name == "คู่หู";
-      });
-      // ภารกิจสมบัติทั้งหมด
+              classShipMission.sort((a, b) => {
+                return Number(a.level) - Number(b.level);
+              });
 
-      treasureMission = temp.data.filter((x) => {
-        return x.name == "สมบัติ";
-      });
+              // ภารกิจคู่หูที่ระดับชั้นนี้ได้ทำ
 
-      let classShipMission;
-      let classBuddyMission;
-      let classTreasureMission;
+              classBuddyMission = buddyMission.filter(x => {
+                return classTempMap.includes(x.key);
+              });
 
-      // ARRAY ของ missionkey ที่ได้ทำไปแล้ว
-      let classTempMap = classroomTemp.data.map((e) => {
-        return e.currentMissionKey;
-      });
+              classBuddyMission.sort((a, b) => {
+                return Number(a.level) - Number(b.level);
+              });
 
-      // ภารกิจเรือที่ระดับชั้นนี้ได้ทำ
-      classShipMission = shipMission.filter((x) => {
-        return classTempMap.includes(x.key);
-      });
+              // ภารกิจสมบัติที่ระดับชั้นนี้ได้ทำ
+              classTreasureMission = treasureMission.filter(x => {
+                return classTempMap.includes(x.key);
+              });
 
-      classShipMission.sort((a, b) => {
-        return Number(a.level) - Number(b.level);
-      });
+              classTreasureMission.sort((a, b) => {
+                return Number(a.level) - Number(b.level);
+              });
 
-      // ภารกิจคู่หูที่ระดับชั้นนี้ได้ทำ
+              let lastShipMissionLV =
+                classShipMission.length != 0
+                  ? classShipMission[classShipMission.length - 1].level
+                  : "0";
 
-      classBuddyMission = buddyMission.filter((x) => {
-        return classTempMap.includes(x.key);
-      });
+              let lastBuddyMissionLV =
+                classBuddyMission.length != 0
+                  ? classBuddyMission[classBuddyMission.length - 1].level
+                  : "0";
 
-      classBuddyMission.sort((a, b) => {
-        return Number(a.level) - Number(b.level);
-      });
+              let lastTreasureMissionLV =
+                classTreasureMission.length != 0
+                  ? classTreasureMission[classTreasureMission.length - 1].level
+                  : "0";
 
-      // ภารกิจสมบัติที่ระดับชั้นนี้ได้ทำ
-      classTreasureMission = treasureMission.filter((x) => {
-        return classTempMap.includes(x.key);
-      });
+              let findNextShipLv = (Number(lastShipMissionLV) + 1).toString();
+              let findNextBuddyLv = (Number(lastBuddyMissionLV) + 1).toString();
+              let findNextTreasureLv = (
+                Number(lastTreasureMissionLV) + 1
+              ).toString();
 
-      classTreasureMission.sort((a, b) => {
-        return Number(a.level) - Number(b.level);
-      });
+              this.mission.ship = shipMission.filter(x => {
+                return x.level == findNextShipLv;
+              })[0];
 
-      let lastShipMissionLV =
-        classShipMission.length != 0
-          ? classShipMission[classShipMission.length - 1].level
-          : "0";
+              this.mission.buddy = buddyMission.filter(x => {
+                return x.level == findNextBuddyLv;
+              })[0];
 
-      let lastBuddyMissionLV =
-        classBuddyMission.length != 0
-          ? classBuddyMission[classBuddyMission.length - 1].level
-          : "0";
+              this.mission.treasure = treasureMission.filter(x => {
+                return x.level == findNextTreasureLv;
+              })[0];
 
-      let lastTreasureMissionLV =
-        classTreasureMission.length != 0
-          ? classTreasureMission[classTreasureMission.length - 1].level
-          : "0";
-
-      let findNextShipLv = (Number(lastShipMissionLV) + 1).toString();
-      let findNextBuddyLv = (Number(lastBuddyMissionLV) + 1).toString();
-      let findNextTreasureLv = (Number(lastTreasureMissionLV) + 1).toString();
-
-      this.mission.ship = shipMission.filter((x) => {
-        return x.level == findNextShipLv;
-      })[0];
-
-      this.mission.buddy = buddyMission.filter((x) => {
-        return x.level == findNextBuddyLv;
-      })[0];
-
-      this.mission.treasure = treasureMission.filter((x) => {
-        return x.level == findNextTreasureLv;
-      })[0];
-
-      this.loadingHide();
-      this.isLoaded = true;
+              this.loadingHide();
+              this.isLoaded = true;
+            });
+        });
     },
     async snapMissionVote() {
-      let countMission = await this.loadCLassroomMissionAll();
+      let countMission = await db
+        .collection("classroomMission")
+        .where("class", "==", this.currentClass)
+        .where("room", "==", this.currentRoom)
+        .where("schoolKey", "==", this.teacherData.schoolKey)
+        .get();
 
       countMission = countMission.size;
-      console.log(countMission);
-
-      console.log(countMission)
 
       this.snapVote = db
         .collection("missionvote")
         .where("class", "==", this.currentClass)
         .where("room", "==", this.currentRoom)
-        .where("schoolKey", "==", this.schoolKey)
-        .where("no", "==", countMission.size + 1)
-        .onSnapshot({ includeMetadataChanges: true }, (doc) => {
+        .where("schoolKey", "==", this.teacherData.schoolKey)
+        .where("no", "==", countMission + 1)
+        .onSnapshot({ includeMetadataChanges: true }, doc => {
           if (doc.size) {
             let temp = [];
-            doc.forEach((element) => {
+            doc.forEach(element => {
               temp.push(element.data());
             });
             // SHIP VOTE
             this.vote.ship = temp
-              .filter((x) => {
+              .filter(x => {
                 return x.vote == "ship";
               })
-              .map((e) => {
+              .map(e => {
                 return e.vote;
               }).length;
             // BUDDY VOTE
             this.vote.buddy = temp
-              .filter((x) => {
+              .filter(x => {
                 return x.vote == "buddy";
               })
-              .map((e) => {
+              .map(e => {
                 return e.vote;
               }).length;
             // Treasure Vote
             this.vote.treasure = temp
-              .filter((x) => {
+              .filter(x => {
                 return x.vote == "treasure";
               })
-              .map((e) => {
+              .map(e => {
                 return e.vote;
               }).length;
           }
@@ -554,20 +567,27 @@ export default {
       // กรณีเรียนแบบห้องเดียว
       // หาจำนวนครั้งที่่โหวต
 
-      let getNoVote = await this.loadCLassroomMissionAll();
+      let getNoVote = await db
+        .collection("classroomMission")
+        .where("class", "==", this.currentClass)
+        .where("room", "==", this.currentRoom)
+        .where("term", "==", this.currentTerm)
+        .where("year", "==", this.currentYear)
+        .where("schoolKey", "==", this.teacherData.schoolKey)
+        .get();
 
       let numberOfVote = getNoVote.size;
       numberOfVote = numberOfVote == 0 ? 1 : numberOfVote + 1;
 
       this.snapTotalVote = db
         .collection("missionvote")
-        .where("schoolKey", "==", this.schoolKey)
+        .where("schoolKey", "==", this.teacherData.schoolKey)
         .where("no", "==", numberOfVote)
         .where("class", "==", this.currentClass)
         .where("room", "==", this.currentRoom)
         .where("term", "==", this.currentTerm)
         .where("year", "==", this.currentYear)
-        .onSnapshot({ includeMetadataChanges: true }, (doc) => {
+        .onSnapshot({ includeMetadataChanges: true }, doc => {
           this.totalVote = doc.size;
         });
     },
@@ -578,19 +598,22 @@ export default {
         .where("classRoom", "==", this.currentClass)
         .where("room", "==", this.currentRoom)
         .where("status", "==", "online")
-        .onSnapshot({ includeMetadataChanges: true }, (doc) => {
+        .onSnapshot({ includeMetadataChanges: true }, doc => {
           this.totalOnlineStudent = doc.size;
         });
     },
     async checkVotePermission() {
       let dateAndTime = await this.getDateAndTime();
       this.loadingShow();
-
-      let checkMission = await this.loadClassroomMissionCurrent(
-        this.currentClass,
-        this.currentRoom,
-        this.currentYear
-      );
+      let checkMission = await db
+        .collection("classroomMission")
+        .where("room", "==", this.currentRoom)
+        .where("class", "==", this.currentClass)
+        .where("term", "==", this.currentTerm)
+        .where("year", "==", this.currentYear)
+        .where("status", "==", "current")
+        .where("schoolKey", "==", this.teacherData.schoolKey)
+        .get();
 
       if (checkMission.size > 0) {
         console.log("กรณีเจอภารกิจที่กำลังทำอยู่");
@@ -604,7 +627,12 @@ export default {
       } else {
         this.loadingHide();
       }
-    },
+    }
+  },
+  created() {
+    this.snapMissionVote();
+    this.loadClassroomMission();
+    this.checkVotePermission();
   },
   beforeDestroy() {
     this.snapTotalVote();
@@ -612,8 +640,9 @@ export default {
     this.snapGetOnlineStudent();
   },
   mounted() {
-    this.loadData();
-  },
+    this.getStudentVote();
+    this.getOnlineStudent();
+  }
 };
 </script>
 

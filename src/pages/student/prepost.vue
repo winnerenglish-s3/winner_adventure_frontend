@@ -12,10 +12,7 @@
       leave-active-class="animated slideOutLeft duration-slide-out"
       v-if="isActiveMain"
     >
-      <div
-        class="row self-end relative-position full-width"
-        v-if="activeType != 'start'"
-      >
+      <div class="row self-end relative-position full-width" v-if="activeType != 'start'">
         <div class="col" align="right">
           <div>
             <q-img
@@ -96,7 +93,7 @@
 
     <!-- SECTION  Main Practice  -->
     <div
-      class="col-12 q-pa-md  relative-position"
+      class="col-12 q-pa-md relative-position"
       v-if="isLoadPractice && activeType == 'start'"
       style="overflow:hidden"
     >
@@ -112,7 +109,7 @@
           v-if="isActivePractice"
         >
           <div class="row box-practice q-px-xl relative-position">
-            <div class="col-4 relative-position " style="width:200px;">
+            <div class="col-4 relative-position" style="width:200px;">
               <!-- NOTE  Number Question -->
               <transition
                 appear
@@ -129,23 +126,19 @@
                     <span>
                       ข้อ
                       {{
-                        "" +
-                          (practice.currentQuestion + 1) +
-                          "/" +
-                          practice.answerData.length
+                      "" +
+                      (practice.currentQuestion + 1) +
+                      "/" +
+                      practice.answerData.length
                       }}
                     </span>
                   </div>
                 </div>
               </transition>
             </div>
-            <div class="col  relative-position">
+            <div class="col relative-position">
               <!-- NOTE  Logo -->
-              <div
-                align="center"
-                class="relative-position q-my-md"
-                style="overflow:hidden;"
-              >
+              <div align="center" class="relative-position q-my-md" style="overflow:hidden;">
                 <transition
                   appear
                   enter-active-class="animated slideInDown duration-practice-logo-in"
@@ -166,7 +159,7 @@
                 </transition>
               </div>
             </div>
-            <div class="col-4 relative-position  " style="width:200px;"></div>
+            <div class="col-4 relative-position" style="width:200px;"></div>
 
             <!-- NOTE  Practice Data : แบบฝึกหัด -->
             <div class="col-12" style="z-index:5">
@@ -237,10 +230,7 @@
                       <q-spinner-facebook size="3vw" />
                     </template>
                     <div class="row full-width">
-                      <div
-                        class="col-2 self-center q-pa-md"
-                        style="width:100px"
-                      >
+                      <div class="col-2 self-center q-pa-md" style="width:100px">
                         <q-icon
                           :name="
                             index == 0
@@ -256,10 +246,7 @@
                           size="45px"
                         ></q-icon>
                       </div>
-                      <div
-                        class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm"
-                        align="left"
-                      >
+                      <div class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm" align="left">
                         <div class="self-center q-px-md">
                           <span class="text-h5">{{ item }}</span>
                         </div>
@@ -470,8 +457,6 @@ export default {
               temp.push(final);
             });
 
-            // TODO : Load Student Practice Log
-            // TODO : ต้องแยก Type ว่าเป็น pretest หรือ posttest ตอนค้นหา
             db.collection("studentprepostlog")
               .where("filter", "==", filterStudent)
               .where("studentKey", "==", this.studentData.key)
@@ -599,7 +584,9 @@ export default {
           }
         });
     },
-    loadSynchronize() {
+    async loadSynchronize() {
+      let dateTime = await this.getDateAndTime();
+
       this.snapSync = db
         .collection("synchronize")
         .where("schoolKey", "==", this.studentData.schoolKey)
@@ -607,6 +594,8 @@ export default {
         .where("room", "==", this.studentData.room)
         .where("term", "==", this.studentData.term)
         .where("year", "==", this.studentData.year)
+        .where("currentDate", "==", dateTime.date)
+        .where("status", "==", "online")
         .onSnapshot({ includeMetadataChanges: true }, doc => {
           if (doc.size) {
             this.updateOnlineStudent();
@@ -664,7 +653,9 @@ export default {
     this.loadSynchronize();
   },
   beforeDestroy() {
-    this.snapSync();
+    if (typeof this.snapSync == "function") {
+      this.snapSync();
+    }
     this.$q.localStorage.remove("useTime");
   }
 };

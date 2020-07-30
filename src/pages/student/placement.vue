@@ -25,21 +25,14 @@
     </div>
 
     <div class="col-8" v-if="activeType != 'start'"></div>
-    <div
-      class="col-4 self-end q-pt-xl"
-      align="center"
-      v-if="activeType != 'start'"
-    >
+    <div class="col-4 self-end q-pt-xl" align="center" v-if="activeType != 'start'">
       <transition
         appear
         enter-active-class="animated fadeIn duration-pirates-in"
         leave-active-class="animated fadeOut duration-pirates-out"
         v-if="isActiveMainCharactor"
       >
-        <q-img
-          src="../../statics/placement/pirates_captain.png"
-          style="width:84%;"
-        ></q-img>
+        <q-img src="../../statics/placement/pirates_captain.png" style="width:84%;"></q-img>
       </transition>
     </div>
 
@@ -74,10 +67,10 @@
                     <span>
                       ข้อ
                       {{
-                        "" +
-                          (practice.currentQuestion + 1) +
-                          "/" +
-                          practice.answerData.length
+                      "" +
+                      (practice.currentQuestion + 1) +
+                      "/" +
+                      practice.answerData.length
                       }}
                     </span>
                   </div>
@@ -152,10 +145,7 @@
                       <q-spinner-facebook size="3vw" />
                     </template>
                     <div class="row full-width">
-                      <div
-                        class="col-2 self-center q-pa-md"
-                        style="width:100px"
-                      >
+                      <div class="col-2 self-center q-pa-md" style="width:100px">
                         <q-icon
                           :name="
                             index == 0
@@ -171,10 +161,7 @@
                           size="45px"
                         ></q-icon>
                       </div>
-                      <div
-                        class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm"
-                        align="left"
-                      >
+                      <div class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm" align="left">
                         <div class="self-center q-px-md">
                           <span class="text-h5" v-html="item"></span>
                         </div>
@@ -189,10 +176,7 @@
       </div>
     </div>
 
-    <div
-      class="col-12 q-px-lg q-pb-md absolute-bottom"
-      style="overflow:hidden;"
-    >
+    <div class="col-12 q-px-lg q-pb-md absolute-bottom" style="overflow:hidden;">
       <transition
         appear
         enter-active-class="animated fadeInUp duration-boxtalk-in"
@@ -603,7 +587,9 @@ export default {
           }
         });
     },
-    loadSynchronize() {
+    async loadSynchronize() {
+      let dateTime = await this.getDateAndTime();
+
       this.snapSync = db
         .collection("synchronize")
         .where("schoolKey", "==", this.studentData.schoolKey)
@@ -611,6 +597,8 @@ export default {
         .where("room", "==", this.studentData.room)
         .where("term", "==", this.studentData.term)
         .where("year", "==", this.studentData.year)
+        .where("currentDate", "==", dateTime.date)
+        .where("status", "==", "online")
         .onSnapshot({ includeMetadataChanges: true }, doc => {
           if (doc.size) {
             this.updateOnlineStudent();
@@ -673,7 +661,9 @@ export default {
     await this.loadSynchronize();
   },
   beforeDestroy() {
-    this.snapSync();
+    if (typeof this.snapSync == "function") {
+      this.snapSync();
+    }
     this.$q.localStorage.remove("useTime");
   }
 };

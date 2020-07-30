@@ -188,6 +188,7 @@ export default {
           "==",
           this.decrypt(this.$q.localStorage.getItem("currentTerm"), 2)
         )
+        .where("schoolKey", "==", this.teacherData.schoolKey)
         .get()
         .then(check => {
           if (!check.size) {

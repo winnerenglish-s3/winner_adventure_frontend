@@ -166,7 +166,8 @@ export default {
     },
     async loadSynchronize() {
       let dateTime = await this.getDateAndTime();
-      this.snapSync = await db
+
+      this.snapSync = db
         .collection("synchronize")
         .where("schoolKey", "==", this.studentData.schoolKey)
         .where("class", "==", this.studentData.classRoom)
@@ -224,7 +225,9 @@ export default {
     this.loadSynchronize();
   },
   beforeDestroy() {
-    this.snapSync();
+    if (typeof this.snapSync == "function") {
+      this.snapSync();
+    }
   }
 };
 </script>

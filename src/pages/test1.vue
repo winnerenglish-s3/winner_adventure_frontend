@@ -9,28 +9,11 @@
     .where("status", "==", "online")-->
 
     <div class="q-gutter-md" style="width:360px;margin:auto">
-      <q-input
-        class="bg-white q-px-sm"
-        v-model="studentDataTemp.schoolKey"
-        label="Id โรงเรียน"
-      ></q-input>
-      <q-input
-        class="bg-white q-px-sm"
-        v-model="studentDataTemp.classRoom"
-        label="ระดับชั้น"
-      ></q-input>
-      <q-input
-        class="bg-white q-px-sm"
-        v-model="studentDataTemp.room"
-        label="ห้อง"
-      ></q-input>
+      <q-input class="bg-white q-px-sm" v-model="studentDataTemp.schoolKey" label="Id โรงเรียน"></q-input>
+      <q-input class="bg-white q-px-sm" v-model="studentDataTemp.classRoom" label="ระดับชั้น"></q-input>
+      <q-input class="bg-white q-px-sm" v-model="studentDataTemp.room" label="ห้อง"></q-input>
       <div align="center">
-        <q-btn
-          label="Hack"
-          class="bg-red-10 text-white"
-          style="width:70%"
-          @click="hackStudent()"
-        ></q-btn>
+        <q-btn label="Hack" class="bg-red-10 text-white" style="width:70%" @click="hackStudent()"></q-btn>
       </div>
     </div>
 
@@ -73,4 +56,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>

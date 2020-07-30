@@ -221,6 +221,7 @@ export default {
         .where("class", "==", classSelected)
         .where("room", "==", roomSelected)
         .where("year", "==", year)
+        .where("schoolKey", "==", this.teacherData.schoolKey)
         .get()
         .then(doc => {
           let temp = [];

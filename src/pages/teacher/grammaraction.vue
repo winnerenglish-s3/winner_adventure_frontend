@@ -655,7 +655,7 @@ export default {
       db.collection("classroomPracticeLog")
         .where("filter", "==", filterWhere1)
         .where("practiceKey", "==", this.currentPractice.practiceKey)
-        .where("schoolKey","==",this.teacherData.schoolKey)
+        .where("schoolKey", "==", this.teacherData.schoolKey)
         .get()
         .then(docpractice => {
           // ไปลบข้อมูลแบบฝึกหัดของห้องนี้ ระดับชั้นนี้ เทอมนี้ ปีนี้ทิ้ง
@@ -664,7 +664,7 @@ export default {
             .delete()
             .then(() => {
               db.collection("studentpracticelog")
-              .where("schoolKey","==",this.teacherData.schoolKey)
+                .where("schoolKey", "==", this.teacherData.schoolKey)
                 .where("filter", "==", filterWhere)
                 .get()
                 .then(practice => {
@@ -748,6 +748,7 @@ export default {
         .where("level", "==", this.currentPractice.level)
         .where("unit", "==", this.currentPractice.unit)
         .where("skill", "==", this.currentPractice.skill)
+        .where("schoolKey", "==", this.teacherData.schoolKey)
         .get();
       classPracticeLog = classPracticeLog.size;
 
@@ -963,7 +964,7 @@ export default {
 
       this.isSnapPracticeLog = db
         .collection("studentpracticelog")
-        .where("schoolKey","==",this.teacherData.schoolKey)
+        .where("schoolKey", "==", this.teacherData.schoolKey)
         .where("filter", "==", filter)
         .onSnapshot({ includeMetadataChanges: true }, doc => {
           let temp = [];
@@ -979,7 +980,6 @@ export default {
 
           let summaryGraphHeight = [];
 
-
           let avgScoreTemp = (this.avgScore = temp.map(
             x => (x.correct / x.totalQuestion) * 100
           ));
@@ -988,7 +988,6 @@ export default {
 
           let scoreAvgTemp = Math.round(sumAvgScoreTemp / avgScoreTemp.length);
           this.avgScore = scoreAvgTemp;
-
 
           if (isNaN(this.avgScore)) {
             this.avgScore = 0;

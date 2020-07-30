@@ -285,16 +285,19 @@ import { db } from "../../router/index.js";
 import onlineProgress from "../../components/onlineProgress.vue";
 export default {
   components: {
-    onlineProgress,
+    onlineProgress
   },
   data() {
     return {
       activeBag: "ship",
 
       showStudentLoginProgress: false,
-
+      totalStudent: this.decrypt(
+        this.$q.localStorage.getItem("totalStudent"),
+        2
+      ),
       totalOnlineStudent: 0,
-      teacherData: "",
+      teacherData: this.decrypt(this.$q.localStorage.getItem("teacherData"), 1),
       pageItem: 0, // หน้าสมบัติปัจจุบัน
       item: [], // เก็บสมบัติของผู้เล่นแล้วนำไปแสดง
 
@@ -303,12 +306,15 @@ export default {
       // Screen size width & height
       innerWidth: window.innerWidth, // เก็บข้อมูลขนาดความกว้าง
       innerHeight: window.innerHeight, // เก็บข้อมูลขนาดความสูง
-      currentRoom: "",
-      currentClass: "",
-      currentTerm: "",
-      currentYear: "",
+      currentRoom: this.decrypt(this.$q.localStorage.getItem("currentRoom"), 2),
+      currentClass: this.decrypt(
+        this.$q.localStorage.getItem("currentClass"),
+        2
+      ),
+      currentTerm: this.decrypt(this.$q.localStorage.getItem("currentTerm"), 2),
+      currentYear: this.decrypt(this.$q.localStorage.getItem("currentYear"), 2),
       snapGetOfflineStudent: "",
-      allMission: "",
+      allMission: this.decrypt(this.$q.localStorage.getItem("allMission"), 1),
       classroomMission: "",
 
       ship: {},
@@ -333,33 +339,11 @@ export default {
       levelShow: "0",
       labelList: [],
       story: "",
-      skill: "",
+      skill: ""
     };
   },
 
   methods: {
-    async loadData() {
-      console.clear();
-      let syncData = await this.loadTeacherSyncData();
-
-      this.currentClass = syncData.class;
-      this.currentRoom = syncData.room;
-      this.currentTerm = syncData.term;
-      this.currentYear = syncData.year;
-      this.teacherData = syncData;
-
-      // Function get Student Offline
-      this.getOfflineStudent();
-
-      // Function Load Mission Items
-      this.loadMissionItems();
-
-      this.$q.localStorage.remove("finishClicked");
-      if (!this.$q.localStorage.has("isSkipQuestionnaire")) {
-        // กรณีมีการกด Skip แบบสอบถามแล้ว ไม่ต้องเช็คใหม่
-        this.checkQuestionnaire();
-      }
-    },
     selectItem(val, index) {
       if (this.activeBag == "ship") {
         this.star1 = Number(val.durable);
@@ -472,22 +456,27 @@ export default {
     closePopup(val) {
       this.showStudentLoginProgress = val;
     },
+    studentLoginProgress() {},
     async startAdventures() {
       // ปุ่มขึ้นเรือ
       this.loadingShow();
       let dateAndTime = await this.getDateAndTime();
       // Check ว่ามี ภารกิจที่กำลังดำเนินการทำอยู่หรือไม่ หากไม่มีให้ไปหน้า Vote
       // หากมีอยู่แล้วไปเรียนต่อได้เลย
-      let checkMission = await this.loadClassroomMissionCurrent(
-        this.currentClass,
-        this.currentRoom,
-        this.currentYear
-      );
+      let checkMission = await db
+        .collection("classroomMission")
+        .where("room", "==", this.currentRoom)
+        .where("class", "==", this.currentClass)
+        .where("term", "==", this.currentTerm)
+        .where("year", "==", this.currentYear)
+        .where("status", "==", "current")
+        .where("schoolKey", "==", this.teacherData.schoolKey)
+        .get();
 
       if (checkMission.size > 0) {
         console.log("กรณีเจอภารกิจที่กำลังทำอยู่");
         db.collection("synchronize")
-          .doc(this.$q.localStorage.getItem("tk"))
+          .doc(this.teacherData.key)
           .update({ currentPage: "studyplan", date: dateAndTime })
           .then(() => {
             this.loadingHide();
@@ -496,7 +485,7 @@ export default {
       } else {
         console.log("กรณีไม่มีภารกิจที่กำลังทำอยู่");
         db.collection("synchronize")
-          .doc(this.$q.localStorage.getItem("tk"))
+          .doc(this.teacherData.key)
           .update({ currentPage: "vote", date: dateAndTime })
           .then(() => {
             this.loadingHide();
@@ -504,15 +493,17 @@ export default {
           });
       }
     },
+    onResize(size) {
+      (this.innerWidth = size.width), (this.innerHeight = size.height);
+    },
     async checkQuestionnaire() {
       this.loadingShow();
       // เช็คว่ามีการเปิด วัดความพึงพอใจไว้หรือไม่
       let date = await this.getDateAndTime();
-
       db.collection("school")
         .doc(this.teacherData.schoolKey)
         .get()
-        .then(async (doc) => {
+        .then(async doc => {
           if (doc.data().questionNaire) {
             console.log("เปิด Questionnaire");
             let findQuestionnaireKey = await db
@@ -541,7 +532,7 @@ export default {
                 .doc(this.teacherData.key)
                 .update({
                   currentPage: "prepare-questionnaire",
-                  date: date,
+                  date: date
                 })
                 .then(() => {
                   this.$q.loading.hide();
@@ -559,7 +550,6 @@ export default {
     },
     getOfflineStudent() {
       let dbStudent;
-
       dbStudent = db
         .collection("student")
         .where("schoolKey", "==", this.teacherData.schoolKey)
@@ -567,12 +557,11 @@ export default {
         .where("room", "==", this.currentRoom)
         .where("term", "==", this.currentTerm)
         .where("year", "==", this.currentYear);
-
       this.snapGetOfflineStudent = dbStudent.onSnapshot(
         { includeMetadataChanges: true },
-        (doc) => {
+        doc => {
           let offlineStudent = 0;
-          doc.forEach((element) => {
+          doc.forEach(element => {
             if (element.data().status != "online") {
               offlineStudent++;
             }
@@ -581,138 +570,186 @@ export default {
         }
       );
     },
-    async loadMissionItems() {
-      let tempMission = await this.loadMissionAll();
+    loadMissionItems() {
+      let dbMission;
 
-      console.log(tempMission);
+      db.collection("mission")
+        .get()
+        .then(missiondoc => {
+          let tempMission = [];
 
-      this.allMission = tempMission.data;
+          missiondoc.forEach(missiondata => {
+            let newData = {
+              key: missiondata.id,
+              ...missiondata.data()
+            };
 
-      tempMission.data.unshift(
-        {
-          itemname: "ถังถัง",
-          name: "เรือ",
-          level: "0",
-          goal: 0,
-          story: "ถังไม้อายุ 100 ปี ทนแดดทนฝน ลอยกลางทะเลไม่มีวันจม....",
-          control: "0.5",
-          durable: "1",
-          speed: "1",
-        },
-        {
-          itemname: "แพน",
-          name: "คู่หู",
-          level: "0",
-          goal: 0,
-          story:
-            "เด็กน้อยผู้สดใสและร่าเริง เขาชอบท่องเที่ยวและเขามักจะอยู่กับเพื่อนเสมอ",
-          str: "2",
-          intg: "2.5",
-          friendly: "5",
-        },
-        {
-          itemname: "ไม่มีข้อมูล",
-          name: "สมบัติ",
-          level: "0",
-          goal: 0,
-          story: "-",
-          rare: "0",
-          val: "0",
-          magic: "0",
-        }
-      );
+            tempMission.push(newData);
+          });
 
-      this.shipItem = tempMission.data.filter((x) => {
-        return x.name == "เรือ";
-      });
+          tempMission.sort((a, b) => {
+            return Number(a.level) - Number(b.level);
+          });
 
-      this.buddyItem = tempMission.data.filter((x) => {
-        return x.name == "คู่หู";
-      });
+          tempMission.unshift(
+            {
+              itemname: "ถังถัง",
+              name: "เรือ",
+              level: "0",
+              goal: 0,
+              story: "ถังไม้อายุ 100 ปี ทนแดดทนฝน ลอยกลางทะเลไม่มีวันจม....",
+              control: "0.5",
+              durable: "1",
+              speed: "1"
+            },
+            {
+              itemname: "แพน",
+              name: "คู่หู",
+              level: "0",
+              goal: 0,
+              story:
+                "เด็กน้อยผู้สดใสและร่าเริง เขาชอบท่องเที่ยวและเขามักจะอยู่กับเพื่อนเสมอ",
+              str: "2",
+              intg: "2.5",
+              friendly: "5"
+            },
+            {
+              itemname: "ไม่มีข้อมูล",
+              name: "สมบัติ",
+              level: "0",
+              goal: 0,
+              story: "-",
+              rare: "0",
+              val: "0",
+              magic: "0"
+            }
+          );
 
-      this.treasureItem = tempMission.data.filter((x) => {
-        return x.name == "สมบัติ";
-      });
+          this.shipItem = tempMission.filter(x => {
+            return x.name == "เรือ";
+          });
 
-      let classroomMissionTemp = await this.loadClassroomMissionFinish();
+          this.buddyItem = tempMission.filter(x => {
+            return x.name == "คู่หู";
+          });
 
-      // กรณีเคยมีภารกิจที่ทำไปแล้ว
-      if (classroomMissionTemp.data.length) {
-        this.classroomMission = classroomMissionTemp.data;
+          this.treasureItem = tempMission.filter(x => {
+            return x.name == "สมบัติ";
+          });
 
-        let allShip = classroomMissionTemp.data.filter((x) => {
-          return x.name == "เรือ";
+          dbMission = db
+            .collection("classroomMission")
+            .where("schoolKey", "==", this.teacherData.schoolKey)
+            .where("status", "==", "finish")
+            .where("term", "==", this.currentTerm)
+            .where("year", "==", this.currentYear)
+            .where("class", "==", this.currentClass)
+            .where("room", "==", this.currentRoom)
+            .get();
+          dbMission.then(doc => {
+            if (doc.size) {
+              // กรณีเคยมีภารกิจที่ทำไปแล้ว
+              let classroomMissionTemp = [];
+
+              doc.forEach(element => {
+                let newData = this.allMission.filter(x => {
+                  return x.key == element.data().currentMissionKey;
+                });
+
+                newData[0].missionStat = newData[0].status;
+                delete newData[0].status;
+                let merge = { ...newData[0], ...element.data() };
+
+                classroomMissionTemp.push(merge);
+              });
+
+              classroomMissionTemp.sort((a, b) => {
+                return Number(a.level) - Number(b.level);
+              });
+
+              this.classroomMission = classroomMissionTemp;
+
+              let allShip = classroomMissionTemp.filter(x => {
+                return x.name == "เรือ";
+              });
+              let allTreasure = classroomMissionTemp.filter(x => {
+                return x.name == "สมบัติ";
+              });
+              let allBuddy = classroomMissionTemp.filter(x => {
+                return x.name == "คู่หู";
+              });
+
+              this.ship =
+                allShip.length > 0 ? allShip[allShip.length - 1] : null;
+
+              this.buddy =
+                allBuddy.length > 0 ? allBuddy[allBuddy.length - 1] : null;
+
+              this.treasure =
+                allTreasure.length > 0
+                  ? allTreasure[allTreasure.length - 1]
+                  : null;
+
+              // กรณีมีภารกิจที่เคยทำไปแล้ว แต่ยังไม่เคยทำ ภารกิจคู่หู
+              if (this.buddy == null) {
+                this.buddy = {
+                  level: "0",
+                  missionStat: "ยังไม่มี"
+                };
+              }
+
+              if (this.ship == null) {
+                this.ship = {
+                  level: "0",
+                  missionStat: "ยังไม่มี"
+                };
+              }
+
+              if (this.treasure == null) {
+                this.treasure = {
+                  level: "-1",
+                  missionStat: "ยังไม่มี"
+                };
+              }
+
+              this.isloadMission = true;
+            } else {
+              // กรณียังไม่เคยทำภารกิจ
+
+              // SET เรือเลเวล0
+              this.ship.missionStat = "ยังไม่มี";
+              this.ship.level = "0";
+              // SET BUDDY เลเวล0
+              this.buddy.missionStat = "ยังไม่มี";
+              this.buddy.level = "0";
+              // SET Treasure
+              this.treasure.missionStat = "ยังไม่มี";
+              this.treasure.level = "-1";
+
+              this.isloadMission = true;
+              this.totalPage = 0;
+            }
+          });
         });
-        let allTreasure = classroomMissionTemp.data.filter((x) => {
-          return x.name == "สมบัติ";
-        });
-        let allBuddy = classroomMissionTemp.data.filter((x) => {
-          return x.name == "คู่หู";
-        });
-
-        this.ship = allShip.length > 0 ? allShip[allShip.length - 1] : null;
-
-        this.buddy = allBuddy.length > 0 ? allBuddy[allBuddy.length - 1] : null;
-
-        this.treasure =
-          allTreasure.length > 0 ? allTreasure[allTreasure.length - 1] : null;
-
-        // กรณีมีภารกิจที่เคยทำไปแล้ว แต่ยังไม่เคยทำ ภารกิจคู่หู
-        if (this.buddy == null) {
-          this.buddy = {
-            level: "0",
-            missionStat: "ยังไม่มี",
-          };
-        }
-
-        if (this.ship == null) {
-          this.ship = {
-            level: "0",
-            missionStat: "ยังไม่มี",
-          };
-        }
-
-        if (this.treasure == null) {
-          this.treasure = {
-            level: "-1",
-            missionStat: "ยังไม่มี",
-          };
-        }
-
-        this.isloadMission = true;
-      } else {
-        // กรณียังไม่เคยทำภารกิจ;
-
-        // SET เรือเลเวล0
-        this.ship.missionStat = "ยังไม่มี";
-        this.ship.level = "0";
-        // SET BUDDY เลเวล0
-        this.buddy.missionStat = "ยังไม่มี";
-        this.buddy.level = "0";
-        // SET Treasure
-        this.treasure.missionStat = "ยังไม่มี";
-        this.treasure.level = "-1";
-
-        this.isloadMission = true;
-        this.totalPage = 0;
-      }
     },
     checkProgress() {
       // ฟังก์ชันเช็คว่า ความก้าวหน้าของนักเรียนช้าหรือไม่ เช็คที่ Mount ได้เลย
-    },
-    onResize(size) {
-      (this.innerWidth = size.width), (this.innerHeight = size.height);
-    },
-  },
-  mounted() {
-    this.loadData();
-  },
-
-  beforeDestroy() {
-    if (typeof this.snapGetOfflineStudent == "function") {
-      this.snapGetOfflineStudent();
     }
   },
+  created() {
+    this.getOfflineStudent();
+    this.loadMissionItems();
+  },
+  mounted() {
+    this.$q.localStorage.remove("finishClicked");
+    if (!this.$q.localStorage.has("isSkipQuestionnaire")) {
+      // กรณีมีการกด Skip แบบสอบถามแล้ว ไม่ต้องเช็คใหม่
+      this.checkQuestionnaire();
+    }
+  },
+  beforeDestroy() {
+    this.snapGetOfflineStudent();
+  }
 };
 </script>
 

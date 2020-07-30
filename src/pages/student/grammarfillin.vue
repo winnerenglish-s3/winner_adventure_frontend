@@ -20,9 +20,11 @@
             style="width:fit-content;width:-webkit-fit-content;"
           >
             <div class="border-dashed br-a-sm q-px-xl q-py-sm">
-              <span class="text-bold" style="font-size:calc(20px + 1vw)">{{
+              <span class="text-bold" style="font-size:calc(20px + 1vw)">
+                {{
                 convertPracticeName(practiceType, practiceSkill)
-              }}</span>
+                }}
+              </span>
             </div>
           </div>
         </div>
@@ -36,14 +38,8 @@
       >
         <div class="q-mt-md row justify-center" v-if="isLoadPractice">
           <div class="col-lg-9 col-md-12 col-xs-12 row relative-position">
-            <div
-              class="col-2 self-center bg5 shadow-2 br-a-xs q-pa-xs"
-              style="width:150px;"
-            >
-              <div
-                class="border-dashed br-a-xs q-pa-md text-h5 text-bold"
-                align="center"
-              >
+            <div class="col-2 self-center bg5 shadow-2 br-a-xs q-pa-xs" style="width:150px;">
+              <div class="border-dashed br-a-xs q-pa-md text-h5 text-bold" align="center">
                 <span>
                   ข้อ
                   {{ practice.currentQuestion + 1 + "/" + practiceList.length }}
@@ -55,21 +51,14 @@
             >
               <div class="col self-center text-overflow" align="left">
                 <span class="text-h6 text-bold">
-                  <span v-if="!isChangeLanguage">
-                    {{ practice.instructionEN }}
-                  </span>
+                  <span v-if="!isChangeLanguage">{{ practice.instructionEN }}</span>
                   <span v-else>{{ practice.instructionTH }}</span>
-                  <q-tooltip
-                    anchor="top left"
-                    self="bottom left"
-                    :offset="[10, 10]"
-                  >
-                    <span style="font-size:1vw;" v-if="!isChangeLanguage">
-                      {{ practice.instructionEN }}
-                    </span>
-                    <span style="font-size:1vw;" v-else>
-                      {{ practice.instructionTH }}
-                    </span>
+                  <q-tooltip anchor="top left" self="bottom left" :offset="[10, 10]">
+                    <span
+                      style="font-size:1vw;"
+                      v-if="!isChangeLanguage"
+                    >{{ practice.instructionEN }}</span>
+                    <span style="font-size:1vw;" v-else>{{ practice.instructionTH }}</span>
                   </q-tooltip>
                 </span>
               </div>
@@ -84,11 +73,7 @@
               </div>
             </div>
 
-            <div
-              class="col-12 absolute-top-right"
-              align="right"
-              style="top:-70px;"
-            >
+            <div class="col-12 absolute-top-right" align="right" style="top:-70px;">
               <!-- <q-btn
               push
               round
@@ -103,11 +88,7 @@
                 style="z-index:15;"
                 @click="isGrammarHelp = !isGrammarHelp"
               >
-                <q-icon
-                  name="far fa-question-circle"
-                  class="q-mr-md"
-                  size="md"
-                ></q-icon>
+                <q-icon name="far fa-question-circle" class="q-mr-md" size="md"></q-icon>
                 <span class="text-h5">ตัวช่วย</span>
               </q-btn>
             </div>
@@ -184,20 +165,19 @@
                             class="q-mx-md"
                             size="55px"
                           ></q-icon>
-                          <span class="text-h5 text-bold">{{
+                          <span class="text-h5 text-bold">
+                            {{
                             studentPracticeData.dataAnswerList[
-                              practice.currentQuestion
+                            practice.currentQuestion
                             ].status == "ผิด"
-                              ? "ตอบผิด"
-                              : "ตอบถูก"
-                          }}</span>
+                            ? "ตอบผิด"
+                            : "ตอบถูก"
+                            }}
+                          </span>
                         </div>
                       </div>
 
-                      <div
-                        class="border-dashed q-pa-md q-py-lg br-a-sm"
-                        align="center"
-                      >
+                      <div class="border-dashed q-pa-md q-py-lg br-a-sm" align="center">
                         <span class="text-h5 text-bold">คำอธิบาย</span>
                         <div class="q-mt-sm">
                           <span
@@ -232,14 +212,9 @@
               </div>
             </div>
 
-            <div
-              class="col-3 bg5 br-a-sm relative-position"
-              style="width:300px;"
-            >
+            <div class="col-3 bg5 br-a-sm relative-position" style="width:300px;">
               <div class="bg3 br-tl-sm br-tr-sm">
-                <div class="color1 text-h5 q-pa-sm q-py-md" align="center">
-                  คำศัพท์เสริม
-                </div>
+                <div class="color1 text-h5 q-pa-sm q-py-md" align="center">คำศัพท์เสริม</div>
               </div>
               <div
                 class="row q-pa-md q-pt-lg relative-position"
@@ -266,9 +241,7 @@
                 </div>
                 <div v-else class="absolute-center col-10">
                   <div>
-                    <div class="q-py-xl q-px-sm text-bold text-h6">
-                      ไม่มีคำศัพท์เสริม
-                    </div>
+                    <div class="q-py-xl q-px-sm text-bold text-h6">ไม่มีคำศัพท์เสริม</div>
                   </div>
                 </div>
               </div>
@@ -295,10 +268,7 @@
             v-if="grammarHelp.length"
           >
             <div class="row">
-              <div
-                class="col-4 bg3 br-tl-sm q-pa-md br-bl-sm"
-                style="width:350px;"
-              >
+              <div class="col-4 bg3 br-tl-sm q-pa-md br-bl-sm" style="width:350px;">
                 <q-scroll-area
                   :thumb-style="thumbStyle"
                   :bar-style="barStyle"
@@ -320,11 +290,7 @@
                 </q-scroll-area>
               </div>
               <div class="col bg5 q-pa-lg br-a-md q-mt-lg">
-                <q-responsive
-                  :ratio="16 / 9"
-                  style="position:sticky;top:20px;"
-                  class="z-top"
-                >
+                <q-responsive :ratio="16 / 9" style="position:sticky;top:20px;" class="z-top">
                   <video
                     :src="grammarHelp[grammarIndex].vdoURL"
                     :poster="grammarHelp[grammarIndex].imgURL"
@@ -336,29 +302,15 @@
                 </q-responsive>
 
                 <div class="q-pt-lg" align="center">
-                  <q-btn
-                    align="left"
-                    class="q-pa-xs bg3 color6"
-                    @click="playVDO(grammarIndex)"
-                  >
-                    <q-icon
-                      :name="isPlayVideo ? 'fas fa-pause' : 'fas fa-play'"
-                      class="q-mr-sm"
-                    ></q-icon>
-                    <span
-                      class="text-h6"
-                      v-html="isPlayVideo ? 'หยุดวีดีโอ' : 'เล่นวีดีโอ'"
-                    ></span>
+                  <q-btn align="left" class="q-pa-xs bg3 color6" @click="playVDO(grammarIndex)">
+                    <q-icon :name="isPlayVideo ? 'fas fa-pause' : 'fas fa-play'" class="q-mr-sm"></q-icon>
+                    <span class="text-h6" v-html="isPlayVideo ? 'หยุดวีดีโอ' : 'เล่นวีดีโอ'"></span>
                   </q-btn>
                 </div>
               </div>
             </div>
 
-            <div
-              align="center"
-              class="absolute-top-right"
-              style="top:-20px;right:-20px;"
-            >
+            <div align="center" class="absolute-top-right" style="top:-20px;right:-20px;">
               <q-btn
                 round
                 class="bg7 color1 text-bold"
@@ -912,7 +864,9 @@ export default {
           }
         });
     },
-    loadSynchronize() {
+    async loadSynchronize() {
+      let dateTime = await this.getDateAndTime();
+
       this.snapSync = db
         .collection("synchronize")
         .where("schoolKey", "==", this.studentData.schoolKey)
@@ -920,6 +874,8 @@ export default {
         .where("room", "==", this.studentData.room)
         .where("term", "==", this.studentData.term)
         .where("year", "==", this.studentData.year)
+        .where("currentDate", "==", dateTime.date)
+        .where("status", "==", "online")
         .onSnapshot({ includeMetadataChanges: true }, doc => {
           if (doc.size) {
             this.practiceKey = doc.docs[0].data().practiceKey

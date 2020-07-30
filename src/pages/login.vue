@@ -187,21 +187,54 @@ export default {
       this.loadingShow();
       this.isCheckData = true;
 
-      let getTermAndYear = await this.getTermAndYear();
+      let getTermAndYear = await db
+        .collection("term")
+        .doc("data")
+        .get();
+
+      let currentTerm = getTermAndYear.data().term;
+      let currentYear = getTermAndYear.data().year;
+
+      db.collection("practicetype")
+        .get()
+        .then(practiceType => {
+          let tempPractice = [];
+          practiceType.forEach(element => {
+            let data = { key: element.id };
+            let final = { ...data, ...element.data() };
+            tempPractice.push(final);
+          });
+          let allMission = [];
+          db.collection("mission")
+            .get()
+            .then(m => {
+              m.forEach(mele => {
+                allMission.push({ key: mele.id, ...mele.data() });
+              });
+              let allMissionEncrypt = this.encrypt(allMission, 1);
+              let practiceTypeEncrypt = this.encrypt(tempPractice, 1);
+              let currentTermEncrypt = this.encrypt(currentTerm, 2);
+              let currentYearEncrypt = this.encrypt(currentYear, 2);
+              this.$q.localStorage.set("allMission", allMissionEncrypt);
+              this.$q.localStorage.set("practiceType", practiceTypeEncrypt);
+              this.$q.localStorage.set("currentTerm", currentTermEncrypt);
+              this.$q.localStorage.set("currentYear", currentYearEncrypt);
+            });
+        });
 
       if (this.userType == "นักเรียน") {
         // Login นักเรียน
         db.collection("student")
           .where("user", "==", this.username)
           .where("password", "==", this.password)
-          .where("term", "==", getTermAndYear.term)
-          .where("year", "==", getTermAndYear.year)
+          .where("term", "==", currentTerm)
+          .where("year", "==", currentYear)
           .get()
           .then(async doc => {
             if (doc.size) {
               let studentData = doc.docs[0].data();
               delete studentData.password;
-              this.$q.localStorage.set("sk", doc.docs[0].id);
+              studentData.key = doc.docs[0].id;
 
               studentData.classRoom = studentData.classRoom
                 .replace("p", "ป.")
@@ -224,6 +257,9 @@ export default {
                 this.isDialogPopup = true;
                 return;
               }
+
+              let studentDataEncrypt = this.encrypt(studentData, 1);
+              this.$q.localStorage.set("studentData", studentDataEncrypt);
 
               db.collection("student")
                 .doc(doc.docs[0].id)
@@ -265,24 +301,62 @@ export default {
             if (doc.size) {
               // Username และ Password ถูกต้อง
               let newData = doc.docs[0].data();
+              delete newData.password;
               newData.key = doc.docs[0].id;
-              this.$q.localStorage.set("tk", newData.key);
+              let teacherDataEncrypt = this.encrypt(newData, 1);
+              this.$q.localStorage.set("teacherData", teacherDataEncrypt);
+              // GET SCHOOLDATA
+              db.collection("school")
+                .doc(newData.schoolKey)
+                .get()
+                .then(scData => {
+                  let schoolDataEncrypt = this.encrypt(scData.data(), 1);
+                  this.$q.localStorage.set("schoolData", schoolDataEncrypt);
 
-              db.collection("teacher")
-                .doc(doc.docs[0].id)
-                .update({
-                  status: "offline"
-                })
-                .then(() => {
                   db.collection("teacher")
                     .doc(doc.docs[0].id)
                     .update({
-                      status: "online"
+                      status: "offline"
                     })
                     .then(() => {
-                      this.loadingHide();
-                      // ไปหน้าเลือกห้องเรียน
-                      this.$router.push("/teacher/classroom");
+                      db.collection("teacher")
+                        .doc(doc.docs[0].id)
+                        .update({
+                          status: "online"
+                        })
+                        .then(() => {
+                          db.collection("student")
+                            .where(
+                              "schoolKey",
+                              "==",
+                              doc.docs[0].data().schoolKey
+                            )
+                            .where("term", "==", currentTerm) //TODO : ดึงเทอมจริง
+                            .where("year", "==", currentYear) //TODO : ดึงปีจริง
+                            .get()
+                            .then(stu => {
+                              let stuTemp = [];
+                              stu.forEach(element => {
+                                let dataFinal = {
+                                  ...{ key: element.id },
+                                  ...element.data()
+                                };
+                                stuTemp.push(dataFinal);
+                              });
+
+                              let allStudentDataEncrypt = this.encrypt(
+                                stuTemp,
+                                1
+                              );
+                              this.$q.localStorage.set(
+                                "allStudentData",
+                                allStudentDataEncrypt
+                              );
+                              this.loadingHide();
+                              // ไปหน้าเลือกห้องเรียน
+                              this.$router.push("/teacher/classroom");
+                            });
+                        });
                     });
                 });
             } else {

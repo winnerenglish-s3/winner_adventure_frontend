@@ -34,317 +34,29 @@ export const db = firebase.firestore();
 export const st = storage.ref();
 
 import test from "../pages/student/charactertalking";
-export default function (/* { store, ssrContext } */) {
+export default function(/* { store, ssrContext } */) {
   Vue.mixin({
     data() {
       return {
         version: "0.0.010", // Version Main App
+        studentData: {
+          ...this.decrypt(this.$q.localStorage.getItem("studentData"), 1),
+          term: this.decrypt(this.$q.localStorage.getItem("currentTerm"), 2),
+          year: this.decrypt(this.$q.localStorage.getItem("currentYear"), 2)
+        },
         serverPath: "https://storage.googleapis.com/winnerenglish/upload/",
         setTimer: "",
         startTime: "",
+        schoolData: this.decrypt(this.$q.localStorage.getItem("schoolData"), 1),
+        teacherData: this.decrypt(
+          this.$q.localStorage.getItem("teacherData"),
+          1
+        ),
+
         playAudioSound: ""
       };
     },
     methods: {
-      // -----------------------------------------------------------------------------------------------
-      // NOTE : โหลดข้อมูลนักเรียนทั้งหมด
-      async loadStudentList() {
-        let getTermAndYear = await this.getTermAndYear();
-        let getSchoolKey = await this.loadTeacherData();
-        return new Promise((a, b) => {
-          db.collection("student")
-            .where("schoolKey", "==", getSchoolKey.schoolKey)
-            .where("term", "==", getTermAndYear.term) //TODO : ดึงเทอมจริง
-            .where("year", "==", getTermAndYear.year) //TODO : ดึงปีจริง
-            .get()
-            .then(result => {
-              let tempStudent = [];
-              result.forEach(element => {
-                let dataFinal = {
-                  ...{ key: element.id },
-                  ...element.data()
-                };
-                tempStudent.push(dataFinal);
-              });
-              // let totalStudent = tempStudent.filter(x => {
-              //   return x.classRoom == classroom && x.room == room;
-              // }).length;
-              let newData = {
-                size: result.size,
-                data: tempStudent
-              }
-              a(newData)
-            });
-        })
-      },
-      // NOTE : โหลดแบบฝึกหัดทั้งหมด
-      loadPracticeType() {
-        return new Promise((a, b) => {
-          db.collection("practicetype")
-            .get()
-            .then(result => {
-              let tempPractice = [];
-              result.forEach(element => {
-                let data = { key: element.id };
-                let final = { ...data, ...element.data() };
-                tempPractice.push(final);
-              });
-              let newData = {
-                size: result.size,
-                data: tempPractice
-              }
-              a(newData)
-            })
-        })
-      },
-      // NOTE : โหลดภารกิจทั้งหมด
-      loadMissionAll() {
-        return new Promise((a, b) => {
-          db.collection("mission")
-            .get()
-            .then(result => {
-              let tempMission = []
-              result.forEach(mele => {
-                tempMission.push({ key: mele.id, ...mele.data() });
-              });
-              tempMission.sort((a, b) => Number(a.level) - Number(b.level))
-              let newData = {
-                size: result.size,
-                data: tempMission
-              }
-              a(newData)
-            });
-        })
-      },
-      // NOTE : โหลดภารกิจทั้งหมด
-      async loadClassroomMissionAll() {
-        let data
-        if (this.$q.localStorage.has("sk")) {
-          data = await this.loadStudentData()
-          data.class = data.classRoom
-        } else {
-          data = await this.loadTeacherSyncData()
-        }
-        return new Promise((a, b) => {
-          db.collection("classroomMission")
-            .where("class", "==", data.class)
-            .where("room", "==", data.room)
-            .where("schoolKey", "==", data.schoolKey)
-            .where("term", "==", data.term)
-            .where("year", "==", data.year)
-            .get().then(doc => {
-              let temp = []
-              doc.forEach(result => {
-                temp.push({ ...result.data(), id: result.id })
-              })
-              let newData = {
-                size: doc.size,
-                data: temp
-              }
-              a(newData)
-            })
-        })
-      },
-      async loadClassroomMissionSnapshot() {
-
-        let studentData = await this.loadStudentData()
-
-        return new Promise((a, b) => {
-
-          db
-            .collection("classroomMission")
-            .where("schoolKey", "==", studentData.schoolKey)
-            .where("class", "==", studentData.classRoom)
-            .where("term", "==", studentData.term)
-            .where("year", "==", studentData.year)
-            .where("room", "==", studentData.room)
-            .onSnapshot({ includeMetadataChanges: true }, (missionDoc) => {
-
-              let temp = []
-              missionDoc.forEach(result => {
-                temp.push({ id: result.id, ...result.data() })
-              })
-
-              let newData = {
-                size: missionDoc.size,
-                data: temp
-              }
-
-            })
-        })
-
-      },
-      // NOTE : โหลดข้อมูลภารกิจที่ทำเสร็จแล้ว
-      async loadClassroomMissionFinish() {
-        let data
-        if (this.$q.localStorage.has("sk")) {
-          data = await this.loadStudentData()
-          data.class = data.classRoom
-        } else {
-          data = await this.loadTeacherSyncData()
-        }
-        return new Promise((a, b) => {
-          db.collection("classroomMission")
-            .where("schoolKey", "==", data.schoolKey)
-            .where("term", "==", data.term)
-            .where("year", "==", data.year)
-            .where("class", "==", data.class)
-            .where("room", "==", data.room)
-            .where("status", "==", "finish")
-            .get()
-            .then(doc => {
-              let classroomMissionTemp = [];
-              doc.forEach(element => {
-                let newData = this.allMission.filter(x => {
-                  return x.key == element.data().currentMissionKey;
-                });
-                newData[0].missionStat = newData[0].status;
-                delete newData[0].status;
-                let merge = { ...newData[0], ...element.data() };
-                classroomMissionTemp.push(merge);
-              });
-              classroomMissionTemp.sort((a, b) => {
-                return Number(a.level) - Number(b.level);
-              });
-              let newData = {
-                size: doc.size,
-                data: classroomMissionTemp
-              }
-              a(newData)
-            })
-        })
-      },
-      // NOTE : โหลดข้อมูลภารกิจที่ทำอยู่ปัจจุบัน ส่งค่า (ชั้น,ห้อง,ปี)
-      async loadClassroomMissionCurrent(classroom, room, year) {
-        let data
-        if (this.$q.localStorage.has("sk")) {
-          data = await this.loadStudentData()
-          data.class = data.classRoom
-        } else {
-          data = await this.loadTeacherData()
-        }
-        return new Promise((a, b) => {
-          db.collection("classroomMission")
-            .where("room", "==", room)
-            .where("class", "==", classroom)
-            // .where("term", "==", teacherSync.term)
-            .where("year", "==", year)
-            .where("status", "==", "current")
-            .where("schoolKey", "==", data.schoolKey)
-            .get()
-            .then(doc => {
-              let temp = []
-              doc.forEach(result => {
-                temp.push({ id: result.id, ...result.data() })
-              })
-              let newData = {
-                size: doc.size,
-                data: temp
-              }
-              a(newData)
-            })
-        })
-      },
-      // NOTE : โหลดข้อมูลโรงเรียน
-      async loadSchoolData() {
-        let data
-        if (this.$q.localStorage.has("sk")) {
-          data = await this.loadStudentData()
-          data.class = data.classRoom
-        } else {
-          data = await this.loadTeacherData()
-        }
-        return new Promise((a, b) => {
-          db.collection("school")
-            .doc(data.schoolKey)
-            .get()
-            .then(doc => {
-              a(doc.data());
-            });
-        });
-      },
-      // NOTE : โหลดข้อมูลคุณครูที่ซิงค์อยู่
-      loadTeacherSyncData() {
-        return new Promise((a, b) => {
-          db.collection("synchronize")
-            .doc(this.$q.localStorage.getItem("tk"))
-            .get()
-            .then(doc => {
-              if (doc.exists) {
-                a(doc.data());
-              } else {
-                a({ status: "offline" })
-              }
-            })
-        });
-      },
-      // NOTE : โหลดข้อมูลคุณครู
-      loadTeacherData() {
-        return new Promise((a, b) => {
-          db.collection("teacher")
-            .doc(this.$q.localStorage.getItem("tk"))
-            .get()
-            .then(doc => {
-              a(doc.data());
-            });
-        });
-      },
-      // async loadTotalStudentSnapshot() {
-      //   let syncData = await this.loadTeacherSyncData()
-      //   return new Promise((a, b) => {
-      //     a(
-      //       this.snapGetOnline = db
-      //         .collection("student")
-      //         .where("classRoom", "==", syncData.class)
-      //         .where("room", "==", syncData.room)
-      //         .where("schoolKey", "==", syncData.schoolKey)
-      //         .where("status", "==", "online")
-      //         .onSnapshot({ includeMetadataChanges: true }, doc => {
-      //           this.totalStudentSize = doc.size
-      //         })
-      //     )
-      //   })
-      // },
-      // NOTE : โหลดข้อมูลนักเรียน
-      loadStudentData() {
-        return new Promise((a, b) => {
-          db.collection("student")
-            .doc(this.$q.localStorage.getItem("sk"))
-            .get()
-            .then(doc => {
-              a(doc.data());
-            });
-        });
-      },
-      async loadTeacherDataSnapshot() {
-        let dateTime = await this.getDateAndTime();
-        let studentData = await this.loadStudentData()
-        return new Promise((a, b) => {
-          db.collection("synchronize")
-            .where("schoolKey", "==", studentData.schoolKey)
-            .where("class", "==", studentData.classRoom)
-            .where("room", "==", studentData.room)
-            .where("term", "==", studentData.term)
-            .where("year", "==", studentData.year)
-            .where("currentDate", "==", dateTime.date)
-            .where("status", "==", "online")
-            .onSnapshot({ includeMetadataChanges: true }, (doc) => {
-              let newData = {
-                size: doc.size,
-                data: doc.docs[0].data()
-              }
-              a(newData)
-              // if (doc.size) {
-              //   this.currentPage = doc.docs[0].data().currentPage;
-              //   this.totalStudent = doc.docs[0].data().totalStudent;
-              //   if (!this.isLoadData) {
-              //     this.loadClassroomMission();
-              //   }
-              // }
-            });
-        })
-      },
-      // -----------------------------------------------------------------------------------------------
       encrypt(data, type) {
         // ฟังก์ชันการเข้ารหัส AES
         // type 1.OBJ 2.String / boolean / number
@@ -472,24 +184,11 @@ export default function (/* { store, ssrContext } */) {
         const res = await axios.get(apiLink);
         return res.data[0];
       },
-      getTermAndYear() {
-
-        return new Promise((a, b) => {
-
-          db.collection("term")
-            .doc("data")
-            .get().then(getTermAndYear => {
-
-              let newData = {
-                term: getTermAndYear.data().term,
-                year: getTermAndYear.data().year
-              }
-
-              a(newData)
-            })
-
-        })
-
+      getAcademicYear() {
+        return this.decrypt(this.$q.localStorage.getItem("currentYear"), 2);
+      },
+      getTerm() {
+        return this.decrypt(this.$q.localStorage.getItem("currentTerm"), 2);
       },
       updateOnlineStudent() {
         db.collection("student")
@@ -499,12 +198,12 @@ export default function (/* { store, ssrContext } */) {
           });
       },
       timer(start, end) {
-        let min = this.$q.localStorage.has("timerMin") ?
-          this.$q.localStorage.getItem("timerMin") :
-          start;
-        let sec = this.$q.localStorage.has("timerSec") ?
-          this.$q.localStorage.getItem("timerSec") :
-          end;
+        let min = this.$q.localStorage.has("timerMin")
+          ? this.$q.localStorage.getItem("timerMin")
+          : start;
+        let sec = this.$q.localStorage.has("timerSec")
+          ? this.$q.localStorage.getItem("timerSec")
+          : end;
 
         this.setTimer = setInterval(() => {
           if (min == 0 && sec == 0) {
@@ -615,8 +314,11 @@ export default function (/* { store, ssrContext } */) {
             .where("year", "==", data.year)
             // .where("status", "==", "current")
             .get()
-            .then(async result => {
-              let allMission = await this.loadMissionAll()
+            .then(result => {
+              let allMission = this.decrypt(
+                this.$q.localStorage.getItem("allMission"),
+                1
+              );
 
               let resultTemp = [];
               let missionTemp = [];
@@ -643,7 +345,7 @@ export default function (/* { store, ssrContext } */) {
                 x => x.currentMissionKey
               );
 
-              allMission.data.forEach(mission => {
+              allMission.forEach(mission => {
                 if (
                   passedMissionMap.includes(mission.key) &&
                   mission.name == "คู่หู"
@@ -669,7 +371,7 @@ export default function (/* { store, ssrContext } */) {
               }
 
               if (resultTemp.includes("current")) {
-                let goal = allMission.data.filter(
+                let goal = allMission.filter(
                   mission => currentMissionKey === mission.key
                 );
                 // NOTE เป้าหมายปัจจุบัน
@@ -769,8 +471,12 @@ export default function (/* { store, ssrContext } */) {
             1
           );
 
+          // console.log(practiceListData);
+
           let filter = `${data.class}-${data.room}-${data.term}-${data.year}`;
           // NOTE เช็คก่อนว่าเป็นแบบฝึกหัดสุดท้ายหรือไม่ เพื่อจะแสดงผลหน้าสรุปคะแนนของทักษะ
+
+          // console.log(filter);
 
           let numOfPracticeInThisWorld = practiceListData.filter(
             x =>
@@ -783,6 +489,8 @@ export default function (/* { store, ssrContext } */) {
           // NOTE จำนวนของแบบฝึกหัดใน Level / unit / skill ปัจจุบัน
           let practiceCounter = numOfPracticeInThisWorld.length;
 
+          // console.log(practiceCounter);
+          //
           // NOTE โหลดค่าแบบฝึกหัดที่ทำไปแล้ว
           let classroomPracticeLog = await db
             .collection("classroomPracticeLog")
@@ -797,8 +505,6 @@ export default function (/* { store, ssrContext } */) {
             classroomPracticeLogData.push(element.data());
           });
 
-          // NOTE
-
           let passedPracticeCounter = classroomPracticeLogData.filter(
             x =>
               x.unit == currentPractice.unit &&
@@ -806,11 +512,17 @@ export default function (/* { store, ssrContext } */) {
               !x.practiceType.includes("review")
           );
 
+          // console.log(passedPracticeCounter);
+
           passedPracticeCounter = [
             ...new Set(passedPracticeCounter.map(x => x.practiceKey))
           ];
 
+          console.log(passedPracticeCounter);
+
           passedPracticeCounter = passedPracticeCounter.length;
+
+          console.log(passedPracticeCounter);
 
           // console.log(classroomPracticeLogData.filter(
           //   x =>
@@ -825,6 +537,8 @@ export default function (/* { store, ssrContext } */) {
             "passedPracticeCounter",
             passedPracticeCounter
           );
+
+          console.log("includes");
 
           if (practiceCounter == passedPracticeCounter && checkType == 1) {
             // NOTE กรณี จำนวนแบบฝึกหัดใน Level / unit / skill ปัจจุบัน เท่ากับ จำนวนแบบฝึกหัดที่ทำไปแล้วใน level / unit / skill ปัจจุบัน หมายถึง ทำครบทุกแบบฝึกหัดแล้ว
@@ -876,8 +590,7 @@ export default function (/* { store, ssrContext } */) {
                 ).length;
                 if (!isPassedFlashcardLesson) {
                   nextPractice = notPassedPractice.filter(
-                    x =>
-                      !x.practicetype.includes("review")
+                    x => !x.practicetype.includes("review")
                   )[0];
                 }
               } else {
@@ -895,14 +608,8 @@ export default function (/* { store, ssrContext } */) {
                 if (!isPassedGrammarLesson) {
                   // NOTE กรณีแบบฝึกหัดถัดไปเป็น Review Grammar แต่ยังไม่เคยทำ Grammar Lesson เลย
                   nextPractice = notPassedPractice.filter(
-                    x =>
-                      !x.practicetype.includes("review")
+                    x => !x.practicetype.includes("review")
                   )[0];
-
-
-
-
-
                 }
               }
             }
@@ -987,7 +694,6 @@ export default function (/* { store, ssrContext } */) {
         }
       }
     },
-    mounted() { },
     beforeDestroy() {
       clearInterval(this.setTimer);
     }

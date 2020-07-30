@@ -281,7 +281,7 @@ export default {
       innerWidth: window.innerWidth, // เก็บข้อมูลขนาดความกว้าง
       innerHeight: window.innerHeight, // เก็บข้อมูลขนาดความสูง
 
-      isLoadData: true,
+      isLoadData: true
     };
   },
   methods: {
@@ -395,134 +395,183 @@ export default {
         this.isActiveMain = true;
       }, 500);
     },
-    async loadStudentSkill() {
+    loadStudentSkill() {
       let dbMission;
 
-      this.studentData = await this.loadStudentData();
-
-      let tempMission = await this.loadMissionAll();
-
-      tempMission.data.unshift(
-        {
-          itemname: "ถังถัง",
-          name: "เรือ",
-          level: "0",
-          goal: 0,
-          story: "ถังไม้อายุ 100 ปี ทนแดดทนฝน ลอยกลางทะเลไม่มีวันจม....",
-          control: "0.5",
-          durable: "1",
-          speed: "1",
-        },
-        {
-          itemname: "แพน",
-          name: "คู่หู",
-          level: "0",
-          goal: 0,
-          story:
-            "เด็กน้อยผู้สดใสและร่าเริง เขาชอบท่องเที่ยวและเขามักจะอยู่กับเพื่อนเสมอ",
-          str: "2",
-          intg: "2.5",
-          friendly: "5",
-        },
-        {
-          itemname: "ไม่มีข้อมูล",
-          name: "สมบัติ",
-          level: "0",
-          goal: 0,
-          story: "-",
-          rare: "0",
-          val: "0",
-          magic: "0",
-        }
+      let allMission = this.decrypt(
+        this.$q.localStorage.getItem("allMission"),
+        1
       );
 
-      this.shipItem = tempMission.data.filter((x) => {
-        return x.name == "เรือ";
-      });
+      db.collection("mission")
+        .get()
+        .then(missiondoc => {
+          let tempMission = [];
 
-      this.buddyItem = tempMission.data.filter((x) => {
-        return x.name == "คู่หู";
-      });
+          missiondoc.forEach(missiondata => {
+            let newData = {
+              key: missiondata.id,
+              ...missiondata.data()
+            };
 
-      this.treasureItem = tempMission.data.filter((x) => {
-        return x.name == "สมบัติ";
-      });
+            tempMission.push(newData);
+          });
 
-      dbMission = await this.loadClassroomMissionFinish();
+          tempMission.sort((a, b) => {
+            return Number(a.level) - Number(b.level);
+          });
 
-      if (dbMission.size) {
-        // กรณีเคยมีภารกิจที่ทำไปแล้ว
-        let classroomMissionTemp = dbMission.data;
+          tempMission.unshift(
+            {
+              itemname: "ถังถัง",
+              name: "เรือ",
+              level: "0",
+              goal: 0,
+              story: "ถังไม้อายุ 100 ปี ทนแดดทนฝน ลอยกลางทะเลไม่มีวันจม....",
+              control: "0.5",
+              durable: "1",
+              speed: "1"
+            },
+            {
+              itemname: "แพน",
+              name: "คู่หู",
+              level: "0",
+              goal: 0,
+              story:
+                "เด็กน้อยผู้สดใสและร่าเริง เขาชอบท่องเที่ยวและเขามักจะอยู่กับเพื่อนเสมอ",
+              str: "2",
+              intg: "2.5",
+              friendly: "5"
+            },
+            {
+              itemname: "ไม่มีข้อมูล",
+              name: "สมบัติ",
+              level: "0",
+              goal: 0,
+              story: "-",
+              rare: "0",
+              val: "0",
+              magic: "0"
+            }
+          );
 
-        this.classroomMission = classroomMissionTemp;
+          this.shipItem = tempMission.filter(x => {
+            return x.name == "เรือ";
+          });
 
-        let allShip = classroomMissionTemp.filter((x) => {
-          return x.name == "เรือ";
+          this.buddyItem = tempMission.filter(x => {
+            return x.name == "คู่หู";
+          });
+
+          this.treasureItem = tempMission.filter(x => {
+            return x.name == "สมบัติ";
+          });
+
+          dbMission = db
+            .collection("classroomMission")
+            .where("schoolKey", "==", this.studentData.schoolKey)
+            .where("status", "==", "finish")
+            .where("term", "==", this.studentData.term)
+            .where("year", "==", this.studentData.year)
+            .where("class", "==", this.studentData.classRoom)
+            .where("room", "==", this.studentData.room)
+            .get();
+          dbMission.then(doc => {
+            if (doc.size) {
+              // กรณีเคยมีภารกิจที่ทำไปแล้ว
+              let classroomMissionTemp = [];
+
+              doc.forEach(element => {
+                let newData = allMission.filter(x => {
+                  return x.key == element.data().currentMissionKey;
+                });
+
+                newData[0].missionStat = newData[0].status;
+                delete newData[0].status;
+                let merge = { ...newData[0], ...element.data() };
+
+                classroomMissionTemp.push(merge);
+              });
+
+              classroomMissionTemp.sort((a, b) => {
+                return Number(a.level) - Number(b.level);
+              });
+
+              this.classroomMission = classroomMissionTemp;
+
+              let allShip = classroomMissionTemp.filter(x => {
+                return x.name == "เรือ";
+              });
+              let allTreasure = classroomMissionTemp.filter(x => {
+                return x.name == "สมบัติ";
+              });
+              let allBuddy = classroomMissionTemp.filter(x => {
+                return x.name == "คู่หู";
+              });
+
+              this.ship =
+                allShip.length > 0 ? allShip[allShip.length - 1] : null;
+
+              this.buddy =
+                allBuddy.length > 0 ? allBuddy[allBuddy.length - 1] : null;
+
+              this.treasure =
+                allTreasure.length > 0
+                  ? allTreasure[allTreasure.length - 1]
+                  : null;
+
+              // กรณีมีภารกิจที่เคยทำไปแล้ว แต่ยังไม่เคยทำ ภารกิจคู่หู
+              if (this.buddy == null) {
+                this.buddy = {
+                  level: "0",
+                  missionStat: "ยังไม่มี"
+                };
+              }
+
+              if (this.ship == null) {
+                this.ship = {
+                  level: "0",
+                  missionStat: "ยังไม่มี"
+                };
+              }
+
+              if (this.treasure == null) {
+                this.treasure = {
+                  level: "-1",
+                  missionStat: "ยังไม่มี"
+                };
+              }
+
+              this.isloadMission = true;
+            } else {
+              // กรณียังไม่เคยทำภารกิจ
+
+              // SET เรือเลเวล0
+              this.ship.missionStat = "ยังไม่มี";
+              this.ship.level = "0";
+              // SET BUDDY เลเวล0
+              this.buddy.missionStat = "ยังไม่มี";
+              this.buddy.level = "0";
+              // SET Treasure
+              this.treasure.missionStat = "ยังไม่มี";
+              this.treasure.level = "-1";
+
+              this.isloadMission = true;
+              this.totalPage = 0;
+            }
+
+            this.isActiveMain = true;
+          });
         });
-        let allTreasure = classroomMissionTemp.filter((x) => {
-          return x.name == "สมบัติ";
-        });
-        let allBuddy = classroomMissionTemp.filter((x) => {
-          return x.name == "คู่หู";
-        });
-
-        this.ship = allShip.length > 0 ? allShip[allShip.length - 1] : null;
-
-        this.buddy = allBuddy.length > 0 ? allBuddy[allBuddy.length - 1] : null;
-
-        this.treasure =
-          allTreasure.length > 0 ? allTreasure[allTreasure.length - 1] : null;
-
-        // กรณีมีภารกิจที่เคยทำไปแล้ว แต่ยังไม่เคยทำ ภารกิจคู่หู
-        if (this.buddy == null) {
-          this.buddy = {
-            level: "0",
-            missionStat: "ยังไม่มี",
-          };
-        }
-
-        if (this.ship == null) {
-          this.ship = {
-            level: "0",
-            missionStat: "ยังไม่มี",
-          };
-        }
-
-        if (this.treasure == null) {
-          this.treasure = {
-            level: "-1",
-            missionStat: "ยังไม่มี",
-          };
-        }
-
-        this.isloadMission = true;
-      } else {
-        // กรณียังไม่เคยทำภารกิจ
-
-        // SET เรือเลเวล0
-        this.ship.missionStat = "ยังไม่มี";
-        this.ship.level = "0";
-        // SET BUDDY เลเวล0
-        this.buddy.missionStat = "ยังไม่มี";
-        this.buddy.level = "0";
-        // SET Treasure
-        this.treasure.missionStat = "ยังไม่มี";
-        this.treasure.level = "-1";
-
-        this.isloadMission = true;
-        this.totalPage = 0;
-      }
-
-      this.isActiveMain = true;
     },
     onResize(size) {
       (this.innerWidth = size.width), (this.innerHeight = size.height);
-    },
+    }
   },
 
   created() {
     this.loadStudentSkill();
-  },
+  }
 };
 </script>
 

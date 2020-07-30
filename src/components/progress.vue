@@ -348,14 +348,14 @@ import { db } from "../router/index.js";
 import wDialog from "../components/dialog.vue";
 export default {
   components: {
-    wDialog,
+    wDialog
   },
   props: ["practiceType", "collection"],
   data() {
     return {
       student: {
         finish: 0, // ข้อมูลนักเรียนที่ทำเสร็จแล้ว
-        data: [], // ข้อมูลนักเรียน
+        data: [] // ข้อมูลนักเรียน
       },
       // SECTION  Data
       practice: {
@@ -365,7 +365,7 @@ export default {
         room: this.$q.localStorage.getItem("classOptions")[0].value, // เลือกห้องเรียน
         roomOptions: this.$q.localStorage.getItem("classOptions"),
         type: this.practiceType.type, // ประเภทแบบฝึกหัด
-        timer: "-- : --", // เวลาในการทำแบบฝึกหัด
+        timer: "-- : --" // เวลาในการทำแบบฝึกหัด
         //โชว์แจ้งเตือนการกดปุ่มเสร็จสิ้น
       },
       dialogFinishTest: false,
@@ -379,12 +379,15 @@ export default {
       isLoadData: true, // เปิดใช้งานโหลดข้อมูล
       isTimeOut: false,
       teacherData: this.decrypt(this.$q.localStorage.getItem("teacherData"), 1),
-      currentClass: "ม.3",
-      currentRoom: "1",
+      currentClass: this.decrypt(
+        this.$q.localStorage.getItem("currentClass"),
+        2
+      ),
+      currentRoom: this.decrypt(this.$q.localStorage.getItem("currentRoom"), 2),
       snapGetOnlineStudent: "",
       totalOnlineStudent: 0,
       term: this.decrypt(this.$q.localStorage.getItem("currentTerm"), 2),
-      year: this.decrypt(this.$q.localStorage.getItem("currentYear"), 2),
+      year: this.decrypt(this.$q.localStorage.getItem("currentYear"), 2)
     };
   },
   methods: {
@@ -423,7 +426,7 @@ export default {
             term: term.toString(),
             testtype: this.practiceType.type,
             year: year.toString(),
-            date: date,
+            date: date
           })
           .then(() => {
             let routePage;
@@ -439,12 +442,12 @@ export default {
             db.collection("synchronize")
               .doc(this.teacherData.key)
               .update({
-                currentPage: routePage,
+                currentPage: routePage
               })
               .then(() => {
                 this.loadingHide();
                 this.$emit("finish", {
-                  activeType: "start",
+                  activeType: "start"
                 });
               });
           });
@@ -453,7 +456,7 @@ export default {
         this.isActivePracticeTimer = false;
         this.loadingHide();
         this.$emit("finish", {
-          activeType: "start",
+          activeType: "start"
         });
       }
     },
@@ -461,17 +464,18 @@ export default {
       // Load Total Question
 
       let currentClass = this.currentClass;
-
       if (
-        this.currentClass == "ป.1" ||
-        this.currentClass == "ป.2" ||
-        this.currentClass == "ป.3"
+        (this.currentClass == "ป.1" ||
+          this.currentClass == "ป.2" ||
+          this.currentClass == "ป.3") &&
+        this.practiceType.type == "placement"
       ) {
+        // เช็คให้ไป talkingplacement ในกรณีที่เป็นแบบทดสอบ placement test เท่านั้น และ ป1-3 ไม่ต้องทำการ placement
         // กรณีเป็น ระดับชั้น ป1 / ป2/ ป3 ไม่ต้องทำการ placement
         db.collection("synchronize")
           .doc(this.teacherData.key)
           .update({
-            currentPage: "talkingplacement",
+            currentPage: "talkingplacement"
           })
           .then(() => {
             this.$router.push("/talkingplacement");
@@ -479,7 +483,7 @@ export default {
         return;
       }
 
-      // currentClass = currentClass.replace("ป.", "p").replace("ม.", "m");
+      currentClass = currentClass.replace("ป.", "p").replace("ม.", "m");
 
       // studentprepostlog
       // studentplacementlog
@@ -501,15 +505,17 @@ export default {
           .collection("questionpool")
           .doc("server")
           .collection("practice")
-          .where("level", "==", this.$q.localStorage.getItem("currentLevel"))
+          .where(
+            "level",
+            "==",
+            this.decrypt(this.$q.localStorage.getItem("currentLevel"), 2)
+          )
           .where(checkPracticeType, "==", true)
           .get();
       }
 
       // จำนวนข้อทั้งหมด
       totalQuestion = totalQuestion.size;
-
-      console.log(totalQuestion);
 
       if (totalQuestion <= 14) {
         this.practice.calQuestion = 2;
@@ -536,7 +542,7 @@ export default {
         start = Number(startQuestion) + 1;
         let newData = {
           start: start,
-          end: end,
+          end: end
         };
 
         startQuestion += this.practice.calQuestion;
@@ -569,12 +575,12 @@ export default {
           .where("year", "==", year);
       }
 
-      dbtype.onSnapshot({ includeMetadataChanges: true }, (doc) => {
+      dbtype.onSnapshot({ includeMetadataChanges: true }, doc => {
         this.student.data = [];
         this.student.finish = 0;
         let practice = this.practice.setQuestion;
         let find = "";
-        doc.forEach((data) => {
+        doc.forEach(data => {
           if (data.data().status) {
             this.student.finish += 1;
           }
@@ -609,10 +615,10 @@ export default {
         .where("classRoom", "==", this.currentClass)
         .where("room", "==", this.currentRoom)
         .where("status", "==", "online")
-        .onSnapshot({ includeMetadataChanges: true }, (doc) => {
+        .onSnapshot({ includeMetadataChanges: true }, doc => {
           this.totalOnlineStudent = doc.size;
         });
-    },
+    }
   },
   mounted() {
     this.getOnlineStudent();
@@ -623,7 +629,7 @@ export default {
     clearInterval(this.practice.timer);
     this.$q.localStorage.remove("timerMin");
     this.$q.localStorage.remove("timerSec");
-  },
+  }
 };
 </script>
 

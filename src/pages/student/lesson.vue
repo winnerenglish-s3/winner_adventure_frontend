@@ -25,9 +25,10 @@
             style="width:fit-content;width:-webkit-fit-content;"
           >
             <div class="border-dashed br-a-sm q-px-xl q-py-sm">
-              <span class="text-bold" style="font-size:calc(20px + 1vw)">
-                {{ convertPracticeName(practiceType, practiceSkill) }}
-              </span>
+              <span
+                class="text-bold"
+                style="font-size:calc(20px + 1vw)"
+              >{{ convertPracticeName(practiceType, practiceSkill) }}</span>
             </div>
           </div>
         </div>
@@ -40,10 +41,7 @@
         v-if="isActivePractice"
       >
         <div class="q-mt-md row justify-center">
-          <div
-            class="q-pa-md bg5 col-12 br-a-md"
-            style="max-width:1200px;width:100%;"
-          >
+          <div class="q-pa-md bg5 col-12 br-a-md" style="max-width:1200px;width:100%;">
             <div v-if="practiceType == 'speaking'">
               <div
                 class="border-dashed row justify-center items-center br-a-md q-pa-md"
@@ -64,10 +62,7 @@
                 </div>
               </div>
               <div v-else>
-                <q-img
-                  :src="practiceList[practice.currentQuestion].imgURL"
-                  style="width:100%;"
-                />
+                <q-img :src="practiceList[practice.currentQuestion].imgURL" style="width:100%;" />
               </div>
             </div>
             <div
@@ -76,10 +71,7 @@
               "
               align="center"
             >
-              <q-img
-                :src="practiceList[practice.currentQuestion].imgURL"
-                style="width:100%;"
-              />
+              <q-img :src="practiceList[practice.currentQuestion].imgURL" style="width:100%;" />
             </div>
           </div>
         </div>
@@ -142,7 +134,9 @@ export default {
           }
         });
     },
-    loadSynchronize() {
+    async loadSynchronize() {
+      let dateTime = await this.getDateAndTime();
+
       this.snapSync = db
         .collection("synchronize")
         .where("schoolKey", "==", this.studentData.schoolKey)
@@ -150,6 +144,8 @@ export default {
         .where("room", "==", this.studentData.room)
         .where("term", "==", this.studentData.term)
         .where("year", "==", this.studentData.year)
+        .where("currentDate", "==", dateTime.date)
+        .where("status", "==", "online")
         .onSnapshot({ includeMetadataChanges: true }, doc => {
           if (doc.size) {
             this.practiceKey = doc.docs[0].data().practiceKey
@@ -177,7 +173,9 @@ export default {
     this.loadSynchronize();
   },
   beforeDestroy() {
-    this.snapSync();
+    if (typeof this.snapSync == "function") {
+      this.snapSync();
+    }
   }
 };
 </script>

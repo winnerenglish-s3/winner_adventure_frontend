@@ -19,10 +19,7 @@
             align="center"
             class="q-py-sm fit"
             :class="[
-              !$q.localStorage.has('selectClassRoom') ||
-              $route.name == 't-prepost' ||
-              $route.name == 't-placement' ||
-              $route.name == 't-classroom'
+              !$q.localStorage.has('selectClassRoom') || $route.name == 't-prepost' || $route.name == 't-placement' || $route.name == 't-classroom'
                 ? 'not-active no-pointer-events'
                 : 'color6',
               $q.localStorage.has('selectClassRoom') &&
@@ -50,12 +47,10 @@
             <div class="col-12">
               <q-icon
                 name="fas fa-book"
+                class="q-py-md"
                 size="34px"
                 :style="[
-                  !$q.localStorage.has('selectClassRoom') ||
-                  $route.name == 't-prepost' ||
-                  $route.name == 't-placement' ||
-                  $route.name == 't-classroom'
+                  !$q.localStorage.has('selectClassRoom') || $route.name == 't-prepost' || $route.name == 't-placement' || $route.name == 't-classroom'
                     ? { color: '#421003' }
                     : { color: '#F6A539' }
                 ]"
@@ -98,15 +93,10 @@
                 v-if="
                   $route.name == 't-placement' ||
                     $route.name == 't-questionnair' ||
-                    $route.name == 't-talkingplacement' ||
-                    $route.name == 't-prepost'
+                    $route.name == 't-talkingplacement' || $route.name == 't-prepost'
                 "
               />
-              <img
-                src="../statics/iconmenu/score.png"
-                style="width:37px;"
-                v-else
-              />
+              <img src="../statics/iconmenu/score.png" style="width:37px;" v-else />
             </div>
             <div class="col-12">
               <span class="q-pt-xs" style="font-size:14px;">คะแนน</span>
@@ -141,15 +131,10 @@
                 v-if="
                   $route.name == 't-placement' ||
                     $route.name == 't-questionnair' ||
-                    $route.name == 't-talkingplacement' ||
-                    $route.name == 't-prepost'
+                    $route.name == 't-talkingplacement' || $route.name == 't-prepost'
                 "
               />
-              <img
-                src="../statics/iconmenu/document.png"
-                style="width:37px;"
-                v-else
-              />
+              <img src="../statics/iconmenu/document.png" style="width:37px;" v-else />
             </div>
             <div class="col-12">
               <span class="q-pt-xs" style="font-size:14px;">แฟ้มข้อมูล</span>
@@ -169,7 +154,7 @@
               'not-active no-pointer-events':
                 $route.name == 't-placement' ||
                 $route.name == 't-questionnair' ||
-                $route.name == 't-talkingplacement' ||
+                $route.name == 't-talkingplacement'||
                 $route.name == 't-prepost'
             }"
             @click="checkShowExitDialog('userInfo')"
@@ -181,15 +166,10 @@
                 v-if="
                   $route.name == 't-placement' ||
                     $route.name == 't-questionnair' ||
-                    $route.name == 't-talkingplacement' ||
-                    $route.name == 't-prepost'
+                    $route.name == 't-talkingplacement' || $route.name == 't-prepost'
                 "
               />
-              <img
-                src="../statics/iconmenu/user.png"
-                style="width:37px;"
-                v-else
-              />
+              <img src="../statics/iconmenu/user.png" style="width:37px;" v-else />
             </div>
             <div class="col-12">
               <span class="q-pt-xs" style="font-size:14px;">ข้อมูลผู้ใช้</span>
@@ -218,9 +198,7 @@
               <div class="col-12">
                 <img src="../statics/iconmenu/room.png" style="width:37px;" />
               </div>
-              <span class="q-pt-xs" style="font-size:14px;"
-                >เลือกห้องเรียน</span
-              >
+              <span class="q-pt-xs" style="font-size:14px;">เลือกห้องเรียน</span>
               <div class="col-12"></div>
             </q-btn>
 
@@ -273,8 +251,7 @@
               color10: missionScore >= missionCurrent.finishScore,
               color3: missionScore < missionCurrent.finishScore
             }"
-            >{{ Math.round(missionScore) }}</span
-          >
+          >{{ Math.round(missionScore) }}</span>
           / {{ missionCurrent.finishScore }} เหรียญ
         </span>
       </div>
@@ -293,9 +270,7 @@
             <q-icon name="fas fa-sign-out-alt"></q-icon>
             &nbsp;{{ dialogObj.header }}
           </div>
-          <div class="q-pt-md" style="font-size:16px">
-            {{ dialogObj.content }}
-          </div>
+          <div class="q-pt-md" style="font-size:16px">{{ dialogObj.content }}</div>
         </q-card-section>
         <q-card-actions align="right">
           <q-btn flat label="ยกเลิก" v-close-popup></q-btn>

@@ -18,9 +18,7 @@
           style="width:fit-content;width:-webkit-fit-content;"
         >
           <div class="border-dashed br-a-sm q-px-xl q-py-sm">
-            <span class="text-bold" style="font-size:calc(20px + 1vw)"
-              >อ่านออกเสียง</span
-            >
+            <span class="text-bold" style="font-size:calc(20px + 1vw)">อ่านออกเสียง</span>
           </div>
         </div>
       </div>
@@ -34,11 +32,7 @@
       <div class="q-mt-md row justify-center" v-if="!isLoadPractice">
         <div class="col-lg-9 col-md-12 col-xs-12 relative-position">
           <div class="bg3 q-pa-md br-tl-sm br-tr-sm" align="center">
-            <span
-              class="color1"
-              style="font-size:calc(16px + 1vw)"
-              v-html="readingTitle.titleEng"
-            ></span>
+            <span class="color1" style="font-size:calc(16px + 1vw)" v-html="readingTitle.titleEng"></span>
           </div>
           <div class="bg5 br-bl-sm br-br-sm q-px-lg q-pb-lg">
             <div class="border-dashed-sentence br-bl-md br-br-md">
@@ -62,11 +56,7 @@
               </div>
 
               <div class="row q-py-xl q-px-sm">
-                <div
-                  class="col-1 self-center"
-                  style="width:80px;"
-                  align="center"
-                >
+                <div class="col-1 self-center" style="width:80px;" align="center">
                   <q-btn
                     @click="currentQuestion--, changeData()"
                     push
@@ -82,27 +72,21 @@
                   ></q-btn>
                 </div>
                 <div class="col self-center q-py-xl row">
-                  <div
-                    class="q-px-md  row justify-center col-12"
-                    align="center"
-                  >
+                  <div class="q-px-md row justify-center col-12" align="center">
                     <div v-if="readingData.length > 0">
                       <div
                         style="font-size:calc(15px + 1vw)"
                         v-html="readingData[currentQuestion].sentenceEng"
                       ></div>
                       <br />
-                      <div style="font-size:calc(15px + 1vw)" id="contentThai">
-                        {{ readingData[currentQuestion].sentenceThai }}
-                      </div>
+                      <div
+                        style="font-size:calc(15px + 1vw)"
+                        id="contentThai"
+                      >{{ readingData[currentQuestion].sentenceThai }}</div>
                     </div>
                   </div>
                 </div>
-                <div
-                  class="col-1 self-center"
-                  style="width:80px;"
-                  align="center"
-                >
+                <div class="col-1 self-center" style="width:80px;" align="center">
                   <q-btn
                     dense
                     push
@@ -191,6 +175,7 @@ export default {
         .where("practiceKey", "==", this.currentPractice.practiceKey)
         .where("schoolKey", "==", this.teacherData.schoolKey)
         .where("filter", "==", filterWhere)
+
         .get()
         .then(doc => {
           if (!doc.size) {

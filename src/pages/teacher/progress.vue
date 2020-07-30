@@ -901,6 +901,7 @@ export default {
       // get passed practice from db
       let classPracticeLog = await db
         .collection("classroomPracticeLog")
+        .where("schoolKey", "==", this.teacherData.schoolKey)
         .where("filter", "==", filter)
         .where("level", "==", this.currentPractice.level)
         .where("unit", "==", this.currentPractice.unit)
@@ -1074,7 +1075,7 @@ export default {
       db.collection("classroomPracticeLog")
         .where("filter", "==", filterWhere1)
         .where("practiceKey", "==", this.currentPractice.practiceKey)
-        .where("schoolKey","==",this.teacherData.schoolKey)
+        .where("schoolKey", "==", this.teacherData.schoolKey)
         .get()
         .then(docpractice => {
           // ไปลบข้อมูลแบบฝึกหัดของห้องนี้ ระดับชั้นนี้ เทอมนี้ ปีนี้ทิ้ง
@@ -1084,7 +1085,7 @@ export default {
             .then(() => {
               db.collection("studentpracticelog")
                 .where("filter", "==", filterWhere)
-                .where("schoolKey","==",this.teacherData.schoolKey)
+                .where("schoolKey", "==", this.teacherData.schoolKey)
                 .get()
                 .then(practice => {
                   if (practice.size) {
@@ -1147,6 +1148,7 @@ export default {
       db.collection("classroomPracticeLog")
         .where("filter", "==", filterWhere)
         .where("practiceKey", "==", this.currentPractice.practiceKey)
+        .where("schoolKey", "==", this.teacherData.schoolKey)
         .where("status", "==", false)
         .get()
         .then(doc => {
@@ -1338,6 +1340,7 @@ export default {
         .where("term", "==", this.currentTerm)
         .where("year", "==", this.currentYear)
         .where("practiceKey", "==", this.currentPractice.practiceKey)
+        // .where("filter", "==", filter)
         .where("schoolKey", "==", this.teacherData.schoolKey)
         .onSnapshot({ includeMetadataChanges: true }, doc => {
           this.studentData = [];
@@ -1379,7 +1382,6 @@ export default {
           let avgScore = 0;
 
           console.log("totalQuestion=", this.totalQuestion);
-          // NOTE ต้องเช็คว่า ค่า currentQuestion ส่วนใหญ่จะส่งมาเกิน 1 เสมอหรือไม่
           successPercent = studentTemp
             .map(x => x.currentQuestion - 1)
             .reduce((a, b) => a + b, 0);

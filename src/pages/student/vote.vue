@@ -391,7 +391,6 @@ import { db } from "../../router/index.js";
 export default {
   data() {
     return {
-      studentData: "",
       currentPage: "",
       studentVote: {},
       mission: {},
@@ -414,7 +413,7 @@ export default {
       isLoadData: false,
 
       innerWidth: window.innerWidth, // เก็บข้อมูลขนาดความกว้าง
-      innerHeight: window.innerHeight, // เก็บข้อมูลขนาดความสูง
+      innerHeight: window.innerHeight // เก็บข้อมูลขนาดความสูง
     };
   },
   methods: {
@@ -448,9 +447,9 @@ export default {
 
       db.collection("mission")
         .get()
-        .then((doc) => {
+        .then(doc => {
           let temp = [];
-          doc.forEach((element) => {
+          doc.forEach(element => {
             temp.push({ key: element.id, ...element.data() });
           });
           // ภารกิจทั้งหมด
@@ -466,11 +465,11 @@ export default {
             .where("year", "==", this.studentData.year)
             .where("schoolKey", "==", this.studentData.schoolKey)
             .get()
-            .then((doc) => {
+            .then(doc => {
               let classroomTemp = [];
-              doc.forEach((classElement) => {
+              doc.forEach(classElement => {
                 let dataAdd = {
-                  key: classElement.id,
+                  key: classElement.id
                 };
                 let dataFinal = { ...dataAdd, ...classElement.data() };
                 classroomTemp.push(dataFinal);
@@ -484,17 +483,17 @@ export default {
               let treasureMission;
 
               // ภาคกิจเรือทั้งหมด
-              shipMission = temp.filter((x) => {
+              shipMission = temp.filter(x => {
                 return x.name == "เรือ";
               });
               // ภารกิจคู่หูทั้งหมด
 
-              buddyMission = temp.filter((x) => {
+              buddyMission = temp.filter(x => {
                 return x.name == "คู่หู";
               });
               // ภารกิจสมบัติทั้งหมด
 
-              treasureMission = temp.filter((x) => {
+              treasureMission = temp.filter(x => {
                 return x.name == "สมบัติ";
               });
 
@@ -502,11 +501,11 @@ export default {
               let classBuddyMission;
               let classTreasureMission;
 
-              let classTempMap = classroomTemp.map((e) => {
+              let classTempMap = classroomTemp.map(e => {
                 return e.currentMissionKey;
               });
               // ภารกิจเรือที่ระดับชั้นนี้ได้ทำ
-              classShipMission = shipMission.filter((x) => {
+              classShipMission = shipMission.filter(x => {
                 return classTempMap.includes(x.key);
               });
 
@@ -516,7 +515,7 @@ export default {
 
               // ภารกิจคู่หูที่ระดับชั้นนี้ได้ทำ
 
-              classBuddyMission = buddyMission.filter((x) => {
+              classBuddyMission = buddyMission.filter(x => {
                 return classTempMap.includes(x.key);
               });
 
@@ -525,7 +524,7 @@ export default {
               });
 
               // ภารกิจสมบัติที่ระดับชั้นนี้ได้ทำ
-              classTreasureMission = treasureMission.filter((x) => {
+              classTreasureMission = treasureMission.filter(x => {
                 return classTempMap.includes(x.key);
               });
 
@@ -554,13 +553,13 @@ export default {
                 Number(lastTreasureMissionLV) + 1
               ).toString();
 
-              this.mission.ship = shipMission.filter((x) => {
+              this.mission.ship = shipMission.filter(x => {
                 return x.level == findNextShipLv;
               })[0];
-              this.mission.buddy = buddyMission.filter((x) => {
+              this.mission.buddy = buddyMission.filter(x => {
                 return x.level == findNextBuddyLv;
               })[0];
-              this.mission.treasure = treasureMission.filter((x) => {
+              this.mission.treasure = treasureMission.filter(x => {
                 return x.level == findNextTreasureLv;
               })[0];
 
@@ -572,7 +571,7 @@ export default {
                 vote: "",
                 no: doc.size + 1,
                 term: this.studentData.term,
-                year: this.studentData.year,
+                year: this.studentData.year
               };
 
               db.collection("missionvote")
@@ -583,7 +582,7 @@ export default {
                 .where("year", "==", this.studentData.year)
                 .where("studentKey", "==", this.studentData.key)
                 .get()
-                .then((docVote) => {
+                .then(docVote => {
                   if (docVote.size > 0) {
                     this.isLoadData = false;
                     this.activeType = "waitingvote";
@@ -606,8 +605,6 @@ export default {
     async loadSynchronize() {
       let dateTime = await this.getDateAndTime();
 
-      this.studentData = await this.loadStudentData();
-
       this.snapSync = await db
         .collection("synchronize")
         .where("schoolKey", "==", this.studentData.schoolKey)
@@ -617,7 +614,7 @@ export default {
         .where("year", "==", this.studentData.year)
         .where("currentDate", "==", dateTime.date)
         .where("status", "==", "online")
-        .onSnapshot({ includeMetadataChanges: true }, (doc) => {
+        .onSnapshot({ includeMetadataChanges: true }, doc => {
           if (doc.size) {
             this.currentPage = doc.docs[0].data().currentPage;
             this.totalStudent = doc.docs[0].data().totalStudent;
@@ -630,7 +627,7 @@ export default {
     },
     onResize(size) {
       (this.innerWidth = size.width), (this.innerHeight = size.height);
-    },
+    }
   },
   computed: {
     checkedShip() {
@@ -683,7 +680,7 @@ export default {
           return false;
         }
       }
-    },
+    }
   },
   created() {
     this.loadSynchronize();
@@ -692,7 +689,7 @@ export default {
     if (typeof this.snapSync == "function") {
       this.snapSync();
     }
-  },
+  }
 };
 </script>
 

@@ -383,6 +383,7 @@ export default {
                     if (!doc.size) {
                       // กรณียังไม่มีการบันทึกแบบฝึกหัดเข้าไป
                       let practiceAddData = {
+                        practiceType: this.currentPractice.practicetype,
                         filter: filter,
                         date: date,
                         practiceListName: "",
@@ -393,7 +394,8 @@ export default {
                         timeIn: this.$q.localStorage.getItem(
                           "enterPracticeTime"
                         ),
-                        timeOut: date.microtime
+                        timeOut: date.microtime,
+                        schoolKey: this.teacherData.schoolKey
                       };
                       let mergeData = {
                         ...practiceAddData,

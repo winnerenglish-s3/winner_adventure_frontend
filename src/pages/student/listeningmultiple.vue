@@ -19,9 +19,11 @@
           style="width:fit-content;width:-webkit-fit-content;"
         >
           <div class="border-dashed br-a-sm q-px-xl q-py-sm">
-            <span class="text-bold" style="font-size:calc(20px + 1vw)">{{
+            <span class="text-bold" style="font-size:calc(20px + 1vw)">
+              {{
               convertPracticeName(practiceType, practiceSkill)
-            }}</span>
+              }}
+            </span>
           </div>
         </div>
       </div>
@@ -35,14 +37,8 @@
     >
       <div class="q-mt-md row justify-center" v-if="isLoadPractice">
         <div class="col-lg-9 col-md-12 col-xs-12 row relative-position">
-          <div
-            class="col-2 self-center bg5 shadow-2 br-a-xs q-pa-xs"
-            style="width:150px;"
-          >
-            <div
-              class="border-dashed br-a-xs q-pa-md text-h5 text-bold"
-              align="center"
-            >
+          <div class="col-2 self-center bg5 shadow-2 br-a-xs q-pa-xs" style="width:150px;">
+            <div class="border-dashed br-a-xs q-pa-md text-h5 text-bold" align="center">
               <span>
                 ข้อ
                 {{ practice.currentQuestion + 1 + "/" + practiceList.length }}
@@ -54,26 +50,15 @@
           >
             <div class="col self-center text-overflow" align="left">
               <span class="text-h6 text-bold">
-                <span
-                  v-if="!isChangeLanguage"
-                  v-html="practice.instructionENG"
-                ></span>
+                <span v-if="!isChangeLanguage" v-html="practice.instructionENG"></span>
                 <span v-else v-html="practice.instructionTH"></span>
-                <q-tooltip
-                  anchor="top left"
-                  self="bottom left"
-                  :offset="[10, 10]"
-                >
+                <q-tooltip anchor="top left" self="bottom left" :offset="[10, 10]">
                   <span
                     style="font-size:1vw;"
                     v-if="!isChangeLanguage"
                     v-html="practice.instructionENG"
                   ></span>
-                  <span
-                    style="font-size:1vw;"
-                    v-else
-                    v-html="practice.instructionTH"
-                  ></span>
+                  <span style="font-size:1vw;" v-else v-html="practice.instructionTH"></span>
                 </q-tooltip>
               </span>
             </div>
@@ -88,11 +73,7 @@
             </div>
           </div>
 
-          <div
-            class="col-12 absolute-top-right"
-            align="right"
-            style="top:-70px;"
-          >
+          <div class="col-12 absolute-top-right" align="right" style="top:-70px;">
             <q-btn
               push
               round
@@ -126,9 +107,11 @@
                       <span>กดเพื่อฟังเสียงโจทย์</span>
                     </div>
                     <div class="text-h5" v-else>
-                      <span>{{
+                      <span>
+                        {{
                         practiceList[practice.currentQuestion].question
-                      }}</span>
+                        }}
+                      </span>
                     </div>
                   </q-btn>
                 </div>
@@ -137,10 +120,7 @@
                   class="border3-lg br-a-sm bg1 q-pa-lg q-mx-md"
                   v-if="practiceList[practice.currentQuestion].question != ''"
                 >
-                  <div
-                    class="text-h5"
-                    v-html="practiceList[practice.currentQuestion].question"
-                  ></div>
+                  <div class="text-h5" v-html="practiceList[practice.currentQuestion].question"></div>
                 </div>
               </div>
 
@@ -180,10 +160,7 @@
                       </template>
 
                       <div class="row full-width">
-                        <div
-                          class="col-2 self-center q-pa-md"
-                          style="width:100px"
-                        >
+                        <div class="col-2 self-center q-pa-md" style="width:100px">
                           <q-icon
                             :name="
                               index == 0
@@ -199,10 +176,7 @@
                             size="45px"
                           ></q-icon>
                         </div>
-                        <div
-                          class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm"
-                          align="left"
-                        >
+                        <div class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm" align="left">
                           <div class="self-center q-px-md">
                             <span class="text-h5" v-html="item.answer"></span>
                           </div>
@@ -213,10 +187,7 @@
                 </div>
 
                 <!-- NOTE  multiple choices (answersound) -->
-                <div
-                  class="row"
-                  v-if="practice.practiceType == 'multiplechoice(answersound)'"
-                >
+                <div class="row" v-if="practice.practiceType == 'multiplechoice(answersound)'">
                   <div
                     class="col-12 q-px-md q-mb-lg"
                     v-for="(item, index) in practiceList[
@@ -248,11 +219,7 @@
                       </template>
 
                       <div class="full-width relative-position" align="center">
-                        <q-icon
-                          name="fas fa-volume-up"
-                          class="q-pr-lg"
-                          size="30px"
-                        ></q-icon>
+                        <q-icon name="fas fa-volume-up" class="q-pr-lg" size="30px"></q-icon>
                         <span class="text-h5" style="display:inline-block;">
                           ฟังเสียงคำตอบ
                           <span
@@ -275,10 +242,7 @@
                 </div>
 
                 <!-- NOTE  multiple choices -->
-                <div
-                  class="row"
-                  v-if="practice.practiceType == 'multiplechoices'"
-                >
+                <div class="row" v-if="practice.practiceType == 'multiplechoices'">
                   <div
                     class="col-12 q-px-md q-mb-lg"
                     v-for="(item, index) in practiceList[
@@ -353,10 +317,7 @@
                       }"
                     >
                       <div class="row full-width">
-                        <div
-                          class="col-2 self-center q-pa-md"
-                          style="width:100px"
-                        >
+                        <div class="col-2 self-center q-pa-md" style="width:100px">
                           <span
                             v-if="
                               studentPracticeData.dataAnswerList[
@@ -366,26 +327,10 @@
                                   .correctanswer != item.index
                             "
                           >
-                            <q-icon
-                              name="fas fa-spider"
-                              v-if="index == 0"
-                              size="45px"
-                            ></q-icon>
-                            <q-icon
-                              name="fas fa-fish"
-                              v-if="index == 1"
-                              size="45px"
-                            ></q-icon>
-                            <q-icon
-                              name="fas fa-dove"
-                              v-if="index == 2"
-                              size="45px"
-                            ></q-icon>
-                            <q-icon
-                              name="fas fa-frog"
-                              v-if="index == 3"
-                              size="45px"
-                            ></q-icon>
+                            <q-icon name="fas fa-spider" v-if="index == 0" size="45px"></q-icon>
+                            <q-icon name="fas fa-fish" v-if="index == 1" size="45px"></q-icon>
+                            <q-icon name="fas fa-dove" v-if="index == 2" size="45px"></q-icon>
+                            <q-icon name="fas fa-frog" v-if="index == 3" size="45px"></q-icon>
                           </span>
                           <span
                             v-if="
@@ -407,10 +352,7 @@
                             <q-icon name="fas fa-times" size="45px"></q-icon>
                           </span>
                         </div>
-                        <div
-                          class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm"
-                          align="left"
-                        >
+                        <div class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm" align="left">
                           <div class="self-center q-px-md">
                             <span class="text-h5" v-html="item.answer"></span>
                           </div>
@@ -421,10 +363,7 @@
                 </div>
 
                 <!-- NOTE  multiple choices (answersound) -->
-                <div
-                  class="row"
-                  v-if="practice.practiceType == 'multiplechoice(answersound)'"
-                >
+                <div class="row" v-if="practice.practiceType == 'multiplechoice(answersound)'">
                   <div
                     class="col-12 q-px-md q-mb-lg"
                     v-for="(item, index) in practiceList[
@@ -461,26 +400,15 @@
                       no-pointer-events
                     >
                       <div class="full-width relative-position" align="center">
-                        <q-icon
-                          name="fas fa-volume-up"
-                          class="q-pr-lg"
-                          size="30px"
-                        ></q-icon>
-                        <span
-                          class="text-h5"
-                          style="display:inline-block;"
-                          v-html="item.answer"
-                        ></span>
+                        <q-icon name="fas fa-volume-up" class="q-pr-lg" size="30px"></q-icon>
+                        <span class="text-h5" style="display:inline-block;" v-html="item.answer"></span>
                       </div>
                     </q-btn>
                   </div>
                 </div>
 
                 <!-- NOTE  multiple choices -->
-                <div
-                  class="row"
-                  v-if="practice.practiceType == 'multiplechoices'"
-                >
+                <div class="row" v-if="practice.practiceType == 'multiplechoices'">
                   <div
                     class="col-12 q-px-md q-mb-lg"
                     v-for="(item, index) in practiceList[
@@ -571,15 +499,9 @@
         class="row justify-center items-center bg-transparent q-pa-lg"
         style="max-width:1450px;width:100%;"
       >
-        <div
-          class="bg5 full-width relative-position"
-          style="border-radius:12px;"
-        >
+        <div class="bg5 full-width relative-position" style="border-radius:12px;">
           <div class="row">
-            <div
-              class="col-4 bg3 br-tl-sm q-pa-md br-bl-sm"
-              style="width:330px;overflow-y:auto;"
-            >
+            <div class="col-4 bg3 br-tl-sm q-pa-md br-bl-sm" style="width:330px;overflow-y:auto;">
               <q-btn
                 class="full-width row q-pa-sm"
                 :class="[
@@ -600,16 +522,11 @@
                   floating
                   transparent
                   v-show="item.isNew"
-                  >new</q-badge
-                >
+                >new</q-badge>
               </q-btn>
             </div>
             <div class="col bg5 q-pa-lg br-a-md q-mt-lg">
-              <q-responsive
-                :ratio="16 / 9"
-                style="position:sticky;top:20px;"
-                class="z-top"
-              >
+              <q-responsive :ratio="16 / 9" style="position:sticky;top:20px;" class="z-top">
                 <video
                   :src="phonicsHelp[phonicsIndex].vdoURL"
                   :poster="phonicsHelp[phonicsIndex].imgURL"
@@ -621,11 +538,7 @@
             </div>
           </div>
 
-          <div
-            align="center"
-            class="absolute-top-right"
-            style="top:-20px;right:-20px;"
-          >
+          <div align="center" class="absolute-top-right" style="top:-20px;right:-20px;">
             <q-btn
               round
               class="bg7 color1 text-bold"
@@ -1093,7 +1006,9 @@ export default {
           }
         });
     },
-    loadSynchronize() {
+    async loadSynchronize() {
+      let dateTime = await this.getDateAndTime();
+
       this.snapSync = db
         .collection("synchronize")
         .where("schoolKey", "==", this.studentData.schoolKey)
@@ -1101,6 +1016,8 @@ export default {
         .where("room", "==", this.studentData.room)
         .where("term", "==", this.studentData.term)
         .where("year", "==", this.studentData.year)
+        .where("currentDate", "==", dateTime.date)
+        .where("status", "==", "online")
         .onSnapshot({ includeMetadataChanges: true }, doc => {
           if (doc.size) {
             this.practiceKey = doc.docs[0].data().practiceKey
@@ -1147,7 +1064,9 @@ export default {
     this.loadSynchronize();
   },
   beforeDestroy() {
-    this.snapSync();
+    if (typeof this.snapSync == "function") {
+      this.snapSync();
+    }
     this.$q.localStorage.remove("useTime");
   }
 };

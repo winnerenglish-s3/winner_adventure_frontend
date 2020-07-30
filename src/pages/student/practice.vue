@@ -142,6 +142,8 @@ export default {
   },
   methods: {
     async loadSynchronize() {
+      let dateTime = await this.getDateAndTime();
+
       this.snapSync = await db
         .collection("synchronize")
         .where("schoolKey", "==", this.studentData.schoolKey)
@@ -149,6 +151,8 @@ export default {
         .where("room", "==", this.studentData.room)
         .where("term", "==", this.studentData.term)
         .where("year", "==", this.studentData.year)
+        .where("currentDate", "==", dateTime.date)
+        .where("status", "==", "online")
         .onSnapshot({ includeMetadataChanges: true }, doc => {
           if (doc.size) {
             this.currentPage = doc.docs[0].data().currentPage;
@@ -169,7 +173,9 @@ export default {
     this.loadSynchronize();
   },
   beforeDestroy() {
-    this.snapSync();
+    if (typeof this.snapSync == "function") {
+      this.snapSync();
+    }
   }
 };
 </script>

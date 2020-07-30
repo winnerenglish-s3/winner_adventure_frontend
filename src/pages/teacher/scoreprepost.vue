@@ -11,9 +11,7 @@
           icon="fas fa-chevron-left"
         ></q-btn>
       </div>
-      <div align="center" class="color3 col-12 self-center text-h5">
-        คะแนนทดสอบก่อนเรียน / หลังเรียน
-      </div>
+      <div align="center" class="color3 col-12 self-center text-h5">คะแนนทดสอบก่อนเรียน / หลังเรียน</div>
     </div>
     <!-- NOTE Selection Section -->
     <div class="row items-center q-pa-md text-h7">
@@ -30,10 +28,7 @@
         ></q-select>
       </div>
       <div class="col q-px-md">
-        <div
-          class="row items-center q-px-md q-py-sm"
-          style="border:1px solid #87533B"
-        >
+        <div class="row items-center q-px-md q-py-sm" style="border:1px solid #87533B">
           <div class="col-2">รูปแบบคะแนน</div>
           <div class="col">
             <div class="row q-pa-sm">
@@ -81,11 +76,7 @@
         </div>-->
         <div style="margin:auto;width:100%;" class="bg-white q-pa-sm">
           <div class="row bg8 q-pa-xs" style="border-radius:5px">
-            <div
-              class="col-2 bg-white"
-              align="center"
-              style="border-radius:5px"
-            >
+            <div class="col-2 bg-white" align="center" style="border-radius:5px">
               <img style="width:90px" src="../../statics/logo_winner.png" alt />
             </div>
             <div class="col text-white q-pa-sm" align="center">
@@ -97,15 +88,9 @@
               </div>
             </div>
           </div>
-          <div align="center" v-if="scoreType == '1'" class="q-pa-md">
-            คะแนนทดสอบก่อนเรียน
-          </div>
-          <div align="center" v-else-if="scoreType == '2'" class="q-pa-md">
-            คะแนนทดสอบหลังเรียน
-          </div>
-          <div align="center" v-else class="q-pa-md">
-            คะแนนทดสอบก่อนและหลังเรียน
-          </div>
+          <div align="center" v-if="scoreType == '1'" class="q-pa-md">คะแนนทดสอบก่อนเรียน</div>
+          <div align="center" v-else-if="scoreType == '2'" class="q-pa-md">คะแนนทดสอบหลังเรียน</div>
+          <div align="center" v-else class="q-pa-md">คะแนนทดสอบก่อนและหลังเรียน</div>
           <!-- NOTE คะแนนก่อนเรียน -->
           <div v-if="scoreType == '1'">
             <table class="fit table_border" style="border-collapse:collapse">
@@ -116,9 +101,7 @@
               </tr>
               <tr v-for="(items, index) in studentList" :key="index">
                 <td class="table_border">{{ items.no }}</td>
-                <td class="table_border">
-                  {{ items.name }} {{ items.surname }}
-                </td>
+                <td class="table_border">{{ items.name }} {{ items.surname }}</td>
                 <td class="table_border">{{ items.score }}</td>
               </tr>
             </table>
@@ -133,9 +116,7 @@
               </tr>
               <tr v-for="(items, index) in studentList" :key="index">
                 <td class="table_border">{{ items.no }}</td>
-                <td class="table_border">
-                  {{ items.name }} {{ items.surname }}
-                </td>
+                <td class="table_border">{{ items.name }} {{ items.surname }}</td>
                 <td class="table_border">{{ items.score }}</td>
               </tr>
             </table>
@@ -153,9 +134,7 @@
 
               <tr v-for="(items, index) in studentList" :key="index">
                 <td class="table_border">{{ items.no }}</td>
-                <td class="table_border">
-                  {{ items.name }} {{ items.surname }}
-                </td>
+                <td class="table_border">{{ items.name }} {{ items.surname }}</td>
                 <td class="table_border">{{ items.pretestScore }}</td>
                 <td class="table_border">{{ items.posttestScore }}</td>
                 <td class="table_border">{{ items.diffScore }}</td>
@@ -183,7 +162,7 @@ export default {
         1
       ),
       studentList: "",
-      scoreData: "",
+      scoreData: ""
     };
   },
   methods: {
@@ -196,8 +175,8 @@ export default {
           term: this.getTerm(),
           year: this.getAcademicYear(),
           classRoomSelected: this.classRoomSelected,
-          type: this.scoreType,
-        },
+          type: this.scoreType
+        }
       });
     },
     loadData() {
@@ -210,7 +189,7 @@ export default {
       );
 
       let roomTotal = [];
-      let studentData = this.studentAllList.map((x) => {
+      let studentData = this.studentAllList.map(x => {
         return x.classRoom + "/" + x.room;
       });
 
@@ -237,7 +216,7 @@ export default {
     loadStudent() {
       let classRoom = this.classRoomSelected.slice(0, 3);
       let room = this.classRoomSelected.slice(4);
-      let result = this.studentAllList.filter((x) => {
+      let result = this.studentAllList.filter(x => {
         return x.classRoom == classRoom && x.room == room;
       });
 
@@ -256,10 +235,9 @@ export default {
         .where("term", "==", this.term)
         .where("year", "==", this.year)
         .get()
-        .then((doc) => {
+        .then(doc => {
           let scoreTemp = [];
-          doc.forEach((element) => {
-            console.log(element.data());
+          doc.forEach(element => {
             let data = {
               correct: element.data().correct,
               incorrect: element.data().incorrect,
@@ -267,7 +245,7 @@ export default {
               type: element.data().type,
               scorePercent: Math.round(
                 (element.data().correct / element.data().totalQuestion) * 100
-              ),
+              )
             };
             scoreTemp.push(data);
           });
@@ -284,16 +262,16 @@ export default {
         type = "posttest";
       }
 
-      this.studentList.forEach((element) => {
+      this.studentList.forEach(element => {
         let score;
         if (this.scoreType == "3") {
           // NOTE กรณีเลือกแบบคะแนนก่อนเเละหลังเรียน
 
           let pretestScore = this.scoreData.filter(
-            (x) => x.studentKey == element.key && x.type == "pretest"
+            x => x.studentKey == element.key && x.type == "pretest"
           );
           let posttestScore = this.scoreData.filter(
-            (x) => x.studentKey == element.key && x.type == "posttest"
+            x => x.studentKey == element.key && x.type == "posttest"
           );
           element.pretestScore = pretestScore.length
             ? pretestScore[0].scorePercent
@@ -307,7 +285,7 @@ export default {
           this.studentList.pop();
         } else {
           score = this.scoreData.filter(
-            (x) => x.studentKey == element.key && x.type == type
+            x => x.studentKey == element.key && x.type == type
           );
           score = score.length ? score[0].scorePercent : 0;
           element.score = score;
@@ -316,7 +294,7 @@ export default {
         }
       });
       this.loadingHide();
-    },
+    }
   },
   computed: {
     convertClassroom() {
@@ -325,12 +303,12 @@ export default {
       } else {
         return this.classRoomSelected.replace("ม.", "ชั้นมัธยมศึกษาปีที่ ");
       }
-    },
+    }
   },
   mounted() {
     console.clear();
     this.loadData();
-  },
+  }
 };
 </script>
 
