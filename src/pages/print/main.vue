@@ -43,7 +43,7 @@
         <div class="row" v-if="classroomOptions.length">
           <div
             class="col-12 text-h6 color3"
-            v-if="unitSelected != 'กรุณาเลือกUnit'"
+            v-if="unitSelected != 'กรุณาเลือกยูนิต'"
           >{{ showSkillName(skillSelected) }} - {{ practiceNameShow }}</div>
           <div class="col-12" v-for="(items,index) in practiceListShow" :key="index">
             <div class="q-pa-sm">
@@ -58,9 +58,9 @@
             </div>
           </div>
         </div>
-        <div class="q-pa-xl">
+        <!-- <div class="q-pa-xl">
           <span class="text-h6">ยังไม่มีการระบุเลเวล</span>
-        </div>
+        </div>-->
       </div>
     </div>
   </q-page>
@@ -81,7 +81,7 @@ export default {
       levelSelected: "",
       practiceList: "",
       practiceNameList: "",
-      practiceNameShow: ""
+      practiceNameShow: "",
     };
   },
   methods: {
@@ -89,18 +89,18 @@ export default {
       let routeData = "";
       if (item.practicetype == "flashcard") {
         routeData = this.$router.resolve({
-          path: "/print/flashcard/" + item.practiceId
+          path: "/print/flashcard/" + item.practiceId,
         });
       } else if (item.practicetype == "spelling bee") {
         let flashcardId = this.practiceListShow.filter(
-          x => x.practicetype == "flashcard"
+          (x) => x.practicetype == "flashcard"
         )[0].practiceId;
         routeData = this.$router.resolve({
-          path: "/print/spellingbee/" + flashcardId
+          path: "/print/spellingbee/" + flashcardId,
         });
       } else if (item.practicetype == "multiplechoices") {
         routeData = this.$router.resolve({
-          path: "/print/multiple/" + item.practiceId
+          path: "/print/multiple/" + item.practiceId,
         });
       }
 
@@ -111,9 +111,10 @@ export default {
     },
     changeUnitOrSkill() {
       this.loadingShow();
-      if (this.unitSelected != "กรุณาเลือกUnit") {
+
+      if (this.unitSelected != "กรุณาเลือกยูนิต") {
         let practiceListShow = this.practiceList.filter(
-          x =>
+          (x) =>
             x.level == this.levelSelected &&
             x.unit == this.unitSelected.toString() &&
             x.skill == this.skillSelected &&
@@ -122,7 +123,7 @@ export default {
         practiceListShow.sort((a, b) => a.order - b.order);
         this.practiceListShow = practiceListShow;
         this.practiceNameShow = this.practiceNameList.filter(
-          x =>
+          (x) =>
             x.level == this.levelSelected &&
             x.unit == this.unitSelected &&
             x.skill == this.skillSelected
@@ -142,7 +143,7 @@ export default {
       );
 
       let roomTotal = [];
-      let studentRoom = studentData.map(x => {
+      let studentRoom = studentData.map((x) => {
         if (x.level != 0) {
           return x.classRoom;
         }
@@ -150,6 +151,8 @@ export default {
 
       let studentRoomObj = [];
       studentRoom = [...new Set(studentRoom)];
+
+      studentRoom = studentRoom.filter((x) => x);
 
       if (studentRoom[0] == undefined) {
         this.classroomSelected = "ยังไม่ได้ระบุเลเวล";
@@ -176,23 +179,26 @@ export default {
         13,
         14,
         15,
-        16
+        16,
       ];
 
       this.skillOptions = ["Vocabulary"];
 
       studentRoom.forEach((element, index) => {
+        console.log(element);
         let splitClass = element.split(".");
+
         let indexadd =
           splitClass[0] == "ป"
-            ? splitClass[1]
+            ? Number(splitClass[1])
             : splitClass[0] == "ม"
             ? Number(splitClass[1]) + 6
             : null;
+
         let dataStudentRoom = {
           label: element,
           value: element,
-          indexAdd: indexadd
+          indexAdd: indexadd,
         };
         studentRoomObj.push(dataStudentRoom);
       });
@@ -211,15 +217,15 @@ export default {
       let level = this.decrypt(
         this.$q.localStorage.getItem("allStudentData"),
         1
-      ).filter(x => {
+      ).filter((x) => {
         return x.classRoom == this.classroomSelected;
       });
       level = level.sort((a, b) => {
         return b.level - a.level;
       });
       let allLevel = [...new Set(level)];
-      allLevel = allLevel.filter(x => Number(x.level) > 0);
-      allLevel = allLevel.map(x => Number(x.level));
+      allLevel = allLevel.filter((x) => Number(x.level) > 0);
+      allLevel = allLevel.map((x) => Number(x.level));
       allLevel = [...new Set(allLevel)];
       let maxLevel = Math.max(...allLevel);
       let minLevel = Math.min(...allLevel);
@@ -231,9 +237,9 @@ export default {
         .where("level", ">=", minLevel.toString())
         .where("level", "<=", maxLevel.toString())
         .get()
-        .then(doc => {
+        .then((doc) => {
           let temp = [];
-          doc.forEach(element => {
+          doc.forEach((element) => {
             temp.push({ ...element.data(), practiceId: element.id });
           });
           this.practiceList = temp;
@@ -241,20 +247,20 @@ export default {
             .where("level", ">=", minLevel.toString())
             .where("level", "<=", maxLevel.toString())
             .get()
-            .then(docName => {
+            .then((docName) => {
               let tempName = [];
-              docName.forEach(element => {
+              docName.forEach((element) => {
                 tempName.push(element.data());
               });
               this.practiceNameList = tempName;
               this.loadingHide();
             });
         });
-    }
+    },
   },
   mounted() {
     this.loadClassroom();
-  }
+  },
 };
 </script>
 
