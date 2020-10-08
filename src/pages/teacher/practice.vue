@@ -285,7 +285,7 @@ export default {
         title:
           "Unit " +
           this.decrypt(this.$q.localStorage.getItem("currentUnit"), 2), // สถานะการพูดคุย : เตรียมเรียน
-        content: "ถ้าตั้งใจคะแนนพิเศษได้แน่นอน รอลุ้นกัน"
+        content: "ถ้าตั้งใจคะแนนพิเศษได้แน่นอน รอลุ้นกัน",
       },
 
       isActiveMainLabel: true,
@@ -308,7 +308,7 @@ export default {
       currentRoom: this.decrypt(this.$q.localStorage.getItem("currentRoom"), 2),
       currentTerm: this.decrypt(this.$q.localStorage.getItem("currentTerm"), 2),
       currentYear: this.decrypt(this.$q.localStorage.getItem("currentYear"), 2),
-      missionScore: 0
+      missionScore: 0,
     };
   },
   methods: {
@@ -328,7 +328,8 @@ export default {
         readingContentKey: "",
         date: date,
         currentQuestion: 0,
-        page: "1"
+        page: "1",
+        order: data.order,
       };
       let totalPassedPractice = this.$q.localStorage.getItem(
         "totalPassedPractice"
@@ -339,7 +340,7 @@ export default {
         // ต้องหาก่อนว่า Flashcard เรียน Unit ไหนไปแล้ว แล้วเอา เลขunit มาเป็น array
         let findFlashcardUnit = totalPassedPractice
           .filter(
-            x =>
+            (x) =>
               x.skill == "Vocabulary" &&
               x.practiceType == "flashcard" &&
               x.level ==
@@ -348,7 +349,7 @@ export default {
               x.year == this.currentYear &&
               x.unit != this.currentPractice.unit
           )
-          .map(e => e.unit);
+          .map((e) => e.unit);
 
         // UNIT ของ Flashcard ที่ผ่านมาแล้วทั้งหมด
         let flashcardUnitSet = [...new Set(findFlashcardUnit)];
@@ -357,14 +358,14 @@ export default {
           this.$q.localStorage.getItem("practiceList"),
           1
         )
-          .filter(x => {
+          .filter((x) => {
             return (
               x.skill == "Vocabulary" &&
               x.practicetype == "multiplechoices" &&
               flashcardUnitSet.includes(x.unit)
             );
           })
-          .map(e => {
+          .map((e) => {
             return e.practiceKey;
           });
 
@@ -378,7 +379,7 @@ export default {
 
         let findGrammarLessonUnit = totalPassedPractice
           .filter(
-            x =>
+            (x) =>
               (x.skill =
                 "Grammar" &&
                 x.practiceType == "grammarlesson" &&
@@ -391,18 +392,18 @@ export default {
                 x.year == this.currentYear) &&
               x.unit != this.currentPractice.unit
           )
-          .map(e => e.unit);
+          .map((e) => e.unit);
         let findPracticeKey = this.decrypt(
           this.$q.localStorage.getItem("practiceList"),
           1
         )
           .filter(
-            x =>
+            (x) =>
               x.skill == "Grammar" &&
               x.practicetype == "multiplechoices" &&
               findGrammarLessonUnit.includes(x.unit)
           )
-          .map(e => e.practiceKey);
+          .map((e) => e.practiceKey);
         // console.log(findPracticeKey);
         updateData.reviewKey = findPracticeKey;
         updateData.reviewUnit = findGrammarLessonUnit;
@@ -415,7 +416,7 @@ export default {
           this.$q.localStorage.getItem("practiceList"),
           1
         ).filter(
-          x =>
+          (x) =>
             x.unit == data.unit && x.skill == "Reading" && x.order > data.order
         )[0].practiceKey;
 
@@ -443,11 +444,11 @@ export default {
         .where("practiceKey", "==", this.currentPractice.practiceKey)
         .where("schoolKey", "==", this.teacherData.schoolKey)
         .get()
-        .then(doc => {
+        .then((doc) => {
           // กรณีพบว่าได้เคยทำ หรือ นักเรียนมีข้อมูลแบบฝึกหัดนี้อยู่แล้ว ให้ทำการลบข้อมูลนั้นๆออก
           if (doc.size) {
             let counter = 0;
-            doc.forEach(element => {
+            doc.forEach((element) => {
               // console.log("LOOP");
               db.collection("studentpracticelog")
                 .doc(element.id)
@@ -516,7 +517,7 @@ export default {
       db.collection("synchronize")
         .doc(this.teacherData.key)
         .update({
-          imgPracticeURL: imgPracticeURL
+          imgPracticeURL: imgPracticeURL,
         })
         .then(() => {
           this.loadingHide();
@@ -526,12 +527,12 @@ export default {
       db.collection("synchronize")
         .doc(this.teacherData.key)
         .update({
-          currentPage: "studyplan"
+          currentPage: "studyplan",
         })
         .then(() => {
           this.$router.push("/teacher/studyplan");
         });
-    }
+    },
   },
   created() {
     this.getTalking();
@@ -546,6 +547,6 @@ export default {
   mounted() {
     // this.loadScoreMission();
     // console.log("LOAD SCORE MISSION");
-  }
+  },
 };
 </script>
