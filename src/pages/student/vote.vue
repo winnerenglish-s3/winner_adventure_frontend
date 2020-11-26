@@ -425,6 +425,7 @@ export default {
 
       this.studentVote.vote = type;
 
+
       db.collection("missionvote")
         .add(this.studentVote)
         .then(() => {
@@ -439,6 +440,7 @@ export default {
         });
     },
     async loadClassroomMission() {
+      console.clear();
       if (this.isLoadData) {
         return;
       }
@@ -461,9 +463,10 @@ export default {
           db.collection("classroomMission")
             .where("class", "==", this.studentData.classRoom)
             .where("room", "==", this.studentData.room)
-            .where("term", "==", this.studentData.term)
+            // .where("term", "==", this.studentData.term)
             .where("year", "==", this.studentData.year)
             .where("schoolKey", "==", this.studentData.schoolKey)
+            .where("status","==","finish")
             .get()
             .then(doc => {
               let classroomTemp = [];
@@ -476,7 +479,7 @@ export default {
               });
               this.allClassMission = classroomTemp;
 
-              // console.log("allMission", temp);
+
 
               let shipMission;
               let buddyMission;
@@ -496,6 +499,7 @@ export default {
               treasureMission = temp.filter(x => {
                 return x.name == "สมบัติ";
               });
+
 
               let classShipMission;
               let classBuddyMission;
@@ -532,6 +536,7 @@ export default {
                 return Number(a.level) - Number(b.level);
               });
 
+
               let lastShipMissionLV =
                 classShipMission.length != 0
                   ? classShipMission[classShipMission.length - 1].level
@@ -563,13 +568,14 @@ export default {
                 return x.level == findNextTreasureLv;
               })[0];
 
+
               this.studentVote = {
                 class: this.studentData.classRoom,
                 room: this.studentData.room,
                 schoolKey: this.studentData.schoolKey,
                 studentKey: this.studentData.key,
                 vote: "",
-                no: doc.size + 1,
+                no: doc.size + 2,
                 term: this.studentData.term,
                 year: this.studentData.year
               };
@@ -684,6 +690,7 @@ export default {
   },
   created() {
     this.loadSynchronize();
+    
   },
   beforeDestroy() {
     if (typeof this.snapSync == "function") {

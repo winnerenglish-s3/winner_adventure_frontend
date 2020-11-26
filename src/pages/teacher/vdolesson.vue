@@ -1,5 +1,22 @@
 <template>
-  <q-page class="q-pa-md color3 bg-grammar bg-blend-mode animated fadeIn">
+  <q-page
+    class="q-pa-md color3 bg-blend-mode animated fadeIn"
+    :class="
+      currentPractice.skill == 'Vocabulary'
+        ? 'bg-vocabulary'
+        : currentPractice.skill == 'Grammar'
+        ? 'bg-grammar'
+        : currentPractice.skill == 'Reading'
+        ? 'bg-reading'
+        : currentPractice.skill == 'Writing'
+        ? 'bg-writing'
+        : currentPractice.skill == 'Phonics'
+        ? 'bg-phonics'
+        : currentPractice.skill == 'Listening & Speaking'
+        ? 'bg-listening'
+        : ''
+    "
+  >
     <div class="relative-position" align="center">
       <transition
         appear
@@ -11,10 +28,12 @@
           style="width:fit-content;width:-webkit-fit-content;"
         >
           <div class="border-dashed br-a-sm q-px-xl q-py-sm">
-            <span
-              class="text-bold"
-              style="font-size:calc(20px + 1vw)"
-            >{{convertPracticeName(currentPractice.practicetype,currentPractice.skill)}}</span>
+            <span class="text-bold" style="font-size:calc(20px + 1vw)">{{
+              convertPracticeName(
+                currentPractice.practicetype,
+                currentPractice.skill
+              )
+            }}</span>
           </div>
         </div>
       </transition>
@@ -38,14 +57,19 @@
       <div class="row">
         <div style="width:300px" class="col-4 bg3 q-pa-sm">
           <q-scroll-area style="height:550px;">
-            <div class="q-py-xs" v-for="(item, index) in practiceData" :key="index">
+            <div
+              class="q-py-xs"
+              v-for="(item, index) in practiceData"
+              :key="index"
+            >
               <div
                 v-ripple
                 @click="showData(item, index)"
                 align="left"
                 class="q-pa-md row relative-position br-a-xs"
                 style="width:100%"
-                :class="[isShowVideo ? 'no-pointer-events' : 'cursor-pointer',
+                :class="[
+                  isShowVideo ? 'no-pointer-events' : 'cursor-pointer',
                   activeIndex == index ? 'bg6' : null,
                   activeIndex != index ? 'bg5' : null
                 ]"
@@ -106,7 +130,11 @@
               ></q-btn>
             </div>
             <div align="right" class="col">
-              <q-btn class="bg3 color6 text-h6" label="จบภารกิจ" @click="finishLesson()"></q-btn>
+              <q-btn
+                class="bg3 color6 text-h6"
+                label="จบภารกิจ"
+                @click="finishLesson()"
+              ></q-btn>
             </div>
           </div>
         </div>

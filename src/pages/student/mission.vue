@@ -210,7 +210,6 @@ export default {
   methods: {
     getCurrentMission() {
       let _this = this;
-
       if (this.isLoadData) {
         return;
       }
@@ -221,6 +220,7 @@ export default {
         this.$q.localStorage.getItem("allMission"),
         1
       );
+
 
       let currentMission = this.$q.localStorage.has("currentMission")
         ? this.decrypt(this.$q.localStorage.getItem("currentMission"), 1)
@@ -234,6 +234,10 @@ export default {
       buddySkill = buddySkill.filter(x => {
         return x.status == "finish";
       });
+
+      
+
+
 
       this.buddyDisCount =
         Number(buddySkill[buddySkill.length - 1].skill) * this.totalStudent;

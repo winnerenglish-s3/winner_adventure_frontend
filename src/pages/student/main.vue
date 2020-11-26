@@ -471,7 +471,7 @@ export default {
             .collection("classroomMission")
             .where("schoolKey", "==", this.studentData.schoolKey)
             .where("status", "==", "finish")
-            .where("term", "==", this.studentData.term)
+            // .where("term", "==", this.studentData.term)
             .where("year", "==", this.studentData.year)
             .where("class", "==", this.studentData.classRoom)
             .where("room", "==", this.studentData.room)

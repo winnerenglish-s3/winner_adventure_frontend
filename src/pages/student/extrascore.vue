@@ -77,7 +77,10 @@
           leave-active-class="animated fadeOutDown duration-talk-out"
           v-if="isActiveMainTalk"
         >
-          <div class="boxtalk row bg1 color2 border3-lg br-a-lg q-ma-md" align="left">
+          <div
+            class="boxtalk row bg1 color2 border3-lg br-a-lg q-ma-md"
+            align="left"
+          >
             <span
               class="q-pa-lg"
               :class="{
@@ -86,7 +89,13 @@
                 'text-size-l': innerWidth > 1440
               }"
             >
-              <span>{{ charTalking(currentPage,practiceType, studentData.buddy == null ? '0' : studentData.buddy.level) }}</span>
+              <span>{{
+                charTalking(
+                  currentPage,
+                  practiceType,
+                  studentData.buddy == null ? "0" : studentData.buddy.level
+                )
+              }}</span>
             </span>
           </div>
         </transition>

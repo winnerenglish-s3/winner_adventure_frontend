@@ -137,7 +137,7 @@ export default {
         .where("schoolKey", "==", this.studentData.schoolKey)
         .where("class", "==", this.studentData.classRoom)
         .where("room", "==", this.studentData.room)
-        .where("term", "==", term)
+        // .where("term", "==", term)
         .where("year", "==", year)
         .where("status", "==", "current")
         .get()

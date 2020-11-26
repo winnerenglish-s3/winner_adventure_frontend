@@ -362,7 +362,6 @@ export default {
 
               if (checkExists) {
                 // กรณีมีคู่หู
-                console.log("มีคู่หู");
                 db.collection("synchronize")
                   .doc(this.teacherData.key)
                   .update({
@@ -373,7 +372,6 @@ export default {
                     this.$router.push("/teacher/mission");
                   });
               } else {
-                console.log("ไม่มีคู่หู");
                 db.collection("synchronize")
                   .doc(this.teacherData.key)
                   .update({ currentPage: "studyplan", date: dateAndTime })
@@ -386,6 +384,7 @@ export default {
         });
     },
     loadClassroomMission() {
+      console.clear();
       this.loadingShow();
       // console.clear();
       db.collection("mission")
@@ -404,7 +403,7 @@ export default {
           db.collection("classroomMission")
             .where("class", "==", this.currentClass)
             .where("room", "==", this.currentRoom)
-            .where("term", "==", this.currentTerm)
+            // .where("term", "==", this.currentTerm)
             .where("year", "==", this.currentYear)
             .where("schoolKey", "==", this.teacherData.schoolKey)
             .where("status", "==", "finish")
@@ -418,6 +417,7 @@ export default {
                 let dataFinal = { ...dataAdd, ...classElement.data() };
                 classroomTemp.push(dataFinal);
               });
+
               this.allClassMission = classroomTemp;
 
               let shipMission;
@@ -438,6 +438,8 @@ export default {
               treasureMission = temp.filter(x => {
                 return x.name == "สมบัติ";
               });
+
+
 
               let classShipMission;
               let classBuddyMission;
@@ -475,6 +477,8 @@ export default {
               classTreasureMission.sort((a, b) => {
                 return Number(a.level) - Number(b.level);
               });
+              
+
 
               let lastShipMissionLV =
                 classShipMission.length != 0
@@ -571,13 +575,17 @@ export default {
         .collection("classroomMission")
         .where("class", "==", this.currentClass)
         .where("room", "==", this.currentRoom)
-        .where("term", "==", this.currentTerm)
+        // .where("term", "==", this.currentTerm)
         .where("year", "==", this.currentYear)
         .where("schoolKey", "==", this.teacherData.schoolKey)
         .get();
 
+
+
       let numberOfVote = getNoVote.size;
       numberOfVote = numberOfVote == 0 ? 1 : numberOfVote + 1;
+
+
 
       this.snapTotalVote = db
         .collection("missionvote")
@@ -585,7 +593,7 @@ export default {
         .where("no", "==", numberOfVote)
         .where("class", "==", this.currentClass)
         .where("room", "==", this.currentRoom)
-        .where("term", "==", this.currentTerm)
+        // .where("term", "==", this.currentTerm)
         .where("year", "==", this.currentYear)
         .onSnapshot({ includeMetadataChanges: true }, doc => {
           this.totalVote = doc.size;
@@ -616,7 +624,6 @@ export default {
         .get();
 
       if (checkMission.size > 0) {
-        console.log("กรณีเจอภารกิจที่กำลังทำอยู่");
         db.collection("synchronize")
           .doc(this.teacherData.key)
           .update({ currentPage: "studyplan", date: dateAndTime })

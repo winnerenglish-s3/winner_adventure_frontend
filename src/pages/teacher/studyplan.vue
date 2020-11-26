@@ -93,8 +93,14 @@
                 :src="'../../statics/coins/t' + currentMission.level + '.png'"
               ></q-img>
             </div>
-            <div class="bg5 q-mt-lg q-pa-sm br-a-sm" style="max-width:300px;width:85%;">
-              <div v-if="isShowMission" class="br-a-sm border-dashed q-py-sm color3">
+            <div
+              class="bg5 q-mt-lg q-pa-sm br-a-sm"
+              style="max-width:300px;width:85%;"
+            >
+              <div
+                v-if="isShowMission"
+                class="br-a-sm border-dashed q-py-sm color3"
+              >
                 <div style="font-size:calc(16px + 1vw)">
                   <span>ภารกิจปัจจุบัน</span>
                 </div>
@@ -102,11 +108,11 @@
                   <div>
                     <span>
                       {{
-                      currentMission.name +
-                      (currentMission.name != "สมบัติ"
-                      ? " ระดับ "
-                      : " ชิ้นที่") +
-                      currentMission.level
+                        currentMission.name +
+                          (currentMission.name != "สมบัติ"
+                            ? " ระดับ "
+                            : " ชิ้นที่") +
+                          currentMission.level
                       }}
                     </span>
                   </div>
@@ -114,9 +120,9 @@
                     <span>
                       <!-- NOTE ต้องถามว่า จะให้ลดก่อนคูณ หรือ คูณก่อนลด -->
                       {{
-                      currentMission.goal * totalStudent -
-                      currentMission.discount +
-                      " เหรียญ"
+                        currentMission.goal * totalStudent -
+                          currentMission.discount +
+                          " เหรียญ"
                       }}
                     </span>
                   </div>
@@ -128,7 +134,10 @@
             </div>
           </div>
           <div class="col q-pt-lg relative-position" align="center">
-            <q-img src="../../statics/main/label.png" style="max-width:900px;width:100%;">
+            <q-img
+              src="../../statics/main/label.png"
+              style="max-width:900px;width:100%;"
+            >
               <div
                 class="absolute-top bg-transparent"
                 style="top:calc(100% - 90%);height:calc(100% - 60%)"
@@ -139,18 +148,19 @@
                   style="font-size:5vw;font-style:italic;"
                 >
                   {{
-                  "ระดับ " +
-                  currentPractice.level +
-                  " บทที่ " +
-                  currentPractice.unit
+                    "ระดับ " +
+                      currentPractice.level +
+                      " บทที่ " +
+                      currentPractice.unit
                   }}
                 </span>
               </div>
-              <div class="absolute-bottom bg-transparent" style="height:calc(100% - 66%)">
+              <div
+                class="absolute-bottom bg-transparent"
+                style="height:calc(100% - 66%)"
+              >
                 <span v-if="isLoadType" style="font-size:4.5vw;">
-                  {{
-                  showSkillName(currentPractice.skill)
-                  }}
+                  {{ showSkillName(currentPractice.skill) }}
                 </span>
               </div>
             </q-img>
@@ -253,10 +263,10 @@
                         </q-item-section>
                         <q-item-section class="color1 text-h6">
                           {{
-                          "บทที่ " +
-                          (index + 1) +
-                          " : " +
-                          practiceShowName[index].name.replace(/:/g, " ")
+                            "บทที่ " +
+                              (index + 1) +
+                              " : " +
+                              practiceShowName[index].name.replace(/:/g, " ")
                           }}
                         </q-item-section>
                       </template>
@@ -268,7 +278,11 @@
                         v-for="(i, index2) in practiceShow"
                         :key="index2"
                       >
-                        <q-item clickable v-ripple @click="goToLearn(i, index2)">
+                        <q-item
+                          clickable
+                          v-ripple
+                          @click="goToLearn(i, index2)"
+                        >
                           <q-item-section avatar class="q-px-md">
                             <div style="width:50px;">
                               <!-- กรณีแบบฝึกหัดยังไม่ถูกทำ จะ ขึ้นตัวเลข -->
@@ -279,7 +293,10 @@
                                 class="text-h3 text-bold text-shadow color3"
                               >
                                 <span v-if="i.practicetype.includes('review')">
-                                  <q-icon size="32px" name="fas fa-book-reader"></q-icon>
+                                  <q-icon
+                                    size="32px"
+                                    name="fas fa-book-reader"
+                                  ></q-icon>
                                 </span>
                                 <span
                                   v-else-if="
@@ -287,27 +304,32 @@
                                       x.practicetype.includes('review')
                                     ) >= 0
                                   "
-                                >{{ index2 }}</span>
+                                  >{{ index2 }}</span
+                                >
                                 <span v-else>{{ index2 + 1 }}</span>
                               </span>
                               <span v-else>
                                 <!-- กรณีแบบฝึกหัดถูกทำแล้ว -->
-                                <q-icon name="fas fa-check" size="35px" class="color10"></q-icon>
+                                <q-icon
+                                  name="fas fa-check"
+                                  size="35px"
+                                  class="color10"
+                                ></q-icon>
                               </span>
                             </div>
                           </q-item-section>
                           <q-item-section>
                             <span class="text-h6">
                               {{
-                              convertPracticeName(
-                              decrypt(
-                              $q.localStorage.getItem("practiceType"),
-                              1
-                              ).filter(x => {
-                              return x.key == i.practicetype;
-                              })[0].key,
-                              i.skill
-                              )
+                                convertPracticeName(
+                                  decrypt(
+                                    $q.localStorage.getItem("practiceType"),
+                                    1
+                                  ).filter(x => {
+                                    return x.key == i.practicetype;
+                                  })[0].key,
+                                  i.skill
+                                )
                               }}
                             </span>
                           </q-item-section>
@@ -517,10 +539,9 @@ export default {
         .collection("practiceListName")
         .where("level", "==", nextPractice.level)
         .where("unit", "==", nextPractice.unit)
+        .where("skill", "==", nextPractice.skill)
         .get();
-
       this.$q.localStorage.set("practiceListName", practiceName.docs[0].data());
-
       db.collection("synchronize")
         .doc(this.teacherData.key)
         .update({

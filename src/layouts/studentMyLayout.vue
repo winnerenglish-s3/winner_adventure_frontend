@@ -317,7 +317,7 @@ export default {
         .collection("classroomMission")
         .where("schoolKey", "==", this.studentData.schoolKey)
         .where("class", "==", this.studentData.classRoom)
-        .where("term", "==", this.studentData.term)
+        // .where("term", "==", this.studentData.term)
         .where("year", "==", this.studentData.year)
         .where("room", "==", this.studentData.room)
         .onSnapshot({ includeMetadataChanges: true }, missionDoc => {
