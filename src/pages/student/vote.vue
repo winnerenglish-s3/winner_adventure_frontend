@@ -1,5 +1,8 @@
 <template>
-  <q-page class="bg-main row justify-center" :class="{ 'flex flex-center': isLoadData }">
+  <q-page
+    class="bg-main row justify-center"
+    :class="{ 'flex flex-center': isLoadData }"
+  >
     <q-resize-observer @resize="onResize" />
 
     <q-spinner-facebook v-if="isLoadData" color="primary" size="100px" />
@@ -18,8 +21,13 @@
         v-if="isActiveVote"
       >
         <div class="col-12 row q-mt-md">
-          <div class="col q-pa-md bg1 border3-md br-a-sm self-center text-overflow" align="center">
-            <span class="text-h5 color3">เลือกภารกิจเพื่อนทำร่วมกับเพื่อนๆ</span>
+          <div
+            class="col q-pa-md bg1 border3-md br-a-sm self-center text-overflow"
+            align="center"
+          >
+            <span class="text-h5 color3"
+              >เลือกภารกิจเพื่อนทำร่วมกับเพื่อนๆ</span
+            >
           </div>
         </div>
       </transition>
@@ -33,7 +41,12 @@
       >
         <div class="col-4 q-mt-lg q-pa-xs relative-position" align="center">
           <div align="center" class="animated bounce duration-bounce">
-            <q-icon name="fas fa-caret-down" class="color7" size="100px" style="height:50px;"></q-icon>
+            <q-icon
+              name="fas fa-caret-down"
+              class="color7"
+              size="100px"
+              style="height:50px;"
+            ></q-icon>
           </div>
 
           <div
@@ -51,7 +64,9 @@
               :style="checkedShip ? { opacity: '.6' } : null"
             >
               <div class="q-pt-xs">
-                <span class="color1 text-h6">เรือ ระดับ {{ mission.ship.level }}</span>
+                <span class="color1 text-h6"
+                  >เรือ ระดับ {{ mission.ship.level }}</span
+                >
               </div>
               <div class="q-py-md">
                 <transition
@@ -68,7 +83,9 @@
                 </transition>
               </div>
               <div class="q-px-lg" style="height:40px;" align="left">
-                <span class="color1">+ {{ mission.ship.status }} เหรียญเมื่อทำแบบฝึกหัด</span>
+                <span class="color1"
+                  >+ {{ mission.ship.status }} เหรียญเมื่อทำแบบฝึกหัด</span
+                >
               </div>
             </div>
             <div
@@ -76,7 +93,9 @@
               align="center"
               :style="checkedShip ? { opacity: '.6' } : null"
             >
-              <span class="text-h4 color3 text-bold">{{ mission.ship.goal * totalStudent }} เหรียญ</span>
+              <span class="text-h4 color3 text-bold"
+                >{{ mission.ship.goal * totalStudent }} เหรียญ</span
+              >
             </div>
           </div>
 
@@ -86,7 +105,9 @@
             v-if="checkedShip"
           >
             <div class="border-dashed br-a-sm q-py-md">
-              <div class="q-pa-xs">คุณจะเลือกเรือ ระดับ {{ mission.ship.level }} ได้ต่อเมื่อ</div>
+              <div class="q-pa-xs">
+                คุณจะเลือกเรือ ระดับ {{ mission.ship.level }} ได้ต่อเมื่อ
+              </div>
               <div v-if="mission.buddy.level == mission.treasure.level">
                 มีคู่หู ระดับ {{ Number(mission.buddy.level) + 1 }} และ สมบัติ
                 ชิ้นที่ {{ Number(mission.treasure.level) + 1 }}
@@ -98,7 +119,9 @@
                     Number(mission.ship.level) - Number(mission.buddy.level) ==
                       3
                   "
-                >มีคู่หู ระดับ {{ Number(mission.buddy.level) + 1 }}</div>
+                >
+                  มีคู่หู ระดับ {{ Number(mission.buddy.level) + 1 }}
+                </div>
                 <div
                   class="q-pa-xs"
                   v-if="
@@ -106,7 +129,9 @@
                       Number(mission.treasure.level) ==
                       3
                   "
-                >มีสมบัติ ชิ้นที่ {{ Number(mission.treasure.level) + 1 }}</div>
+                >
+                  มีสมบัติ ชิ้นที่ {{ Number(mission.treasure.level) + 1 }}
+                </div>
               </div>
             </div>
           </div>
@@ -122,7 +147,12 @@
       >
         <div class="col-4 q-mt-lg q-pa-xs relative-position" align="center">
           <div align="center" class="animated bounce duration-bounce">
-            <q-icon name="fas fa-caret-down" class="color7" size="100px" style="height:50px;"></q-icon>
+            <q-icon
+              name="fas fa-caret-down"
+              class="color7"
+              size="100px"
+              style="height:50px;"
+            ></q-icon>
           </div>
           <div
             v-ripple
@@ -141,7 +171,9 @@
               :style="checkedBuddy ? { opacity: '.6' } : null"
             >
               <div class="q-pt-xs">
-                <span class="color1 text-h6">คู่หู ระดับ {{ mission.buddy.level }}</span>
+                <span class="color1 text-h6"
+                  >คู่หู ระดับ {{ mission.buddy.level }}</span
+                >
               </div>
               <div class="q-py-md">
                 <transition
@@ -170,7 +202,9 @@
               style="max-width:300px;width:100%;"
               align="center"
             >
-              <span class="text-h4 color3 text-bold">{{ mission.buddy.goal * totalStudent }} เหรียญ</span>
+              <span class="text-h4 color3 text-bold"
+                >{{ mission.buddy.goal * totalStudent }} เหรียญ</span
+              >
             </div>
           </div>
 
@@ -180,7 +214,9 @@
             v-if="checkedBuddy"
           >
             <div class="border-dashed br-a-sm q-py-md">
-              <div class="q-pa-xs">คุณจะเลือกเรือ ระดับ {{ mission.buddy.level }} ได้ต่อเมื่อ</div>
+              <div class="q-pa-xs">
+                คุณจะเลือกเรือ ระดับ {{ mission.buddy.level }} ได้ต่อเมื่อ
+              </div>
               <div v-if="mission.ship.level == mission.treasure.level">
                 มีเรือ ระดับ {{ Number(mission.ship.level) + 1 }} และ สมบัติ
                 ชิ้นที่ {{ Number(mission.treasure.level) + 1 }}
@@ -192,7 +228,9 @@
                     Number(mission.buddy.level) - Number(mission.ship.level) ==
                       3
                   "
-                >มีเรือ ระดับ {{ Number(mission.ship.level) + 1 }}</div>
+                >
+                  มีเรือ ระดับ {{ Number(mission.ship.level) + 1 }}
+                </div>
                 <div
                   class="q-pa-xs"
                   v-if="
@@ -200,7 +238,9 @@
                       Number(mission.treasure.level) ==
                       3
                   "
-                >มีสมบัติ ชิ้นที่ {{ Number(mission.treasure.level) + 1 }}</div>
+                >
+                  มีสมบัติ ชิ้นที่ {{ Number(mission.treasure.level) + 1 }}
+                </div>
               </div>
             </div>
           </div>
@@ -216,7 +256,12 @@
       >
         <div class="col-4 q-mt-lg q-pa-xs relative-position" align="center">
           <div align="center" class="animated bounce duration-bounce">
-            <q-icon name="fas fa-caret-down" class="color7" size="100px" style="height:50px;"></q-icon>
+            <q-icon
+              name="fas fa-caret-down"
+              class="color7"
+              size="100px"
+              style="height:50px;"
+            ></q-icon>
           </div>
           <div
             v-ripple
@@ -235,7 +280,9 @@
               :style="checkedTreasure ? { opacity: '.6' } : null"
             >
               <div class="q-pt-xs">
-                <span class="color1 text-h6">สมบัติ ชิ้นที่ {{ mission.treasure.level }}</span>
+                <span class="color1 text-h6"
+                  >สมบัติ ชิ้นที่ {{ mission.treasure.level }}</span
+                >
               </div>
               <div class="q-py-md">
                 <transition
@@ -264,9 +311,9 @@
               style="max-width:300px;width:100%;"
               align="center"
             >
-              <span
-                class="text-h4 color3 text-bold"
-              >{{ mission.treasure.goal * totalStudent }} เหรียญ</span>
+              <span class="text-h4 color3 text-bold"
+                >{{ mission.treasure.goal * totalStudent }} เหรียญ</span
+              >
             </div>
           </div>
 
@@ -276,7 +323,9 @@
             v-if="checkedTreasure"
           >
             <div class="border-dashed br-a-sm q-py-md">
-              <div class="q-pa-xs">คุณจะเลือกเรือ ระดับ {{ mission.treasure.level }} ได้ต่อเมื่อ</div>
+              <div class="q-pa-xs">
+                คุณจะเลือกเรือ ระดับ {{ mission.treasure.level }} ได้ต่อเมื่อ
+              </div>
               <div v-if="mission.ship.level == mission.buddy.level">
                 มีเรือ ระดับ {{ Number(mission.ship.level) + 1 }} และ คู่หู
                 ชิ้นที่ {{ Number(mission.buddy.level) + 1 }}
@@ -289,7 +338,9 @@
                       Number(mission.ship.level) ==
                       3
                   "
-                >มีเรือ ระดับ {{ Number(mission.ship.level) + 1 }}</div>
+                >
+                  มีเรือ ระดับ {{ Number(mission.ship.level) + 1 }}
+                </div>
                 <div
                   class="q-pa-xs"
                   v-if="
@@ -297,7 +348,9 @@
                       Number(mission.buddy.level) ==
                       3
                   "
-                >มีคู่หู ระดับ {{ Number(mission.buddy.level) + 1 }}</div>
+                >
+                  มีคู่หู ระดับ {{ Number(mission.buddy.level) + 1 }}
+                </div>
               </div>
             </div>
           </div>
@@ -356,14 +409,20 @@
       </transition>
 
       <!-- NOTE  main Talking : แสดงการพูดคุย -->
-      <div class="col-12 self-end z-top absolute-bottom" style="overflow:hidden;">
+      <div
+        class="col-12 self-end z-top absolute-bottom"
+        style="overflow:hidden;"
+      >
         <transition
           appear
           enter-active-class="animated fadeInUp duration-talk-in"
           leave-active-class="animated fadeOutDown duration-talk-out"
           v-if="isActiveMainTalk"
         >
-          <div class="boxtalk row bg1 color2 border3-lg br-a-lg q-ma-md" align="left">
+          <div
+            class="boxtalk row bg1 color2 border3-lg br-a-lg q-ma-md"
+            align="left"
+          >
             <span
               class="q-pa-md"
               :class="{
@@ -425,7 +484,6 @@ export default {
 
       this.studentVote.vote = type;
 
-
       db.collection("missionvote")
         .add(this.studentVote)
         .then(() => {
@@ -466,7 +524,7 @@ export default {
             // .where("term", "==", this.studentData.term)
             .where("year", "==", this.studentData.year)
             .where("schoolKey", "==", this.studentData.schoolKey)
-            .where("status","==","finish")
+            .where("status", "==", "finish")
             .get()
             .then(doc => {
               let classroomTemp = [];
@@ -478,8 +536,6 @@ export default {
                 classroomTemp.push(dataFinal);
               });
               this.allClassMission = classroomTemp;
-
-
 
               let shipMission;
               let buddyMission;
@@ -499,7 +555,6 @@ export default {
               treasureMission = temp.filter(x => {
                 return x.name == "สมบัติ";
               });
-
 
               let classShipMission;
               let classBuddyMission;
@@ -536,7 +591,6 @@ export default {
                 return Number(a.level) - Number(b.level);
               });
 
-
               let lastShipMissionLV =
                 classShipMission.length != 0
                   ? classShipMission[classShipMission.length - 1].level
@@ -568,14 +622,13 @@ export default {
                 return x.level == findNextTreasureLv;
               })[0];
 
-
               this.studentVote = {
                 class: this.studentData.classRoom,
                 room: this.studentData.room,
                 schoolKey: this.studentData.schoolKey,
                 studentKey: this.studentData.key,
                 vote: "",
-                no: doc.size + 2,
+                no: doc.size + 1,
                 term: this.studentData.term,
                 year: this.studentData.year
               };
@@ -690,7 +743,6 @@ export default {
   },
   created() {
     this.loadSynchronize();
-    
   },
   beforeDestroy() {
     if (typeof this.snapSync == "function") {
