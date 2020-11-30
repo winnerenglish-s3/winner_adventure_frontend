@@ -8,7 +8,10 @@
     >
       <div class="col-lg-10 col-xs-12 row q-px-xs">
         <div class="col-12" align="right">
-          <q-btn class="bg1 border3-sm br-a-xs text-h6 no-pointer-events" style="width:370px;">
+          <q-btn
+            class="bg1 border3-sm br-a-xs text-h6 no-pointer-events"
+            style="width:370px;"
+          >
             <div class="row fit">
               <div class="col self-center" align="left">
                 <span>จำนวนลูกเรือที่เลือก</span>
@@ -29,8 +32,12 @@
           leave-active-class="animated fadeOut duration-votetext-out"
         >
           <div class="col-12 row q-mt-md" align="center">
-            <div class="col q-pa-md bg1 border3-md border3-b-md br-a-sm self-center text-overflow">
-              <span class="text-h5 color2">ให้ลูกเรือเลือกภารกิจที่อยากได้และหาเหรียญให้ครบตามกำหนด</span>
+            <div
+              class="col q-pa-md bg1 border3-md border3-b-md br-a-sm self-center text-overflow"
+            >
+              <span class="text-h5 color2"
+                >ให้ลูกเรือเลือกภารกิจที่อยากได้และหาเหรียญให้ครบตามกำหนด</span
+              >
             </div>
           </div>
         </transition>
@@ -70,14 +77,27 @@
                   </transition>
                 </div>
                 <div class="q-px-md" style="height:40px;" align="center">
-                  <span class="color1">+ {{ mission.ship.status }} เหรียญเมื่อทำแบบฝึกหัด</span>
+                  <span class="color1"
+                    >+ {{ mission.ship.status }} เหรียญเมื่อทำแบบฝึกหัด</span
+                  >
                 </div>
               </div>
-              <div class="q-px-lg bg1 q-pa-xs" style="max-width:300px;width:100%;" align="center">
-                <span class="text-h4 color3 text-bold">{{ mission.ship.goal * totalStudent }} เหรียญ</span>
+              <div
+                class="q-px-lg bg1 q-pa-xs"
+                style="max-width:300px;width:100%;"
+                align="center"
+              >
+                <span class="text-h4 color3 text-bold"
+                  >{{ mission.ship.goal * totalStudent }} เหรียญ</span
+                >
               </div>
-              <div class="bg5 br-bl-xl br-br-xl q-pa-md" style="max-width:300px;width:100%;">
-                <span class="text-h5 color3">ลูกเรือเลือก {{ vote.ship }} คน</span>
+              <div
+                class="bg5 br-bl-xl br-br-xl q-pa-md"
+                style="max-width:300px;width:100%;"
+              >
+                <span class="text-h5 color3"
+                  >ลูกเรือเลือก {{ vote.ship }} คน</span
+                >
               </div>
               <div class="q-mt-xl">
                 <!-- :disable="!(vote.ship > 0 &&  vote.ship >= vote.treasure && vote.ship >= vote.buddy)" -->
@@ -114,7 +134,9 @@
                 :disable="isDisabled"
               >
                 <div class="q-pt-xs">
-                  <span class="color1 text-h6">คู่หู ระดับ {{ mission.buddy.level }}</span>
+                  <span class="color1 text-h6"
+                    >คู่หู ระดับ {{ mission.buddy.level }}</span
+                  >
                 </div>
                 <div class="q-py-md">
                   <transition
@@ -137,13 +159,22 @@
                   </span>
                 </div>
               </div>
-              <div class="q-px-lg bg1 q-pa-xs" style="max-width:300px;width:100%;" align="center">
-                <span
-                  class="text-h4 color3 text-bold"
-                >{{ mission.buddy.goal * totalStudent }} เหรียญ</span>
+              <div
+                class="q-px-lg bg1 q-pa-xs"
+                style="max-width:300px;width:100%;"
+                align="center"
+              >
+                <span class="text-h4 color3 text-bold"
+                  >{{ mission.buddy.goal * totalStudent }} เหรียญ</span
+                >
               </div>
-              <div class="bg5 br-bl-xl br-br-xl q-pa-md" style="max-width:300px;width:100%;">
-                <span class="text-h5 color3">ลูกเรือเลือก {{ vote.buddy }} คน</span>
+              <div
+                class="bg5 br-bl-xl br-br-xl q-pa-md"
+                style="max-width:300px;width:100%;"
+              >
+                <span class="text-h5 color3"
+                  >ลูกเรือเลือก {{ vote.buddy }} คน</span
+                >
               </div>
               <div class="q-mt-xl">
                 <q-btn
@@ -205,13 +236,22 @@
                   </span>
                 </div>
               </div>
-              <div class="q-px-lg bg1 q-pa-xs" style="max-width:300px;width:100%;" align="center">
-                <span
-                  class="text-h4 color3 text-bold"
-                >{{ mission.treasure.goal * totalStudent }} เหรียญ</span>
+              <div
+                class="q-px-lg bg1 q-pa-xs"
+                style="max-width:300px;width:100%;"
+                align="center"
+              >
+                <span class="text-h4 color3 text-bold"
+                  >{{ mission.treasure.goal * totalStudent }} เหรียญ</span
+                >
               </div>
-              <div class="bg5 br-bl-xl br-br-xl q-pa-md" style="max-width:300px;width:100%;">
-                <span class="text-h5 color3">ลูกเรือเลือก {{ vote.treasure }} คน</span>
+              <div
+                class="bg5 br-bl-xl br-br-xl q-pa-md"
+                style="max-width:300px;width:100%;"
+              >
+                <span class="text-h5 color3"
+                  >ลูกเรือเลือก {{ vote.treasure }} คน</span
+                >
               </div>
               <div class="q-mt-xl">
                 <q-btn
@@ -337,6 +377,7 @@ export default {
             .where("class", "==", this.currentClass)
             .where("room", "==", this.currentRoom)
             .where("status", "==", "finish")
+                .where("year", "==", this.currentYear)
             .get()
             .then(m => {
               // let totalMission = [];
@@ -439,8 +480,6 @@ export default {
                 return x.name == "สมบัติ";
               });
 
-
-
               let classShipMission;
               let classBuddyMission;
               let classTreasureMission;
@@ -477,8 +516,6 @@ export default {
               classTreasureMission.sort((a, b) => {
                 return Number(a.level) - Number(b.level);
               });
-              
-
 
               let lastShipMissionLV =
                 classShipMission.length != 0
@@ -523,7 +560,9 @@ export default {
         .collection("classroomMission")
         .where("class", "==", this.currentClass)
         .where("room", "==", this.currentRoom)
+        .where("year", "==", this.currentYear)
         .where("schoolKey", "==", this.teacherData.schoolKey)
+        .where("status", "==", "finish")
         .get();
 
       countMission = countMission.size;
@@ -532,6 +571,7 @@ export default {
         .collection("missionvote")
         .where("class", "==", this.currentClass)
         .where("room", "==", this.currentRoom)
+        .where("year", "==", this.currentYear)
         .where("schoolKey", "==", this.teacherData.schoolKey)
         .where("no", "==", countMission + 1)
         .onSnapshot({ includeMetadataChanges: true }, doc => {
@@ -580,12 +620,8 @@ export default {
         .where("schoolKey", "==", this.teacherData.schoolKey)
         .get();
 
-
-
       let numberOfVote = getNoVote.size;
       numberOfVote = numberOfVote == 0 ? 1 : numberOfVote + 1;
-
-
 
       this.snapTotalVote = db
         .collection("missionvote")
@@ -617,7 +653,7 @@ export default {
         .collection("classroomMission")
         .where("room", "==", this.currentRoom)
         .where("class", "==", this.currentClass)
-        .where("term", "==", this.currentTerm)
+        // .where("term", "==", this.currentTerm)
         .where("year", "==", this.currentYear)
         .where("status", "==", "current")
         .where("schoolKey", "==", this.teacherData.schoolKey)

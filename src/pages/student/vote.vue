@@ -536,7 +536,6 @@ export default {
                 classroomTemp.push(dataFinal);
               });
               this.allClassMission = classroomTemp;
-
               let shipMission;
               let buddyMission;
               let treasureMission;
