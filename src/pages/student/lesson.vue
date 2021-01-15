@@ -25,10 +25,9 @@
             style="width:fit-content;width:-webkit-fit-content;"
           >
             <div class="border-dashed br-a-sm q-px-xl q-py-sm">
-              <span
-                class="text-bold"
-                style="font-size:calc(20px + 1vw)"
-              >{{ convertPracticeName(practiceType, practiceSkill) }}</span>
+              <span class="text-bold" style="font-size:calc(20px + 1vw)">{{
+                convertPracticeName(practiceType, practiceSkill)
+              }}</span>
             </div>
           </div>
         </div>
@@ -41,7 +40,10 @@
         v-if="isActivePractice"
       >
         <div class="q-mt-md row justify-center">
-          <div class="q-pa-md bg5 col-12 br-a-md" style="max-width:1200px;width:100%;">
+          <div
+            class="q-pa-md bg5 col-12 br-a-md"
+            style="max-width:1200px;width:100%;"
+          >
             <div v-if="practiceType == 'speaking'">
               <div
                 class="border-dashed row justify-center items-center br-a-md q-pa-md"
@@ -52,7 +54,13 @@
               </div>
             </div>
             <div v-if="practiceType == 'languagetips'">
-              <div v-if="practice.currentQuestion == 0">
+              <!-- <div
+                v-if="
+                  practice.currentQuestion == 0 &&
+                    practiceList[practice.currentQuestion].practicetype !=
+                      'languagetips'
+                "
+              >
                 <div
                   class="border-dashed row justify-center items-center br-a-md q-pa-md"
                   align="center"
@@ -60,9 +68,12 @@
                 >
                   <span style="font-size:3vw">ตั้งใจดูบนหน้าจอกัปตัน</span>
                 </div>
-              </div>
-              <div v-else>
-                <q-img :src="practiceList[practice.currentQuestion].imgURL" style="width:100%;" />
+              </div> -->
+              <div>
+                <q-img
+                  :src="practiceList[practice.currentQuestion].imgURL"
+                  style="width:100%;"
+                />
               </div>
             </div>
             <div
@@ -71,7 +82,10 @@
               "
               align="center"
             >
-              <q-img :src="practiceList[practice.currentQuestion].imgURL" style="width:100%;" />
+              <q-img
+                :src="practiceList[practice.currentQuestion].imgURL"
+                style="width:100%;"
+              />
             </div>
           </div>
         </div>
