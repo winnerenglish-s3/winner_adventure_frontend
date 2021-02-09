@@ -19,7 +19,9 @@
           style="width:fit-content;width:-webkit-fit-content;"
         >
           <div class="border-dashed br-a-sm q-px-xl q-py-sm">
-            <span class="text-bold" style="font-size:calc(20px + 1vw)">ถามตอบไวยากรณ์</span>
+            <span class="text-bold" style="font-size:calc(20px + 1vw)"
+              >ถามตอบไวยากรณ์</span
+            >
           </div>
         </div>
       </div>
@@ -45,20 +47,25 @@
                 icon="far fa-user"
                 size="lg"
               >
-                <span
-                  class="text-h5 q-pl-sm"
-                  style="width:100px;"
-                >{{ finishStudent }}/ {{totalOnlineStudent}}</span>
+                <span class="text-h5 q-pl-sm" style="width:100px;"
+                  >{{ finishStudent }}/ {{ totalOnlineStudent }}</span
+                >
               </q-btn>
             </div>
             <div class="absolute-right" style="top:-92px">
-              <countdown-timer class="relative-position" :practiceTimeProps="currentPractice.time"></countdown-timer>
+              <countdown-timer
+                class="relative-position"
+                :practiceTimeProps="currentPractice.time"
+              ></countdown-timer>
             </div>
 
             <div class="bg5 br-a-sm q-px-md q-py-md">
               <div class="border-dashed-sentence br-a-sm q-pa-lg">
                 <!-- เลขข้อ -->
-                <div class="q-py-sm" v-show="currentState != '3' && currentState != '6'">
+                <div
+                  class="q-py-sm"
+                  v-show="currentState != '3' && currentState != '6'"
+                >
                   <div class="row border3-sm bg1 color3 text-bold">
                     <div
                       align="center"
@@ -72,14 +79,19 @@
                         },
                         { 'border3-r-sm': index != practiceData.length - 1 }
                       ]"
-                    >{{ index + 1 }}</div>
+                    >
+                      {{ index + 1 }}
+                    </div>
                   </div>
                 </div>
                 <div
                   class="q-pa-sm bg3 color1 text-h6"
                   v-show="currentState != '3' && currentState != '6'"
                 >
-                  <div class="q-pa-md" v-html="practiceData[currentQuestion].question"></div>
+                  <div
+                    class="q-pa-md"
+                    v-html="practiceData[currentQuestion].question"
+                  ></div>
                 </div>
 
                 <!-- คำถาม -->
@@ -95,7 +107,19 @@
                         no-caps
                         dense
                         class="full-width color1 br-a-sm q-mt-md no-pointer-events"
-                        :class="isActiveAnswer == false ? 'bg11 ' : index == 0  ?'bg14' : index == 1 ? 'bg8' : index == 2 ? 'bg10' : index == 3 ? 'bg7' : null"
+                        :class="
+                          isActiveAnswer == false
+                            ? 'bg11 '
+                            : index == 0
+                            ? 'bg14'
+                            : index == 1
+                            ? 'bg8'
+                            : index == 2
+                            ? 'bg10'
+                            : index == 3
+                            ? 'bg7'
+                            : null
+                        "
                         align="left"
                         v-for="(item, index) in practiceData[currentQuestion]
                           .choices"
@@ -106,7 +130,10 @@
                         </template>
 
                         <div class="row full-width">
-                          <div class="col-2 self-center q-pa-md" style="width:100px">
+                          <div
+                            class="col-2 self-center q-pa-md"
+                            style="width:100px"
+                          >
                             <q-icon
                               :name="
                                 index == 0
@@ -122,7 +149,10 @@
                               size="45px"
                             ></q-icon>
                           </div>
-                          <div class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm" align="left">
+                          <div
+                            class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm"
+                            align="left"
+                          >
                             <div class="self-center q-px-md">
                               <span class="text-h5" v-html="item"></span>
                             </div>
@@ -143,7 +173,9 @@
                     class="q-mt-md row justify-center"
                     style="max-height:fit-content;min-height:400px"
                   >
-                    <div class="col-md-12 col-xs-10 q-px-md q-pa-sm q-mb-xl q-pb-xl">
+                    <div
+                      class="col-md-12 col-xs-10 q-px-md q-pa-sm q-mb-xl q-pb-xl"
+                    >
                       <span class="text-h5">สรุปคำตอบที่ลูกเรือเลือก</span>
                     </div>
 
@@ -187,16 +219,16 @@
                               style="top:-35px;"
                             >
                               {{
-                              practiceLogData
-                              .map(e => {
-                              return e.dataAnswerList.filter(x => {
-                              return (
-                              x.index == index &&
-                              x.no == currentQuestion
-                              );
-                              }).length;
-                              })
-                              .reduce((a, b) => a + b, 0)
+                                practiceLogData
+                                  .map(e => {
+                                    return e.dataAnswerList.filter(x => {
+                                      return (
+                                        x.index == index &&
+                                        x.no == currentQuestion
+                                      );
+                                    }).length;
+                                  })
+                                  .reduce((a, b) => a + b, 0)
                               }}
                             </span>
                           </div>
@@ -261,7 +293,10 @@
                         </template>
 
                         <div class="row full-width">
-                          <div class="col-2 self-center q-pa-md" style="width:100px">
+                          <div
+                            class="col-2 self-center q-pa-md"
+                            style="width:100px"
+                          >
                             <q-icon
                               name="fas fa-check"
                               size="45px"
@@ -286,7 +321,10 @@
                               size="45px"
                             ></q-icon>
                           </div>
-                          <div class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm" align="left">
+                          <div
+                            class="col row bg1 br-tr-xs br-br-xs color2 q-pa-sm"
+                            align="left"
+                          >
                             <div class="self-center q-px-md">
                               <span class="text-h5" v-html="item"></span>
                             </div>
@@ -304,13 +342,19 @@
                   v-else-if="currentState == '5'"
                 >
                   <div class="q-mb-xl">
-                    <div class="border-dashed br-a-xs q-mt-lg q-pa-md" align="center">
+                    <div
+                      class="border-dashed br-a-xs q-mt-lg q-pa-md"
+                      align="center"
+                    >
                       <div class="q-mt-lg">
                         <span class="text-h4 text-bold">คำอธิบาย</span>
                       </div>
                       <div class="row justify-center" align="left">
                         <div class="q-mt-xl q-mb-md">
-                          <span class="text-h5" v-html="practiceData[currentQuestion].description"></span>
+                          <span
+                            class="text-h5"
+                            v-html="practiceData[currentQuestion].description"
+                          ></span>
                         </div>
                       </div>
                     </div>
@@ -325,46 +369,68 @@
                 >
                   <div class="text-h6 br-a-md">
                     <div v-show="true" class="q-px-lg">
-                      <div align="center" class="color3 text-h5">รายงานผลภารกิจ</div>
+                      <div align="center" class="color3 text-h5">
+                        รายงานผลภารกิจ
+                      </div>
                       <div class="q-my-lg">
                         <div class="color3 q-pt-md text-h6">คะแนนเฉลี่ย</div>
                         <div class="q-px-lg">
-                          <div class="bg1 relative-position q-mt-md" style="width:100%">
+                          <div
+                            class="bg1 relative-position q-mt-md"
+                            style="width:100%"
+                          >
                             <!-- NOTE ขีดแรก -->
                             <div
                               class="absolute color7"
                               style="top:-19px;left:-0.5px;font-size:16px"
-                            >|</div>
+                            >
+                              |
+                            </div>
                             <!-- NOTE ขีดกลาง -->
                             <div
                               class="absolute color7"
                               align="right"
                               style="top:-19px;left:1px;width:50%;font-size:16px"
-                            >|</div>
+                            >
+                              |
+                            </div>
                             <!-- NOTE ขีดขวา -->
                             <div
                               class="absolute color7"
                               style="top:-19px;left:0.5px;width:100%;font-size:16px"
                               align="right"
-                            >|</div>
+                            >
+                              |
+                            </div>
                             <div
                               :class="avgScore >= 50 ? 'bg10' : 'bg7'"
-                              :style="'width:'+ avgScore +'%'"
+                              :style="'width:' + avgScore + '%'"
                             >
                               <!-- NOTE Green Bar -->
-                              <div align="right" class="text-white q-pr-sm">{{ avgScore }}%</div>
+                              <div align="right" class="text-white q-pr-sm">
+                                {{ avgScore }}%
+                              </div>
                             </div>
-                            <div class="color7 absolute" style="top:25px;left:-5px">0%</div>
+                            <div
+                              class="color7 absolute"
+                              style="top:25px;left:-5px"
+                            >
+                              0%
+                            </div>
                             <div
                               class="color7 absolute"
                               style="top:25px;left:0px;width:52%"
                               align="right"
-                            >50%</div>
+                            >
+                              50%
+                            </div>
                             <div
                               class="color7 absolute"
                               style="top:25px;left:20px;width:100%"
                               align="right"
-                            >100%</div>
+                            >
+                              100%
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -374,7 +440,9 @@
                         align="left"
                         style="font-size:22px"
                       >
-                        <div v-if="avgScore < 50">"ลูกเรือส่วนใหญ่ทำแบบฝึกหัดไม่ถูกต้อง"</div>
+                        <div v-if="avgScore < 50">
+                          "ลูกเรือส่วนใหญ่ทำแบบฝึกหัดไม่ถูกต้อง"
+                        </div>
                         <div v-else>"ลูกเรือส่วนใหญ่ทำแบบฝึกหัดผ่านเกณฑ์"</div>
                       </div>
                     </div>
@@ -382,7 +450,9 @@
                     <div v-show="false">
                       <!-- NOTE รูปแบบเก่า -->
                       <!-- HEADER TEXT -->
-                      <span class="color3">แผนภูมิการกระจายผลคะแนนของลูกเรือ</span>
+                      <span class="color3"
+                        >แผนภูมิการกระจายผลคะแนนของลูกเรือ</span
+                      >
 
                       <div class="color3">
                         คะแนนเฉลี่ย
@@ -395,7 +465,7 @@
                           <div class="row" align="center">
                             <div
                               class="col self-end"
-                              v-for="(items,index) in summaryGraphHeight"
+                              v-for="(items, index) in summaryGraphHeight"
                               :key="index"
                             >
                               <div>
@@ -417,20 +487,38 @@
                                   style="position:relative;left:0px"
                                   align="left"
                                 >
-                                  <span style="position:relative;top:-12px;left:3px">I</span>
+                                  <span
+                                    style="position:relative;top:-12px;left:3px"
+                                    >I</span
+                                  >
 
-                                  <span style="position:relative;left:-5px;top:5px">{{items.start}}</span>
+                                  <span
+                                    style="position:relative;left:-5px;top:5px"
+                                    >{{ items.start }}</span
+                                  >
                                 </div>
-                                <div v-else style="position:relative;left:0px" align="left">
-                                  <span style="position:relative;top:-12px;left:-5px">I</span>
+                                <div
+                                  v-else
+                                  style="position:relative;left:0px"
+                                  align="left"
+                                >
+                                  <span
+                                    style="position:relative;top:-12px;left:-5px"
+                                    >I</span
+                                  >
 
-                                  <span style="position:relative;left:-12px;top:5px">{{items.start}}</span>
+                                  <span
+                                    style="position:relative;left:-12px;top:5px"
+                                    >{{ items.start }}</span
+                                  >
                                 </div>
                               </div>
                             </div>
                           </div>
 
-                          <div align="center" class="q-pt-md">คะแนนของลูกเรือ (%)</div>
+                          <div align="center" class="q-pt-md">
+                            คะแนนของลูกเรือ (%)
+                          </div>
                         </div>
                       </div>
                     </div>
