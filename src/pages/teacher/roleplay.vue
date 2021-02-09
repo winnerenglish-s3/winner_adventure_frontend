@@ -1,6 +1,7 @@
 <template>
   <q-page
-    :class="practiceWorld == 'Vocabulary'
+    :class="
+      practiceWorld == 'Vocabulary'
         ? 'bg-vocabulary'
         : practiceWorld == 'Grammar'
         ? 'bg-grammar'
@@ -12,7 +13,8 @@
         ? 'bg-phonics'
         : practiceWorld == 'Listening & Speaking'
         ? 'bg-listening'
-        : ''"
+        : ''
+    "
     class="bg-vocabulary bg-blend-mode q-pa-md color3"
   >
     <div class="relative-position q-mb-md" align="center">
@@ -21,13 +23,18 @@
         style="width:fit-content;width:-webkit-fit-content;"
       >
         <div class="br-a-sm border-dashed q-px-xl q-py-sm">
-          <span class="text-bold" style="font-size:calc(20px + 1vw)">บทหนังสั้น</span>
+          <span class="text-bold" style="font-size:calc(20px + 1vw)"
+            >บทหนังสั้น</span
+          >
         </div>
       </div>
     </div>
 
     <div class="row justify-center full-width">
-      <div class="col-12 bg5 relative-position" style="max-width:1400px;width:100%;">
+      <div
+        class="col-12 bg5 relative-position"
+        style="max-width:1400px;width:100%;"
+      >
         <div class="absolute-right" style="top:-105px;">
           <countdown-timer
             class="relative-position"
@@ -35,11 +42,15 @@
             :practiceTimeProps="currentPractice.time"
           ></countdown-timer>
         </div>
+        <div class="bg3 text-white q-pa-md text-h6" align="center">
+          {{ $q.localStorage.getItem("practiceListName").name }} ({{
+            currentDialog + 1
+          }}/{{ speakingDialog.length }})
+        </div>
         <div
-          class="bg3 text-white q-pa-md text-h6"
-          align="center"
-        >{{$q.localStorage.getItem("practiceListName").name}} ({{currentDialog+1}}/{{speakingDialog.length}})</div>
-        <div class="bg5 relative-position" style="min-height:calc(100vh - 300px);">
+          class="bg5 relative-position"
+          style="min-height:calc(100vh - 300px);"
+        >
           <div class="q-ma-md row">
             <div class="col q-pa-md" align="left">
               <div
@@ -47,15 +58,17 @@
                 style="width:fit-content;width:-webkit-fit-content;border-radius:30px;"
               >
                 <q-icon size="50px" name="fas fa-user-circle"></q-icon>
-                <span
-                  v-if="isLoad"
-                  class="q-mx-lg"
-                  style="font-size:18px;"
-                >{{speakingDialog[currentDialog].name}}</span>
+                <span v-if="isLoad" class="q-mx-lg" style="font-size:18px;">{{
+                  speakingDialog[currentDialog].name
+                }}</span>
               </div>
             </div>
           </div>
-          <div class="row items-center" style="min-height:calc(100vh - 380px)" v-if="isLoad">
+          <div
+            class="row items-center"
+            style="min-height:calc(100vh - 380px)"
+            v-if="isLoad"
+          >
             <div class="col-1 q-pl-md">
               <q-btn
                 style="height:180px"
@@ -65,12 +78,20 @@
                 dense
                 push
                 :disable="isDisableBtn"
-                :class="currentDialog > 0 ? 'bg3 color1' : 'bg11 color1 no-pointer-events' "
+                :class="
+                  currentDialog > 0
+                    ? 'bg3 color1'
+                    : 'bg11 color1 no-pointer-events'
+                "
               ></q-btn>
             </div>
             <div class="col-10" align="center">
-              <div class="text-h2">{{ speakingDialog[currentDialog].conversationEng }}</div>
-              <div class="text-h3 q-pt-md">{{ speakingDialog[currentDialog].conversationThai }}</div>
+              <div class="text-h2">
+                {{ speakingDialog[currentDialog].conversationEng }}
+              </div>
+              <div class="text-h3 q-pt-md">
+                {{ speakingDialog[currentDialog].conversationThai }}
+              </div>
             </div>
             <div class="col-1 q-pr-md" align="right">
               <q-btn
@@ -81,18 +102,25 @@
                 dense
                 push
                 :disable="isDisableBtn"
-                :class="currentDialog < speakingDialog.length - 1 ? 'bg3 color1' : 'bg11 color1 no-pointer-events'"
+                :class="
+                  currentDialog < speakingDialog.length - 1
+                    ? 'bg3 color1'
+                    : 'bg11 color1 no-pointer-events'
+                "
               ></q-btn>
             </div>
             <div class="col-12 color6 relative-position" align="center">
-              <q-btn style="width:180px" class="bg3">
-                <q-icon
-                  name="fas fa-volume-up"
-                  @click="playSound(speakingDialog[currentDialog].audioURL)"
-                  size="50px"
-                ></q-icon>
+              <q-btn
+                style="width:180px"
+                class="bg3"
+                @click="playSound(speakingDialog[currentDialog].audioURL)"
+              >
+                <q-icon name="fas fa-volume-up" size="50px"></q-icon>
               </q-btn>
-              <div class="absolute-right color3 q-pr-md" v-show="isShowFinishPractice">
+              <div
+                class="absolute-right color3 q-pr-md"
+                v-show="isShowFinishPractice"
+              >
                 <q-btn
                   label="จบภารกิจ"
                   class="bg6 color3 fit text-h5"
@@ -315,5 +343,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
