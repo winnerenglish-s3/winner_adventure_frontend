@@ -693,9 +693,10 @@ export default {
               let question = data.data().question;
               let answer = [];
 
-              let setArray = data
-                .data()
-                .question.match(/<\s*u[^>]*>(.*?)<\s*\/\s*u>/g);
+               let resSpan = data
+                      .data().question.replace(/<\s*span[^>]*>/g,'<u>').replace(/<\s*\/\s*span>/g,'</u>')
+
+              let setArray = resSpan.match(/<\s*u[^>]*>(.*?)<\s*\/\s*u>/g);
 
               sumAnswerBox += setArray.length;
 
@@ -706,7 +707,7 @@ export default {
 
                 let setWidth = setRemoveTag.length * 25;
 
-                let res = question.replace(
+                let res = resSpan.replace(
                   setArray[i],
                   '<input type="text" id="answer' +
                     (i + 1) +

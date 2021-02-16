@@ -665,6 +665,7 @@ export default {
               .where("practicekey", "==", this.practiceKey)
               .get()
               .then(async practiceDoc => {
+                console.clear();
                 let temp = [];
 
                 // NOTE  กรณีมีข้อมูลแบบฝึกหัด
@@ -673,9 +674,15 @@ export default {
                     let question = result.data().question;
                     let answer = [];
 
-                    let setArray = result
-                      .data()
-                      .question.match(/<\s*u[^>]*>(.*?)<\s*\/\s*u>/g);
+                    console.log(result
+                      .data().question);
+
+                    let resSpan = result
+                      .data().question.replace(/<\s*span[^>]*>/g,'<u>').replace(/<\s*\/\s*span>/g,'</u>')
+                      
+                    let setArray = resSpan
+                      .match(/<\s*u[^>]*>(.*?)<\s*\/\s*u>/g);
+
 
                     for (let i = 0; i < setArray.length; i++) {
                       let setRemoveTag = setArray[i].replace(
@@ -687,7 +694,7 @@ export default {
 
                       let setWidth = setRemoveTag.length * 25;
 
-                      let res = question.replace(
+                      let res = resSpan.replace(
                         setArray[i],
                         '<input type="text" id="answer' +
                           (i + 1) +
